@@ -1,16 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from '@/components/Header';
+import HeroBanner from '@/components/HeroBanner';
+import SearchBar from '@/components/SearchBar';
+import FormatAccess from '@/components/FormatAccess';
+import BookSection from '@/components/BookSection';
+import PromoBanner from '@/components/PromoBanner';
+import CollectionsGrid from '@/components/CollectionsGrid';
+import TrustSignals from '@/components/TrustSignals';
+import Newsletter from '@/components/Newsletter';
+import Footer from '@/components/Footer';
+import { featuredBooks, bestsellerBooks } from '@/data/books';
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
-  return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
-  );
-};
-
-const Index = PlaceholderIndex;
+const Index = () => (
+  <div className="min-h-screen flex flex-col">
+    <Header />
+    <HeroBanner />
+    <SearchBar />
+    <FormatAccess />
+    <BookSection title="Novedades editoriales" books={featuredBooks} />
+    <PromoBanner />
+    <BookSection title="Los más vendidos" books={bestsellerBooks} ctaLabel="Ver más" />
+    <CollectionsGrid />
+    <TrustSignals />
+    <Newsletter />
+    <Footer />
+  </div>
+);
 
 export default Index;
