@@ -4,10 +4,12 @@ import SearchBar from '@/components/SearchBar';
 import FormatAccess from '@/components/FormatAccess';
 import BookSection from '@/components/BookSection';
 import PromoBanner from '@/components/PromoBanner';
+import ConvocatoriaBanner from '@/components/ConvocatoriaBanner';
 import CollectionsGrid from '@/components/CollectionsGrid';
 import TrustSignals from '@/components/TrustSignals';
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
+import StickyRegisterCTA from '@/components/StickyRegisterCTA';
 import { featuredBooks, bestsellerBooks } from '@/data/books';
 
 const Index = () => (
@@ -19,10 +21,12 @@ const Index = () => (
     <BookSection title="Novedades editoriales" subtitle="Nuevos lanzamientos" books={featuredBooks} />
     <PromoBanner />
     <BookSection title="Los más vendidos" subtitle="Bestsellers" books={bestsellerBooks} ctaLabel="Ver más" />
+    <ConvocatoriaBanner />
     <CollectionsGrid />
     <TrustSignals />
     <Newsletter />
     <Footer />
+    <StickyRegisterCTA />
   </div>
 );
 
