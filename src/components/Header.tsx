@@ -4,6 +4,43 @@ import { Button } from '@/components/ui/button';
 import SearchOverlay from '@/components/SearchOverlay';
 import RedeemCodeModal from '@/components/RedeemCodeModal';
 
+/* ── Catálogo: categorías con subcategorías ── */
+const catalogoSections: { label: string; items: string[] }[] = [
+  {
+    label: 'Áreas',
+    items: [
+      'Artes', 'Ciencias', 'Ciencias agrarias y veterinaria', 'Ciencias de la salud',
+      'Ciencias económicas', 'Ciencias Humanas y Sociales', 'Derecho y ciencias políticas',
+      'Ingeniería', 'Literatura',
+    ],
+  },
+  {
+    label: 'Sedes',
+    items: [
+      'Sede Bogotá', 'Sede Caribe', 'Sede Medellín', 'Sede Nivel nacional',
+      'Sede Palmira', 'Sede Amazonía', 'Sede La Paz', 'Sede Manizales',
+    ],
+  },
+  {
+    label: 'Colecciones',
+    items: [
+      'Biblioteca abierta', 'Ciencias naturales', 'Clásicos del pensamiento',
+      'Colección CES', 'Estadísticas e indicadores', 'Estudios afrocolombianos',
+      'Geografía y ordenamiento territorial', 'Historia y memoria',
+      'Lenguas aborígenes', 'Medio ambiente', 'Obra selecta', 'Salud pública',
+      'Semillas', 'Textos universitarios', 'Vigilada MinEducación',
+    ],
+  },
+  {
+    label: 'E-books',
+    items: ['PDF', 'EPUB', 'Acceso abierto'],
+  },
+  {
+    label: 'Impreso bajo demanda',
+    items: ['Catálogo IBD', 'Novedades IBD'],
+  },
+];
+
 const areas = [
   'Artes', 'Ciencias', 'Ciencias agrarias y veterinaria', 'Ciencias de la salud',
   'Ciencias económicas', 'Ciencias Humanas y Sociales', 'Derecho y ciencias políticas',
@@ -34,9 +71,22 @@ const noticiasTemas = [
   'Editorial UNAL',
 ];
 
+/* ── Noticias sections ── */
+const noticiasSections: { label: string; items: string[] }[] = [
+  {
+    label: 'Categorías',
+    items: ['Ferias del libro', 'Boletines', 'Reseñas', 'Presentación de libros', 'Sede Palmira', 'Libros recomendados', 'Sede Medellín'],
+  },
+  {
+    label: 'Temas',
+    items: ['Acceso abierto', 'Códice Abierto', 'Botánica', 'Literatura infantil', 'Literatura no ficción', 'Fac. Ciencias Humanas', 'Fac. Ciencias Agrarias', 'Editorial UNAL'],
+  },
+];
+
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [hoveredSection, setHoveredSection] = useState<number>(0);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [redeemOpen, setRedeemOpen] = useState(false);
@@ -180,47 +230,55 @@ const Header = () => {
         {/* ==================== MEGA MENUS (desktop) ==================== */}
         {activeMenu === 'catalogo' && (
           <div
-            className="hidden lg:block absolute left-0 right-0 bg-white border-b border-border shadow-lg z-50 animate-in fade-in slide-in-from-top-1 duration-200"
+            className="hidden lg:block absolute left-0 right-0 bg-white border-b border-border shadow-xl z-50 animate-in fade-in slide-in-from-top-1 duration-200"
             onMouseEnter={keepMenu}
             onMouseLeave={closeMenu}
           >
-            <div className="container mx-auto px-4 py-8">
-              <div className="grid grid-cols-3 gap-10">
-                <div>
-                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full" /> Áreas
-                  </h3>
-                  <ul className="space-y-2">
-                    {areas.map((area) => (
-                      <li key={area}><a href="#" className="font-body text-sm text-muted-foreground hover:text-primary transition-colors">{area}</a></li>
-                    ))}
-                  </ul>
+            <div className="container mx-auto px-0">
+              <div className="flex min-h-[360px]">
+                {/* Left sidebar — category list */}
+                <div className="w-[280px] bg-muted/40 border-r border-border flex-shrink-0">
+                  {catalogoSections.map((section, idx) => (
+                    <button
+                      key={section.label}
+                      onMouseEnter={() => setHoveredSection(idx)}
+                      className={`w-full flex items-center justify-between px-6 py-4 font-body text-sm font-semibold text-left transition-colors border-b border-border/50 ${
+                        hoveredSection === idx
+                          ? 'bg-white text-primary border-l-2 border-l-primary'
+                          : 'text-foreground hover:bg-white/60'
+                      }`}
+                    >
+                      {section.label}
+                      <ChevronRight className={`h-4 w-4 transition-colors ${hoveredSection === idx ? 'text-primary' : 'text-muted-foreground'}`} />
+                    </button>
+                  ))}
                 </div>
-                <div>
-                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full" /> Sedes
+
+                {/* Right panel — subcategories in multi-column */}
+                <div className="flex-1 px-10 py-8">
+                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-5">
+                    {catalogoSections[hoveredSection]?.label}
                   </h3>
-                  <ul className="space-y-2">
-                    {sedes.map((sede) => (
-                      <li key={sede}><a href="#" className="font-body text-sm text-muted-foreground hover:text-primary transition-colors">{sede}</a></li>
+                  <div className="grid grid-cols-3 gap-x-8 gap-y-1">
+                    {catalogoSections[hoveredSection]?.items.map((item) => (
+                      <a
+                        key={item}
+                        href="#"
+                        className="font-body text-sm text-muted-foreground hover:text-primary transition-colors py-2.5 border-b border-dashed border-border/60"
+                      >
+                        {item}
+                      </a>
                     ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full" /> Colecciones
-                  </h3>
-                  <ul className="space-y-2">
-                    {colecciones.map((col) => (
-                      <li key={col}><a href="#" className="font-body text-sm text-muted-foreground hover:text-primary transition-colors">{col}</a></li>
-                    ))}
-                  </ul>
-                  <a href="#" className="inline-flex items-center gap-1 mt-4 font-body text-xs font-bold text-primary hover:underline uppercase tracking-wider">
-                    Ver todas las colecciones <ChevronRight className="h-3 w-3" />
-                  </a>
+                  </div>
+                  {catalogoSections[hoveredSection]?.label === 'Colecciones' && (
+                    <a href="#" className="inline-flex items-center gap-1 mt-6 font-body text-xs font-bold text-primary hover:underline uppercase tracking-wider">
+                      Ver todas las colecciones <ChevronRight className="h-3 w-3" />
+                    </a>
+                  )}
                 </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-border flex items-center justify-between">
+              {/* Footer */}
+              <div className="px-6 py-4 border-t border-border flex items-center justify-between bg-muted/20">
                 <p className="font-body text-sm text-muted-foreground">
                   Explora más de <strong className="text-foreground">2.300 publicaciones</strong> académicas en todos los formatos.
                 </p>
@@ -234,34 +292,50 @@ const Header = () => {
 
         {activeMenu === 'noticias' && (
           <div
-            className="hidden lg:block absolute left-0 right-0 bg-white border-b border-border shadow-lg z-50 animate-in fade-in slide-in-from-top-1 duration-200"
+            className="hidden lg:block absolute left-0 right-0 bg-white border-b border-border shadow-xl z-50 animate-in fade-in slide-in-from-top-1 duration-200"
             onMouseEnter={keepMenu}
             onMouseLeave={closeMenu}
           >
-            <div className="container mx-auto px-4 py-8">
-              <div className="grid grid-cols-2 gap-10">
-                <div>
-                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full" /> Categorías
-                  </h3>
-                  <ul className="space-y-2">
-                    {noticiasCategorias.map((cat) => (
-                      <li key={cat}><a href="#" className="font-body text-sm text-muted-foreground hover:text-primary transition-colors">{cat}</a></li>
-                    ))}
-                  </ul>
+            <div className="container mx-auto px-0">
+              <div className="flex min-h-[280px]">
+                {/* Left sidebar */}
+                <div className="w-[280px] bg-muted/40 border-r border-border flex-shrink-0">
+                  {noticiasSections.map((section, idx) => (
+                    <button
+                      key={section.label}
+                      onMouseEnter={() => setHoveredSection(idx)}
+                      className={`w-full flex items-center justify-between px-6 py-4 font-body text-sm font-semibold text-left transition-colors border-b border-border/50 ${
+                        hoveredSection === idx
+                          ? 'bg-white text-primary border-l-2 border-l-primary'
+                          : 'text-foreground hover:bg-white/60'
+                      }`}
+                    >
+                      {section.label}
+                      <ChevronRight className={`h-4 w-4 transition-colors ${hoveredSection === idx ? 'text-primary' : 'text-muted-foreground'}`} />
+                    </button>
+                  ))}
                 </div>
-                <div>
-                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full" /> Temas
+
+                {/* Right panel */}
+                <div className="flex-1 px-10 py-8">
+                  <h3 className="font-body text-xs font-bold tracking-widest uppercase text-secondary mb-5">
+                    {noticiasSections[hoveredSection]?.label}
                   </h3>
-                  <ul className="space-y-2">
-                    {noticiasTemas.map((tema) => (
-                      <li key={tema}><a href="#" className="font-body text-sm text-muted-foreground hover:text-primary transition-colors">{tema}</a></li>
+                  <div className="grid grid-cols-3 gap-x-8 gap-y-1">
+                    {noticiasSections[hoveredSection]?.items.map((item) => (
+                      <a
+                        key={item}
+                        href="#"
+                        className="font-body text-sm text-muted-foreground hover:text-primary transition-colors py-2.5 border-b border-dashed border-border/60"
+                      >
+                        {item}
+                      </a>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-border flex items-center justify-between">
+              {/* Footer */}
+              <div className="px-6 py-4 border-t border-border flex items-center justify-between bg-muted/20">
                 <p className="font-body text-sm text-muted-foreground">
                   Mantente al día con las novedades de la Editorial UNAL.
                 </p>
