@@ -32,12 +32,12 @@ const StickyRegisterCTA = () => {
           <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               <UserPlus className="h-5 w-5 text-primary flex-shrink-0" />
-              <p className="font-body text-sm text-white/90 truncate">
-                <strong className="text-primary">Regístrate gratis</strong> y obtén 10% de descuento en tu primera compra + acceso a cientos de libros en Acceso Abierto.
+              <p className="font-body text-sm text-white/90 truncate font-light">
+                <strong className="text-primary font-medium">Regístrate gratis</strong> y obtén 10% de descuento en tu primera compra + acceso a cientos de libros en Acceso Abierto.
               </p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <Button className="font-body font-semibold text-xs uppercase tracking-wider h-9">
+              <Button className="font-body font-medium text-[11px] uppercase tracking-[0.15em] h-9">
                 Crear cuenta gratis
               </Button>
               <button

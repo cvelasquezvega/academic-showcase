@@ -44,9 +44,9 @@ const BookSection = ({ title, subtitle, books, ctaLabel = 'Ver todo' }: Props) =
         <div className="flex items-end justify-between mb-6">
           <div>
             {subtitle && (
-              <p className="font-body text-sm tracking-widest uppercase text-primary mb-1 font-semibold">{subtitle}</p>
+              <p className="font-body text-[11px] tracking-[0.2em] uppercase text-primary mb-1 font-semibold">{subtitle}</p>
             )}
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">{title}</h2>
+            <h2 className="font-heading text-xl md:text-2xl font-bold text-foreground">{title}</h2>
           </div>
           <div className="flex items-center gap-2">
             {/* Nav arrows */}
@@ -66,8 +66,8 @@ const BookSection = ({ title, subtitle, books, ctaLabel = 'Ver todo' }: Props) =
             >
               <ChevronRight className="h-4 w-4" />
             </button>
-            <Button variant="ghost" className="font-body text-sm text-primary font-semibold hover:text-primary/80 uppercase tracking-wider ml-2">
-              {ctaLabel} <ArrowRight className="ml-1 h-4 w-4" />
+            <Button variant="ghost" className="font-body text-[11px] text-primary font-semibold hover:text-primary/80 uppercase tracking-[0.15em] ml-2">
+              {ctaLabel} <ArrowRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
         </div>

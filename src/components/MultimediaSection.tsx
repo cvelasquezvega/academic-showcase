@@ -69,7 +69,7 @@ const MultimediaSection = () => {
       {/* ═══ PROGRAMA ENTRE LIBROS ═══ */}
       <section className="bg-primary py-12 md:py-16" id="entre-libros">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground mb-8">
+          <h2 className="font-heading text-xl md:text-2xl font-bold text-primary-foreground mb-8">
             Programa: Entre libros
           </h2>
 
@@ -82,10 +82,10 @@ const MultimediaSection = () => {
               className="bg-gradient-to-br from-primary-foreground/10 to-primary-foreground/5 rounded-lg overflow-hidden aspect-square flex flex-col items-center justify-center p-8 border border-primary-foreground/10"
             >
               <Radio className="h-12 w-12 text-primary-foreground/70 mb-4" />
-              <p className="font-heading text-2xl font-bold text-primary-foreground text-center leading-tight">
+              <p className="font-heading text-xl font-bold text-primary-foreground text-center leading-tight">
                 ‹‹Entre Libros››
               </p>
-              <p className="font-body text-sm text-primary-foreground/60 mt-2 text-center">
+              <p className="font-body text-sm text-primary-foreground/60 mt-2 text-center font-light">
                 Espacio editorial al aire
               </p>
               <div className="flex items-center gap-2 mt-4">
@@ -97,7 +97,7 @@ const MultimediaSection = () => {
 
             {/* Episodes list */}
             <div>
-              <h3 className="font-body text-lg font-semibold text-primary-foreground mb-4">Capítulos recientes</h3>
+              <h3 className="font-body text-base font-medium text-primary-foreground mb-4">Capítulos recientes</h3>
               <div className="space-y-0">
                 {radioEpisodes.map((ep, i) => (
                   <motion.a
@@ -132,7 +132,7 @@ const MultimediaSection = () => {
       <section className="bg-primary/90 py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-6">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground">
+            <h2 className="font-heading text-xl md:text-2xl font-bold text-primary-foreground">
               Más allá de los Libros
             </h2>
             <div className="flex items-center gap-2">

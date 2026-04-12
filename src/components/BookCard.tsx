@@ -39,18 +39,18 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       {/* Status badges (top-right) */}
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-1">
         {printDetail?.printStatus === 'out-of-stock' && (
-          <span className="font-body text-[10px] font-bold bg-destructive/90 text-white px-2 py-0.5">Sin stock</span>
+          <span className="font-body text-[10px] font-semibold bg-destructive/90 text-white px-2 py-0.5">Sin stock</span>
         )}
         {printDetail?.printStatus === 'coming-soon' && (
-          <span className="font-body text-[10px] font-bold bg-muted-foreground/80 text-white px-2 py-0.5">Próximamente</span>
+          <span className="font-body text-[10px] font-semibold bg-muted-foreground/80 text-white px-2 py-0.5">Próximamente</span>
         )}
         {audioDetail?.audioStatus === 'coming-soon' && (
-          <span className="font-body text-[10px] font-bold bg-format-audio text-white px-2 py-0.5 flex items-center gap-0.5">
+          <span className="font-body text-[10px] font-semibold bg-format-audio text-white px-2 py-0.5 flex items-center gap-0.5">
             <Headphones className="h-2.5 w-2.5" /> Pronto
           </span>
         )}
         {audioDetail?.audioStatus === 'free-listen' && (
-          <span className="font-body text-[10px] font-bold bg-secondary text-white px-2 py-0.5 flex items-center gap-0.5">
+          <span className="font-body text-[10px] font-semibold bg-secondary text-white px-2 py-0.5 flex items-center gap-0.5">
             <Headphones className="h-2.5 w-2.5" /> Audio libre
           </span>
         )}
@@ -59,8 +59,8 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       {/* Cover */}
       <div className={`relative h-64 bg-gradient-to-br ${book.coverColor} flex items-center justify-center p-6`}>
         <div className="text-center">
-          <h3 className="font-heading text-sm font-bold text-white leading-snug line-clamp-3">{book.title}</h3>
-          <p className="font-body text-xs text-white/70 mt-2">{book.author}</p>
+          <h3 className="font-heading text-sm font-normal text-white leading-snug line-clamp-3">{book.title}</h3>
+          <p className="font-body text-xs text-white/60 mt-2 font-light">{book.author}</p>
         </div>
       </div>
 
@@ -69,17 +69,17 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
         {/* Format badges */}
         <div className="flex flex-wrap gap-1 mb-2">
           {book.formats.map(f => (
-            <span key={f} className={`badge-format ${formatMeta[f].class}`}>{formatMeta[f].label}</span>
+            <span key={f} className={`badge-format ${formatMeta[f].class} text-[10px]`}>{formatMeta[f].label}</span>
           ))}
         </div>
 
-        <p className="font-body text-xs text-muted-foreground tracking-wide uppercase mb-2">{book.category}</p>
+        <p className="font-body text-[11px] text-muted-foreground tracking-wide uppercase mb-2 font-medium">{book.category}</p>
 
         {/* Price + CTA area */}
         <div className="mt-auto pt-3 border-t border-border">
           {cta.icon === 'download' ? (
             /* Open Access: direct download */
-            <Button size="sm" className="w-full font-body font-semibold bg-secondary hover:bg-secondary/90 text-secondary-foreground uppercase text-xs tracking-wider">
+            <Button size="sm" className="w-full font-body font-medium bg-secondary hover:bg-secondary/90 text-secondary-foreground uppercase text-[11px] tracking-[0.15em]">
               <Download className="h-3.5 w-3.5 mr-1.5" /> Descargar gratis
             </Button>
           ) : (
@@ -87,7 +87,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
               {/* Price display */}
               {lowestPrice && (
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="font-body text-lg font-bold text-foreground">
+                  <span className="font-body text-lg font-semibold text-foreground">
                     {multiFormat ? `Desde ${formatPrice(lowestPrice)}` : formatPrice(lowestPrice)}
                   </span>
                   {book.originalPrice && !multiFormat && (
@@ -118,7 +118,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
               <Button
                 size="sm"
                 variant={cta.icon === 'notify' ? 'outline' : 'default'}
-                className={`w-full font-body font-semibold uppercase text-xs tracking-wider ${
+                className={`w-full font-body font-medium uppercase text-[11px] tracking-[0.15em] ${
                   cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground hover:bg-muted cursor-default' : ''
                 } ${cta.icon === 'notify' ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground' : ''}`}
               >

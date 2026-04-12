@@ -17,18 +17,18 @@ const ConvocatoriaBanner = () => (
           </div>
         </div>
         <div className="flex-1 text-center md:text-left">
-          <h3 className="font-heading text-xl font-bold text-foreground mb-1">
+          <h3 className="font-heading text-lg font-bold text-foreground mb-1">
             Convocatorias editoriales abiertas
           </h3>
-          <p className="font-body text-sm text-muted-foreground">
+          <p className="font-body text-sm text-muted-foreground font-light">
             ¿Tienes un manuscrito académico? Conoce nuestras convocatorias vigentes y postula tu obra para publicación.
           </p>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
-          <Button variant="outline" className="font-body font-semibold text-xs uppercase tracking-wider border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground">
+          <Button variant="outline" className="font-body font-medium text-[11px] uppercase tracking-[0.15em] border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground">
             <FileText className="h-3.5 w-3.5 mr-1.5" /> Ver convocatorias
           </Button>
-          <Button className="font-body font-semibold text-xs uppercase tracking-wider bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+          <Button className="font-body font-medium text-[11px] uppercase tracking-[0.15em] bg-secondary hover:bg-secondary/90 text-secondary-foreground">
             <Mail className="h-3.5 w-3.5 mr-1.5" /> Contactar
           </Button>
         </div>
