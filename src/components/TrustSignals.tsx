@@ -8,18 +8,14 @@ const signals = [
 ];
 
 const TrustSignals = () => (
-  <section className="py-10 md:py-14">
+  <section className="py-16 md:py-20 border-t border-border">
     <div className="container mx-auto px-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-border">
         {signals.map(s => (
-          <div key={s.title} className="flex items-start gap-4 p-4">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <s.icon className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <h4 className="font-body text-sm font-bold text-foreground">{s.title}</h4>
-              <p className="font-body text-xs text-muted-foreground mt-0.5">{s.desc}</p>
-            </div>
+          <div key={s.title} className="bg-background flex flex-col items-center text-center p-8">
+            <s.icon className="h-6 w-6 text-primary mb-4" />
+            <h4 className="font-body text-sm font-bold text-foreground mb-1">{s.title}</h4>
+            <p className="font-body text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
           </div>
         ))}
       </div>
