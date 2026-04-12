@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const PromoBanner = () => (
@@ -9,20 +9,25 @@ const PromoBanner = () => (
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="bg-foreground p-10 md:p-16 md:flex items-center justify-between"
+        className="bg-primary-light p-8 md:p-14 md:flex items-center justify-between gap-8"
       >
-        <div className="mb-6 md:mb-0 md:mr-12">
-          <p className="font-body text-sm tracking-widest uppercase text-primary mb-3">Feria del Libro 2026</p>
-          <h3 className="font-heading text-2xl md:text-4xl font-bold text-background mb-3">
+        <div className="mb-6 md:mb-0">
+          <p className="font-body text-sm tracking-widest uppercase text-primary mb-2 font-semibold">Feria del Libro 2026</p>
+          <h3 className="font-heading text-2xl md:text-4xl font-bold text-foreground mb-3">
             Hasta 30% de descuento
           </h3>
-          <p className="font-body text-background/60 text-sm max-w-md">
-            Aprovecha la promoción especial en más de 500 publicaciones hasta el 30 de mayo.
+          <p className="font-body text-muted-foreground text-sm max-w-md">
+            Aprovecha la promoción especial en más de 500 publicaciones. Regístrate y obtén un descuento adicional del 5%.
           </p>
         </div>
-        <Button size="lg" className="font-body font-semibold uppercase tracking-wider text-sm flex-shrink-0">
-          Ver ofertas <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex flex-col gap-3 flex-shrink-0">
+          <Button size="lg" className="font-body font-semibold uppercase tracking-wider text-sm">
+            Ver ofertas <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <Button size="lg" variant="outline" className="font-body font-semibold uppercase tracking-wider text-sm border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground">
+            <UserPlus className="mr-2 h-4 w-4" /> Regístrate gratis
+          </Button>
+        </div>
       </motion.div>
     </div>
   </section>

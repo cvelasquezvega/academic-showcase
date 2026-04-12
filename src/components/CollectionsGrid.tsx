@@ -3,13 +3,13 @@ import { ArrowRight } from 'lucide-react';
 import { collections } from '@/data/books';
 
 const CollectionsGrid = () => (
-  <section className="py-16 md:py-20 bg-muted">
+  <section className="py-14 md:py-18 bg-primary-light/40">
     <div className="container mx-auto px-4">
-      <p className="font-body text-sm tracking-widest uppercase text-muted-foreground text-center mb-3">Subjects</p>
-      <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground text-center mb-12">
+      <p className="font-body text-sm tracking-widest uppercase text-primary text-center mb-2 font-semibold">Temáticas</p>
+      <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground text-center mb-10">
         Explora por temática
       </h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {collections.map((col, i) => (
           <motion.a
             key={col.name}
@@ -18,7 +18,7 @@ const CollectionsGrid = () => (
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.04 }}
-            className="group bg-background p-6 hover:bg-primary/5 transition-colors flex items-center gap-4"
+            className="group bg-card border border-border p-5 hover:border-primary/30 hover:shadow-md transition-all flex items-center gap-3"
           >
             <span className="text-2xl">{col.icon}</span>
             <div className="flex-1 min-w-0">
