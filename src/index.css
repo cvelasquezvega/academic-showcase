@@ -108,4 +108,20 @@
     background-color: hsl(var(--format-ibd));
     @apply text-foreground;
   }
+  /* Carousel slide responsive widths */
+  .carousel-slide-book {
+    flex: 0 0 85%;
+  }
+  @media (min-width: 640px) {
+    .carousel-slide-book { flex: 0 0 48%; }
+  }
+  @media (min-width: 768px) {
+    .carousel-slide-book { flex: 0 0 32%; }
+  }
+  @media (min-width: 1024px) {
+    .carousel-slide-book { flex: 0 0 24%; }
+  }
+  @media (min-width: 1280px) {
+    .carousel-slide-book { flex: 0 0 calc(100% / 6); }
+  }
 }
