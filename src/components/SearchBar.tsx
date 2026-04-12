@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
-import { Search, X, Download, ShoppingCart, Truck, BookOpen, Headphones, Unlock, Clock, ArrowRight } from 'lucide-react';
+import { Search, X, Download, ShoppingCart, ArrowRight, BookOpen, Unlock, Clock, Headphones, ChevronRight, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { featuredBooks, bestsellerBooks, formatPrice } from '@/data/books';
+import { featuredBooks, bestsellerBooks, formatPrice, getMiniCardCTA } from '@/data/books';
 import type { Book, BookFormat } from '@/data/books';
 
 const allBooks = [...featuredBooks, ...bestsellerBooks];
@@ -49,7 +49,6 @@ const SearchBar = () => {
   return (
     <section className="border-b border-border bg-card">
       <div className="container mx-auto px-4 py-5">
-        {/* Format filter pills */}
         <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
           {formatFilters.map(f => (
             <button
@@ -67,7 +66,6 @@ const SearchBar = () => {
           ))}
         </div>
 
-        {/* Search input */}
         <div className="relative max-w-2xl mx-auto">
           <div className="flex items-center border border-border px-4 py-3 focus-within:border-primary focus-within:shadow-sm transition-all bg-background">
             <Search className="h-4 w-4 text-primary mr-3 flex-shrink-0" />
@@ -88,7 +86,6 @@ const SearchBar = () => {
             )}
           </div>
 
-          {/* Popular searches (idle state) */}
           {showSuggestions && (
             <div className="absolute top-full mt-px left-0 right-0 bg-card border border-border border-t-0 shadow-lg z-20 p-4">
               <p className="font-body text-[11px] font-bold tracking-widest uppercase text-muted-foreground mb-3">Búsquedas populares</p>
@@ -106,7 +103,6 @@ const SearchBar = () => {
             </div>
           )}
 
-          {/* Rich search results */}
           {showResults && (
             <div className="absolute top-full mt-px left-0 right-0 bg-card border border-border border-t-0 shadow-lg z-20 max-h-[420px] overflow-y-auto">
               {filtered.length === 0 ? (
@@ -140,16 +136,17 @@ const SearchBar = () => {
 };
 
 const SearchResultItem = ({ book }: { book: Book }) => {
-  const isOpenAccess = book.formats.includes('open-access');
+  const cta = getMiniCardCTA(book);
+  const lowestPrice = book.formatDetails
+    ? Math.min(...book.formatDetails.filter(d => d.price && d.price > 0).map(d => d.price!))
+    : book.price;
 
   return (
     <div className="flex items-center gap-4 px-4 py-3 hover:bg-primary-light/50 transition-colors border-b border-border/50 last:border-b-0 cursor-pointer">
-      {/* Mini cover */}
       <div className={`w-12 h-16 flex-shrink-0 bg-gradient-to-br ${book.coverColor} flex items-center justify-center`}>
         <span className="font-heading text-[8px] text-white font-bold text-center leading-tight px-1 line-clamp-2">{book.title}</span>
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0">
         <h4 className="font-body text-sm font-semibold text-foreground truncate">{book.title}</h4>
         <p className="font-body text-xs text-muted-foreground">{book.author}</p>
@@ -160,20 +157,25 @@ const SearchResultItem = ({ book }: { book: Book }) => {
         </div>
       </div>
 
-      {/* Direct action CTA */}
-      <div className="flex-shrink-0">
-        {isOpenAccess ? (
-          <Button size="sm" className="font-body text-[11px] font-semibold bg-secondary hover:bg-secondary/90 text-secondary-foreground h-8 px-3">
-            <Download className="h-3 w-3 mr-1" /> Descargar
-          </Button>
-        ) : (
-          <div className="text-right">
-            <span className="font-body text-sm font-bold text-foreground block">{formatPrice(book.price!)}</span>
-            <Button size="sm" className="font-body text-[11px] font-semibold h-7 px-2.5 mt-1">
-              <ShoppingCart className="h-3 w-3 mr-1" /> Añadir
-            </Button>
-          </div>
+      <div className="flex-shrink-0 text-right">
+        {lowestPrice && lowestPrice > 0 && (
+          <span className="font-body text-sm font-bold text-foreground block">
+            {cta.icon === 'options' ? `Desde ${formatPrice(lowestPrice)}` : formatPrice(lowestPrice)}
+          </span>
         )}
+        <Button
+          size="sm"
+          variant={cta.icon === 'notify' ? 'outline' : 'default'}
+          className={`font-body text-[11px] font-semibold h-7 px-2.5 mt-1 ${
+            cta.icon === 'download' ? 'bg-secondary hover:bg-secondary/90 text-secondary-foreground' : ''
+          }`}
+        >
+          {cta.icon === 'download' && <Download className="h-3 w-3 mr-1" />}
+          {cta.icon === 'cart' && <ShoppingCart className="h-3 w-3 mr-1" />}
+          {cta.icon === 'options' && <ChevronRight className="h-3 w-3 mr-1" />}
+          {cta.icon === 'notify' && <Bell className="h-3 w-3 mr-1" />}
+          {cta.label}
+        </Button>
       </div>
     </div>
   );
