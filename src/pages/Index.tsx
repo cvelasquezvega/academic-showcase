@@ -16,9 +16,9 @@ const Index = () => (
     <HeroBanner />
     <SearchBar />
     <FormatAccess />
-    <BookSection title="Novedades editoriales" books={featuredBooks} />
+    <BookSection title="Novedades editoriales" subtitle="Nuevos lanzamientos" books={featuredBooks} />
     <PromoBanner />
-    <BookSection title="Los más vendidos" books={bestsellerBooks} ctaLabel="Ver más" />
+    <BookSection title="Los más vendidos" subtitle="Bestsellers" books={bestsellerBooks} ctaLabel="Ver más" />
     <CollectionsGrid />
     <TrustSignals />
     <Newsletter />

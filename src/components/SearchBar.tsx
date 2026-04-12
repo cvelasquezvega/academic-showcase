@@ -19,14 +19,14 @@ const SearchBar = () => {
     : [];
 
   return (
-    <section className="bg-card border-b border-border">
-      <div className="container mx-auto px-4 py-4">
+    <section className="border-b border-border">
+      <div className="container mx-auto px-4 py-5">
         <div className="relative max-w-2xl mx-auto">
-          <div className="flex items-center bg-muted rounded-lg px-4 py-2.5 border border-border focus-within:ring-2 focus-within:ring-primary/30">
-            <Search className="h-5 w-5 text-muted-foreground mr-3 flex-shrink-0" />
+          <div className="flex items-center border border-border px-4 py-3 focus-within:border-primary transition-colors">
+            <Search className="h-4 w-4 text-muted-foreground mr-3 flex-shrink-0" />
             <input
               type="text"
-              placeholder="Buscar por título, autor, ISBN o tema..."
+              placeholder="Search by title, author, ISBN, or subject..."
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => setFocused(true)}
@@ -41,11 +41,11 @@ const SearchBar = () => {
           </div>
 
           {focused && filtered.length > 0 && (
-            <div className="absolute top-full mt-1 left-0 right-0 bg-card border border-border rounded-lg shadow-lg z-20 overflow-hidden">
+            <div className="absolute top-full mt-px left-0 right-0 bg-background border border-border border-t-0 shadow-lg z-20">
               {filtered.map(s => (
                 <button
                   key={s}
-                  className="w-full text-left px-4 py-2.5 font-body text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2"
+                  className="w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2"
                   onClick={() => setQuery(s)}
                 >
                   <Search className="h-3.5 w-3.5 text-muted-foreground" />

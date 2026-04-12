@@ -9,12 +9,12 @@ export default {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1280px",
       },
     },
     extend: {
       fontFamily: {
-        heading: ["Libre Baskerville", "serif"],
+        heading: ["Playfair Display", "serif"],
         body: ["Source Sans 3", "sans-serif"],
       },
       colors: {

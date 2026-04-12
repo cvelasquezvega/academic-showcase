@@ -24,29 +24,29 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.06 }}
-      className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col relative"
+      className="group bg-background border border-border overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col relative"
     >
       {book.discount && <span className="badge-discount">-{book.discount}%</span>}
 
-      <div className={`relative h-56 bg-gradient-to-br ${book.coverColor} flex items-center justify-center p-6`}>
+      <div className={`relative h-64 bg-gradient-to-br ${book.coverColor} flex items-center justify-center p-6`}>
         <div className="text-center">
           <h3 className="font-heading text-sm font-bold text-white leading-snug line-clamp-3">{book.title}</h3>
           <p className="font-body text-xs text-white/70 mt-2">{book.author}</p>
         </div>
       </div>
 
-      <div className="p-4 flex flex-col flex-1">
+      <div className="p-5 flex flex-col flex-1">
         <div className="flex flex-wrap gap-1 mb-3">
           {book.formats.map(f => (
             <span key={f} className={`badge-format ${formatMeta[f].class}`}>{formatMeta[f].label}</span>
           ))}
         </div>
 
-        <p className="font-body text-xs text-muted-foreground mb-1">{book.category}</p>
+        <p className="font-body text-xs text-muted-foreground tracking-wide uppercase mb-2">{book.category}</p>
 
-        <div className="mt-auto pt-3 border-t border-border">
+        <div className="mt-auto pt-4 border-t border-border">
           {isOpenAccess ? (
-            <Button size="sm" className="w-full font-body font-semibold bg-format-open hover:bg-format-open/90 text-white">
+            <Button size="sm" className="w-full font-body font-semibold bg-format-open hover:bg-format-open/90 text-white uppercase text-xs tracking-wider">
               <Download className="h-3.5 w-3.5 mr-1.5" /> Descargar gratis
             </Button>
           ) : (
@@ -57,12 +57,12 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
                   <span className="font-body text-sm text-muted-foreground line-through">{formatPrice(book.originalPrice)}</span>
                 )}
               </div>
-              <div className="flex items-center gap-1 text-muted-foreground text-[11px] font-body mb-2">
+              <div className="flex items-center gap-1 text-muted-foreground text-[11px] font-body mb-3">
                 {hasEbook && <span className="flex items-center gap-0.5"><Download className="h-3 w-3" /> Acceso inmediato</span>}
                 {hasPrint && <span className="flex items-center gap-0.5 ml-2"><Truck className="h-3 w-3" /> Envío disponible</span>}
                 {hasIbd && <span className="flex items-center gap-0.5 ml-2"><Clock className="h-3 w-3" /> 5-7 días</span>}
               </div>
-              <Button size="sm" className="w-full font-body font-semibold">
+              <Button size="sm" className="w-full font-body font-semibold uppercase text-xs tracking-wider">
                 <ShoppingCart className="h-3.5 w-3.5 mr-1.5" /> Añadir al carrito
               </Button>
             </>

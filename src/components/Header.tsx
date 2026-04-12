@@ -1,58 +1,61 @@
 import { useState } from 'react';
-import { Search, User, Heart, ShoppingCart, Menu, X } from 'lucide-react';
+import { Search, User, ShoppingCart, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const navLinks = ['Catálogo', 'Novedades', 'Colecciones', 'Acceso Abierto', 'Nosotros'];
+const navLinks = ['Books', 'New Releases', 'Subjects', 'Open Access', 'About'];
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center">
-            <span className="text-card font-heading text-sm font-bold">EU</span>
+    <header className="sticky top-0 z-50 bg-background border-b border-border">
+      <div className="container mx-auto px-4 flex items-center justify-between h-[72px]">
+        <a href="#" className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground font-heading text-lg font-bold">U</span>
           </div>
-          <span className="font-heading text-lg font-bold text-foreground hidden sm:block">
-            Editorial <span className="text-primary">Académica</span>
-          </span>
-        </div>
+          <div className="hidden sm:block">
+            <span className="font-heading text-xl font-bold text-foreground tracking-tight">
+              Editorial UN
+            </span>
+          </div>
+        </a>
 
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link} href="#" className="font-body text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            <a
+              key={link}
+              href="#"
+              className="font-body text-sm font-medium text-foreground hover:text-primary transition-colors tracking-wide uppercase"
+            >
               {link}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary">
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" className="text-foreground hover:text-primary">
             <Search className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hidden sm:flex">
+          <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hidden sm:flex">
             <User className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hidden sm:flex">
-            <Heart className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary relative">
+          <Button variant="ghost" size="icon" className="text-foreground hover:text-primary relative">
             <ShoppingCart className="h-5 w-5" />
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
               2
             </span>
           </Button>
-          <Button variant="ghost" size="icon" className="lg:hidden text-muted-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
+          <Button variant="ghost" size="icon" className="lg:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
       </div>
 
       {mobileOpen && (
-        <nav className="lg:hidden bg-card border-t border-border px-4 py-4 space-y-3">
+        <nav className="lg:hidden bg-background border-t border-border px-4 py-6 space-y-4">
           {navLinks.map((link) => (
-            <a key={link} href="#" className="block font-body text-sm font-medium text-muted-foreground hover:text-primary">
+            <a key={link} href="#" className="block font-body text-sm font-medium text-foreground hover:text-primary uppercase tracking-wide">
               {link}
             </a>
           ))}
