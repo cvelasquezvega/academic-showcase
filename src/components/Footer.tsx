@@ -22,17 +22,17 @@ const Footer = () => (
             <span className="font-heading text-lg font-bold italic">Editorial</span>
             <span className="font-body text-base font-bold text-primary">UNAL</span>
           </div>
-          <p className="font-body text-xs text-primary-foreground/50 leading-relaxed">
+          <p className="font-body text-xs text-primary-foreground/50 leading-relaxed font-light">
             Universidad Nacional de Colombia. Publicaciones académicas con rigor editorial al servicio de la investigación, la docencia y la extensión.
           </p>
         </div>
         {footerSections.map(s => (
           <div key={s.title}>
-            <h4 className="font-body text-xs font-bold mb-4 uppercase tracking-widest text-primary-foreground/70">{s.title}</h4>
+            <h4 className="font-body text-[11px] font-semibold mb-4 uppercase tracking-[0.2em] text-primary-foreground/70">{s.title}</h4>
             <ul className="space-y-2.5">
               {s.links.map(link => (
                 <li key={link}>
-                  <a href="#" className="font-body text-sm text-primary-foreground/50 hover:text-primary transition-colors">{link}</a>
+                  <a href="#" className="font-body text-sm text-primary-foreground/50 hover:text-primary transition-colors font-light">{link}</a>
                 </li>
               ))}
             </ul>

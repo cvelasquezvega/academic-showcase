@@ -14,8 +14,8 @@ const TrustSignals = () => (
         {signals.map(s => (
           <div key={s.title} className="bg-card border border-border flex flex-col items-center text-center p-6">
             <s.icon className="h-6 w-6 text-secondary mb-3" />
-            <h4 className="font-body text-sm font-bold text-foreground mb-1">{s.title}</h4>
-            <p className="font-body text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+            <h4 className="font-body text-sm font-medium text-foreground mb-1">{s.title}</h4>
+            <p className="font-body text-xs text-muted-foreground leading-relaxed font-light">{s.desc}</p>
           </div>
         ))}
       </div>

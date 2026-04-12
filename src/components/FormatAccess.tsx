@@ -12,8 +12,8 @@ const formats = [
 const FormatAccess = () => (
   <section className="py-14 md:py-18 bg-primary-light/50">
     <div className="container mx-auto px-4">
-      <p className="font-body text-sm tracking-widest uppercase text-primary text-center mb-2 font-semibold">Formatos</p>
-      <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground text-center mb-10">
+      <p className="font-body text-[11px] tracking-[0.2em] uppercase text-primary text-center mb-2 font-semibold">Formatos</p>
+      <h2 className="font-heading text-xl md:text-2xl font-bold text-foreground text-center mb-10">
         Elige tu formato preferido
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -28,8 +28,8 @@ const FormatAccess = () => (
             className="group flex flex-col items-center text-center p-6 bg-card border border-border hover:border-primary/30 hover:shadow-md transition-all"
           >
             <f.icon className={`h-7 w-7 ${f.color} mb-3 group-hover:scale-110 transition-transform`} />
-            <span className="font-body text-sm font-semibold text-foreground">{f.label}</span>
-            <span className="font-body text-xs text-muted-foreground mt-1">{f.desc}</span>
+            <span className="font-body text-sm font-medium text-foreground">{f.label}</span>
+            <span className="font-body text-xs text-muted-foreground mt-1 font-light">{f.desc}</span>
           </motion.a>
         ))}
       </div>
