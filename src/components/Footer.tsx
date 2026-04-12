@@ -14,35 +14,33 @@ const footerSections = [
 ];
 
 const Footer = () => (
-  <footer className="bg-foreground text-background border-t border-background/10">
-    <div className="container mx-auto px-4 py-16">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+  <footer className="bg-header-dark text-primary-foreground">
+    <div className="container mx-auto px-4 py-14">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
         <div>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-heading text-sm font-bold">U</span>
-            </div>
-            <span className="font-heading text-base font-bold">Editorial UN</span>
+          <div className="flex items-baseline gap-1.5 mb-4">
+            <span className="font-heading text-lg font-bold italic">Editorial</span>
+            <span className="font-body text-base font-bold text-primary">UNAL</span>
           </div>
-          <p className="font-body text-xs text-background/50 leading-relaxed">
-            Publicaciones académicas con rigor editorial al servicio de la investigación, la docencia y la extensión universitaria.
+          <p className="font-body text-xs text-primary-foreground/50 leading-relaxed">
+            Universidad Nacional de Colombia. Publicaciones académicas con rigor editorial al servicio de la investigación, la docencia y la extensión.
           </p>
         </div>
         {footerSections.map(s => (
           <div key={s.title}>
-            <h4 className="font-body text-xs font-bold mb-4 uppercase tracking-widest text-background/70">{s.title}</h4>
+            <h4 className="font-body text-xs font-bold mb-4 uppercase tracking-widest text-primary-foreground/70">{s.title}</h4>
             <ul className="space-y-2.5">
               {s.links.map(link => (
                 <li key={link}>
-                  <a href="#" className="font-body text-sm text-background/50 hover:text-primary transition-colors">{link}</a>
+                  <a href="#" className="font-body text-sm text-primary-foreground/50 hover:text-primary transition-colors">{link}</a>
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
-      <div className="border-t border-background/10 pt-8 text-center">
-        <p className="font-body text-xs text-background/30">© 2026 Editorial UN — Universidad Nacional de Colombia. Todos los derechos reservados.</p>
+      <div className="border-t border-primary-foreground/10 pt-6 text-center">
+        <p className="font-body text-xs text-primary-foreground/30">© 2026 Editorial UNAL — Universidad Nacional de Colombia. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>

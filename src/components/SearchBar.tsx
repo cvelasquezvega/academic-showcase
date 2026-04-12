@@ -19,14 +19,14 @@ const SearchBar = () => {
     : [];
 
   return (
-    <section className="border-b border-border">
-      <div className="container mx-auto px-4 py-5">
+    <section className="border-b border-border bg-card">
+      <div className="container mx-auto px-4 py-4">
         <div className="relative max-w-2xl mx-auto">
-          <div className="flex items-center border border-border px-4 py-3 focus-within:border-primary transition-colors">
-            <Search className="h-4 w-4 text-muted-foreground mr-3 flex-shrink-0" />
+          <div className="flex items-center border border-border px-4 py-3 focus-within:border-primary transition-colors bg-background">
+            <Search className="h-4 w-4 text-primary mr-3 flex-shrink-0" />
             <input
               type="text"
-              placeholder="Search by title, author, ISBN, or subject..."
+              placeholder="Buscar por título, autor, ISBN o temática..."
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => setFocused(true)}
@@ -41,14 +41,14 @@ const SearchBar = () => {
           </div>
 
           {focused && filtered.length > 0 && (
-            <div className="absolute top-full mt-px left-0 right-0 bg-background border border-border border-t-0 shadow-lg z-20">
+            <div className="absolute top-full mt-px left-0 right-0 bg-card border border-border border-t-0 shadow-lg z-20">
               {filtered.map(s => (
                 <button
                   key={s}
-                  className="w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2"
+                  className="w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-primary-light transition-colors flex items-center gap-2"
                   onClick={() => setQuery(s)}
                 >
-                  <Search className="h-3.5 w-3.5 text-muted-foreground" />
+                  <Search className="h-3.5 w-3.5 text-primary" />
                   {s}
                 </button>
               ))}
