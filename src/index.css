@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,46 +6,47 @@
 
 @layer base {
   :root {
-    --background: 35 25% 95%;
-    --foreground: 20 10% 15%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
 
-    --card: 30 20% 98%;
-    --card-foreground: 20 10% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 10% 15%;
+    --popover-foreground: 0 0% 8%;
 
-    --primary: 15 65% 52%;
+    --primary: 27 95% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 160 35% 35%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 8%;
 
-    --muted: 35 15% 90%;
-    --muted-foreground: 20 8% 45%;
+    --muted: 30 10% 96%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 45 70% 55%;
-    --accent-foreground: 20 10% 15%;
+    --accent: 27 95% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 15 65% 52%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 27 95% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0px;
 
-    --hero-gradient: linear-gradient(135deg, hsl(20 10% 15%) 0%, hsl(20 15% 25%) 50%, hsl(15 65% 52% / 0.9) 100%);
-    --cta-gradient: linear-gradient(135deg, hsl(15 65% 52%), hsl(15 75% 45%));
-    --promo-gradient: linear-gradient(135deg, hsl(160 35% 35%), hsl(160 45% 28%));
+    --hero-gradient: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 0% 15%) 100%);
+    --cta-gradient: linear-gradient(135deg, hsl(27 95% 55%), hsl(27 95% 48%));
+    --promo-gradient: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 15%));
+
     --format-open: 160 45% 40%;
-    --format-ebook: 220 60% 50%;
-    --format-print: 15 65% 52%;
-    --format-audio: 280 45% 50%;
-    --format-ibd: 45 70% 50%;
+    --format-ebook: 220 55% 45%;
+    --format-print: 27 95% 55%;
+    --format-audio: 280 40% 45%;
+    --format-ibd: 45 60% 50%;
 
-    --font-heading: 'Libre Baskerville', serif;
+    --font-heading: 'Playfair Display', serif;
     --font-body: 'Source Sans 3', sans-serif;
 
     --sidebar-background: 0 0% 98%;
@@ -66,6 +67,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -74,10 +77,10 @@
 
 @layer components {
   .badge-discount {
-    @apply absolute top-2 left-2 bg-destructive text-destructive-foreground text-xs font-bold px-2 py-1 rounded-sm z-10;
+    @apply absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 z-10;
   }
   .badge-format {
-    @apply inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full;
+    @apply inline-flex items-center text-xs font-semibold px-2 py-0.5;
   }
   .badge-open-access {
     background-color: hsl(var(--format-open));
