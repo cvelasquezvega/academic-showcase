@@ -76,12 +76,7 @@ const BookSection = ({ title, subtitle, books, ctaLabel = 'Ver todo' }: Props) =
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex -ml-4">
             {books.map((book, i) => (
-              <div
-                key={book.id}
-                className="min-w-0 shrink-0 grow-0 pl-4"
-                style={{ flexBasis: 'calc(100% / 2)' }}
-                // Responsive via CSS classes won't work inline, use media queries approach
-              >
+              <div key={book.id} className="carousel-slide-book min-w-0 pl-4">
                 <BookCard book={book} index={i} />
               </div>
             ))}
