@@ -96,6 +96,7 @@ const Header = () => {
   const openMenu = (menu: string) => {
     if (menuTimeout.current) clearTimeout(menuTimeout.current);
     setActiveMenu(menu);
+    setHoveredSection(0);
   };
 
   const closeMenu = () => {
