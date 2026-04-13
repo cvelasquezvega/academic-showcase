@@ -82,7 +82,7 @@ const HeroBanner = () => {
             animate="center"
             exit="exit"
             transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="max-w-2xl"
+            className="max-w-3xl mx-auto text-center"
           >
             <span className="inline-block font-body text-[11px] font-semibold tracking-[0.2em] uppercase text-primary mb-4 bg-primary/10 px-3 py-1.5">
               {slide.tag}
@@ -90,10 +90,10 @@ const HeroBanner = () => {
             <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-[1.15] mb-5">
               {slide.title}
             </h1>
-            <p className="font-body text-base md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg font-light">
+            <p className="font-body text-base md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto font-light">
               {slide.subtitle}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" className="font-body font-medium text-sm uppercase tracking-[0.15em]">
                 {slide.cta} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

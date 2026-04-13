@@ -23,6 +23,14 @@ export interface TocItem {
   page?: number;
 }
 
+export interface MultimediaResource {
+  type: 'mp3' | 'mp4';
+  title: string;
+  description: string;
+  duration?: string;
+  size?: string;
+}
+
 export interface Book {
   id: string;
   title: string;
@@ -30,6 +38,7 @@ export interface Book {
   author: string;
   coAuthors?: string[];
   coverColor: string;
+  coverImage?: string;
   price?: number;
   originalPrice?: number;
   formats: BookFormat[];
@@ -63,6 +72,7 @@ export interface Book {
   drmType?: string;
   ratingAvg?: number;
   ratingCount?: number;
+  multimediaResources?: MultimediaResource[];
 }
 
 // Helpers
@@ -101,6 +111,7 @@ export const featuredBooks: Book[] = [
     subtitle: 'Fundamentos jurídicos y análisis comparado',
     author: 'María Angélica Sánchez Álvarez',
     coverColor: 'from-teal-700 to-teal-900',
+    coverImage: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80',
     price: 62000,
     formats: ['printed', 'ebook', 'ibd'],
     formatDetails: [
@@ -145,6 +156,22 @@ export const featuredBooks: Book[] = [
     drmType: 'Social DRM',
     ratingAvg: 4.5,
     ratingCount: 18,
+    multimediaResources: [
+      {
+        type: 'mp3',
+        title: 'Presentación sonora',
+        description: 'Comentario de lectura y contexto académico del título.',
+        duration: '08:42',
+        size: '7.8 MB',
+      },
+      {
+        type: 'mp4',
+        title: 'Video de presentación',
+        description: 'Introducción audiovisual a los principales aportes de la obra.',
+        duration: '03:16',
+        size: '42 MB',
+      },
+    ],
   },
   {
     id: '2',
@@ -153,6 +180,7 @@ export const featuredBooks: Book[] = [
     author: 'Luz Gabriela Arango',
     coAuthors: ['Mara Viveros Vigoya', 'Rosa Inés Ospina Robledo'],
     coverColor: 'from-amber-100 to-amber-300',
+    coverImage: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
     price: 45000,
     formats: ['printed', 'ebook'],
     formatDetails: [
@@ -186,6 +214,7 @@ export const featuredBooks: Book[] = [
     subtitle: 'Arte contemporáneo y ausencia en la obra de Doris Salcedo',
     author: 'Francisco Pérez Muñoz',
     coverColor: 'from-slate-700 to-slate-900',
+    coverImage: 'https://images.unsplash.com/photo-1545989253-02cc26577f88?auto=format&fit=crop&w=800&q=80',
     price: 0,
     formats: ['open-access'],
     formatDetails: [{ format: 'open-access' }],
@@ -213,6 +242,7 @@ export const featuredBooks: Book[] = [
     subtitle: 'Relatos sobre biodiversidad y ecosistemas colombianos',
     author: 'Camila Ernesto López Carrascal',
     coverColor: 'from-sky-400 to-sky-600',
+    coverImage: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
     price: 38000,
     formats: ['printed', 'ebook', 'audiobook'],
     formatDetails: [
@@ -238,6 +268,7 @@ export const featuredBooks: Book[] = [
     author: 'Grupo de investigación',
     coAuthors: ['Carlos Andrés Meza', 'Patricia Vargas Silva'],
     coverColor: 'from-emerald-600 to-emerald-800',
+    coverImage: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=80',
     price: 55000,
     formats: ['printed'],
     formatDetails: [
@@ -260,6 +291,7 @@ export const featuredBooks: Book[] = [
     subtitle: 'Transformaciones de la ciudad latinoamericana',
     author: 'Felipe López Vargas',
     coverColor: 'from-rose-400 to-rose-600',
+    coverImage: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000f?auto=format&fit=crop&w=800&q=80',
     price: 48000,
     formats: ['printed', 'ebook'],
     formatDetails: [
@@ -286,6 +318,7 @@ export const bestsellerBooks: Book[] = [
     author: 'Krisna Ruette Orihuela',
     coAuthors: ['Claudia Mosquera Rosero-Labbé'],
     coverColor: 'from-red-700 to-red-900',
+    coverImage: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80',
     price: 60000,
     formats: ['printed'],
     formatDetails: [{ format: 'printed', price: 60000, printStatus: 'available' }],
@@ -307,6 +340,7 @@ export const bestsellerBooks: Book[] = [
     subtitle: 'Constitucionalismo y democracia en Colombia',
     author: 'Juan Fernando Jaramillo',
     coverColor: 'from-indigo-800 to-indigo-950',
+    coverImage: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80',
     price: 80000,
     originalPrice: 95000,
     formats: ['printed', 'ebook'],
@@ -341,6 +375,7 @@ export const bestsellerBooks: Book[] = [
     subtitle: 'Emociones, liberalismo político y educación',
     author: 'Iván Alfonso Pinedo Cantillo',
     coverColor: 'from-yellow-600 to-yellow-800',
+    coverImage: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=800&q=80',
     price: 60000,
     formats: ['printed', 'ebook'],
     formatDetails: [
@@ -363,6 +398,7 @@ export const bestsellerBooks: Book[] = [
     subtitle: 'Conflicto, territorio y desarrollo en el nororiente colombiano',
     author: 'Luis Humberto Hernández',
     coverColor: 'from-orange-500 to-orange-700',
+    coverImage: 'https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=800&q=80',
     price: 33000,
     formats: ['printed'],
     formatDetails: [{ format: 'printed', price: 33000, printStatus: 'available' }],
@@ -383,6 +419,7 @@ export const bestsellerBooks: Book[] = [
     subtitle: 'Derecho ambiental y derechos de la naturaleza',
     author: 'Gregorio Mesa Cuadros',
     coverColor: 'from-green-700 to-green-900',
+    coverImage: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80',
     price: 155000,
     formats: ['printed', 'ebook'],
     formatDetails: [
@@ -406,6 +443,7 @@ export const bestsellerBooks: Book[] = [
     subtitle: 'Justicia transicional y construcción de memoria',
     author: 'Camilo Alberto Borrero',
     coverColor: 'from-purple-600 to-purple-800',
+    coverImage: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80',
     price: 112000,
     formats: ['printed', 'ebook', 'audiobook'],
     formatDetails: [

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 371" role="img" aria-labelledby="title desc">
+  <title id="title">Boletin Editorial UNAL Marzo 2026</title>
+  <desc id="desc">Banner lila del Boletin Editorial UNAL de marzo de 2026.</desc>
+  <rect width="2048" height="371" fill="#cbc9ff"/>
+  <text x="248" y="160" font-family="Georgia, serif" font-size="88" font-style="italic" letter-spacing="28" fill="#2d1917">Boletin /</text>
+  <text x="380" y="288" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#2d1917">Editorial</text>
+  <rect x="655" y="230" width="186" height="87" rx="32" fill="#2d1917"/>
+  <text x="682" y="290" font-family="Arial, sans-serif" font-size="49" font-weight="900" letter-spacing="5" fill="#cbc9ff">UNAL</text>
+  <rect x="1964" y="72" width="84" height="291" rx="28" fill="#ee7e11"/>
+  <text x="2016" y="244" transform="rotate(-90 2016 244)" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#fff">Marzo, 2026</text>
+  <path d="M0 82c20 0 42 58 54 109 8-70 19-129 29-124 12 5 10 78 0 127 28-87 56-99 68-59 7 23-4 73-40 88l-59 9c-14 0-14-14-23-34-9-20-16-38-29-47z" fill="none" stroke="#fff" stroke-width="3" opacity=".9"/>
+  <path d="M188 286c33-38 55-57 85-42 14 7 13 23-4 42-14 15-28 9-16-10 13-23 45-27 68-3 23 24 47-1 57-15" fill="none" stroke="#fff" stroke-width="4"/>
+  <path d="M858 58c54-11 105-15 142 20 29-48 62-79 116-78-10 47-32 81-66 104-54 0-119 0-190 4 48-24 99-29 149-28" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M864 130c48 2 97 4 145 0 37-27 62-25 100-2-24 10-47 17-72 24-58 2-119 0-180-3z" fill="none" stroke="#fff" stroke-width="3"/>
+  <circle cx="1283" cy="88" r="29" fill="none" stroke="#fff" stroke-width="2"/>
+  <path d="M1026 294c20-9 42-18 64-22 13-2 15 5 14 11 16-4 24 2 14 15-12 16-28 13-28 13 5 24-7 41-30 40-20-1-31-16-38-35z" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M1370 193l52-23 21 92 45-26 14 89c-6 3-11 1-15-3l-20-59-56 38 26 74c-8 5-13 3-18-3l-49-74 42-35z" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M1595 347c0-41 67-41 67 0zM1606 347c0-15 45-15 45 0M1597 322c6-46 58-46 64 0" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M1763 343c-7-47-45-77-90-98 52 3 85 26 125 71-14-44-42-79-83-111 60 8 96 46 142 101-7-47-4-79 13-137 12 58 15 92 7 139 32-34 64-64 116-75-50 37-79 69-107 104 39-1 76 5 112 20-53 2-91 8-113 25z" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M1634 0c22 20 47 39 71 46-16 20-13 51-42 66-41 12-77 5-73-36 2-28 25-46 44-76z" fill="none" stroke="#fff" stroke-width="3"/>
+</svg>

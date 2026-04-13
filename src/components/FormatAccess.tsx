@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Download, Headphones, Clock, Unlock } from 'lucide-react';
+import { BookOpen, Smartphone, Headphones, Package, Unlock } from 'lucide-react';
 
 const formats = [
-  { label: 'Impresos', desc: 'Envío a todo el país', icon: BookOpen, color: 'text-primary' },
-  { label: 'eBooks', desc: 'Acceso inmediato', icon: Download, color: 'text-format-ebook' },
-  { label: 'Acceso Abierto', desc: 'Descarga gratuita', icon: Unlock, color: 'text-secondary' },
+  { label: 'Impresos', desc: 'Envío a todo el país', icon: BookOpen, color: 'text-format-print' },
+  { label: 'eBooks', desc: 'Acceso inmediato', icon: Smartphone, color: 'text-format-ebook' },
+  { label: 'Acceso Abierto', desc: 'Descarga gratuita', icon: Unlock, color: 'text-format-open' },
   { label: 'Audiolibros', desc: 'Escucha en cualquier lugar', icon: Headphones, color: 'text-format-audio' },
-  { label: 'Bajo Demanda', desc: 'Producción en 5-7 días', icon: Clock, color: 'text-secondary-light' },
+  { label: 'Bajo Demanda', desc: 'Producción en 5-7 días', icon: Package, color: 'text-format-ibd' },
 ];
 
 const FormatAccess = () => (

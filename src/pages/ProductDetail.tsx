@@ -2,29 +2,77 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ShoppingCart, Download, Truck, Clock, Bell, Heart,
+  Truck, Clock, Bell, Heart, ShoppingCart,
   Share2, BookOpen, FileText, Headphones, ChevronRight, ChevronDown,
-  Check, AlertTriangle, Info, Printer, ExternalLink, Copy,
-  Monitor, Smartphone, Shield, Tag, BookMarked, Users, Globe
+  Check, AlertTriangle, Info, ExternalLink, Copy,
+  Monitor, Smartphone, Shield, Tag, BookMarked, Users, Globe, Unlock, Package,
+  Leaf, Target, Music2, Video, PlayCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BookCard from '@/components/BookCard';
+import BookCover from '@/components/BookCover';
 import { featuredBooks, bestsellerBooks, formatPrice } from '@/data/books';
 import type { Book, BookFormat } from '@/data/books';
 import { toast } from '@/hooks/use-toast';
+import logoDpa from '@/assets/Logo-DPA.png';
 
 const allBooks = [...featuredBooks, ...bestsellerBooks];
 
 /* ── Format config ── */
 const fmtCfg: Record<BookFormat, { label: string; icon: typeof BookOpen; badgeClass: string }> = {
   printed:       { label: 'Impreso',        icon: BookOpen,    badgeClass: 'badge-print' },
-  ebook:         { label: 'E-book',         icon: FileText,    badgeClass: 'badge-ebook' },
-  'open-access': { label: 'Acceso Abierto', icon: Download,    badgeClass: 'badge-open-access' },
-  ibd:           { label: 'IBD',            icon: Printer,     badgeClass: 'badge-ibd' },
+  ebook:         { label: 'E-book',         icon: Smartphone,  badgeClass: 'badge-ebook' },
+  'open-access': { label: 'Acceso Abierto', icon: Unlock,      badgeClass: 'badge-open-access' },
+  ibd:           { label: 'IBD',            icon: Package,     badgeClass: 'badge-ibd' },
   audiobook:     { label: 'Audiolibro',     icon: Headphones,  badgeClass: 'badge-audio' },
 };
+
+const formatCssVar: Record<BookFormat, string> = {
+  printed: '--format-print',
+  ebook: '--format-ebook',
+  'open-access': '--format-open',
+  ibd: '--format-ibd',
+  audiobook: '--format-audio',
+};
+
+const multimediaCfg = {
+  mp3: {
+    label: 'MP3',
+    icon: Music2,
+    color: 'hsl(var(--format-audio))',
+    soft: 'hsl(var(--format-audio) / 0.08)',
+  },
+  mp4: {
+    label: 'MP4',
+    icon: Video,
+    color: 'hsl(var(--format-ebook))',
+    soft: 'hsl(var(--format-ebook) / 0.08)',
+  },
+};
+
+const odsItems = [
+  {
+    number: '10',
+    color: '#DF1683',
+    title: 'Reducción de las Desigualdades',
+    description: 'Impulsa liderazgos inclusivos y equitativos',
+  },
+  {
+    number: '11',
+    color: '#F99D26',
+    title: 'Ciudades y Comunidades Sostenibles',
+    description: 'Aporta al diseño urbano inclusivo, seguro y resiliente',
+  },
+  {
+    number: '16',
+    color: '#00689D',
+    title: 'Paz, Justicia e Instituciones',
+    description: 'Fortalece el Estado de derecho y las instituciones democráticas',
+  },
+];
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -71,6 +119,81 @@ const ProductDetail = () => {
   const ebookFormats = currentDetail?.ebookFormats || [];
   const effectiveEbookSub = selectedEbookSub || (ebookFormats.length > 0 ? ebookFormats[0] : null);
   const audioStatus = currentDetail?.audioStatus;
+  const currentFormatColor = `hsl(var(${formatCssVar[effectiveFormat]}))`;
+  const currentFormatSoftColor = `hsl(var(${formatCssVar[effectiveFormat]}) / 0.08)`;
+  const detailCardTitle: Record<BookFormat, string> = {
+    printed: 'Características del impreso',
+    ebook: 'Características del E-book',
+    'open-access': 'Características del acceso abierto',
+    ibd: 'Características del impreso bajo demanda',
+    audiobook: 'Características del audiolibro',
+  };
+  const detailLinkLabel: Record<BookFormat, string> = {
+    printed: 'Detalles de entrega',
+    ebook: 'Detalles de lectura',
+    'open-access': 'Detalles de lectura',
+    ibd: 'Detalles de entrega',
+    audiobook: 'Detalles de escucha',
+  };
+  const detailPopover: Record<BookFormat, { title: string; body: string; note: string }> = {
+    printed: {
+      title: 'Compra de impreso',
+      body: 'Recibirás un ejemplar físico. La entrega depende de disponibilidad, preparación del pedido y destino de envío.',
+      note: 'Libro físico con envío a domicilio.',
+    },
+    ebook: {
+      title: 'Lectura digital',
+      body: 'Puedes leer en navegador web o en apps oficiales para Windows, Mac, iOS y Android. No se envía PDF/EPUB por correo ni queda como descarga directa. No compatible con Linux ni Kindle.',
+      note: 'Lee en navegador web o app oficial.',
+    },
+    'open-access': {
+      title: 'Acceso abierto',
+      body: 'Puedes consultar y descargar este título sin costo desde el entorno de lectura autorizado.',
+      note: 'Consulta y descarga gratuita.',
+    },
+    ibd: {
+      title: 'Impreso bajo demanda',
+      body: 'Primero se produce el ejemplar bajo pedido y luego se envía como libro físico. El tiempo total incluye producción más envío según destino.',
+      note: 'Producción bajo demanda + envío físico.',
+    },
+    audiobook: {
+      title: 'Escucha digital',
+      body: 'Accede al audio desde el entorno habilitado para este título. La disponibilidad puede depender de la licencia y del formato activo.',
+      note: 'Escucha desde el entorno oficial.',
+    },
+  };
+  const detailItems = (() => {
+    if (isEbook || isOpenAccess) {
+      return [
+        { icon: Monitor, label: 'Versión digital', value: effectiveEbookSub ? effectiveEbookSub.toUpperCase() : 'Web' },
+        book.fileSize && { icon: FileText, label: 'Tamaño', value: book.fileSize },
+        { icon: Shield, label: 'Tipo de DRM', value: book.drmType || 'Propietario' },
+        book.pages && { icon: BookOpen, label: 'Págs. orientativas', value: `~${book.pages} pp.` },
+      ].filter(Boolean) as { icon: typeof BookOpen; label: string; value: string }[];
+    }
+
+    if (isIBD) {
+      return [
+        { icon: BookOpen, label: 'Encuadernación', value: 'Rústica bajo demanda' },
+        book.pages && { icon: FileText, label: 'Páginas', value: `${book.pages} pp.` },
+        book.dimensions && { icon: Package, label: 'Dimensiones', value: book.dimensions },
+        { icon: Truck, label: 'Entrega', value: '15 a 21 días hábiles' },
+      ].filter(Boolean) as { icon: typeof BookOpen; label: string; value: string }[];
+    }
+
+    if (isPrinted) {
+      return [
+        { icon: BookOpen, label: 'Encuadernación', value: 'Rústica' },
+        book.pages && { icon: FileText, label: 'Páginas', value: `${book.pages} pp.` },
+        book.dimensions && { icon: Package, label: 'Dimensiones', value: book.dimensions },
+      ].filter(Boolean) as { icon: typeof BookOpen; label: string; value: string }[];
+    }
+
+    return [
+      { icon: Headphones, label: 'Formato', value: 'Audio digital' },
+      { icon: Smartphone, label: 'Acceso', value: 'App o navegador' },
+    ];
+  })();
 
   // Related books
   const relatedBooks = allBooks
@@ -115,7 +238,7 @@ const ProductDetail = () => {
       {/* ═══ MAIN PRODUCT — 3-column layout ═══ */}
       <section className="py-8 md:py-10">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr_320px] gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-8 lg:gap-10">
 
             {/* ────── COL 1: Cover + actions ────── */}
             <div>
@@ -123,14 +246,15 @@ const ProductDetail = () => {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4 }}
-                className={`relative aspect-[3/4] bg-gradient-to-br ${book.coverColor} overflow-hidden group shadow-lg`}
+                className="group"
               >
-                {book.discount && (
-                  <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-sm font-body font-semibold px-3 py-1.5 z-10">
-                    -{book.discount}%
-                  </span>
-                )}
-                <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-700" />
+                <BookCover book={book} className="aspect-[3/4] shadow-lg" imageClassName="group-hover:scale-105 transition-transform duration-700">
+                  {book.discount && (
+                    <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-sm font-body font-semibold px-3 py-1.5 z-10">
+                      -{book.discount}%
+                    </span>
+                  )}
+                </BookCover>
               </motion.div>
 
               {/* Quick actions under cover */}
@@ -152,10 +276,81 @@ const ProductDetail = () => {
                   Formatos disponibles
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {book.formats.map(f => (
-                    <span key={f} className={`badge-format ${fmtCfg[f].badgeClass} text-[10px]`}>{fmtCfg[f].label}</span>
-                  ))}
+                  {book.formats.map(f => {
+                    const Icon = fmtCfg[f].icon;
+                    return (
+                      <span key={f} className={`badge-format ${fmtCfg[f].badgeClass} text-[10px] gap-1`}>
+                        <Icon className="h-3 w-3" /> {fmtCfg[f].label}
+                      </span>
+                    );
+                  })}
                 </div>
+              </div>
+
+              <div className="mt-5 space-y-5">
+                <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+                  <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+                    <Leaf className="h-4 w-4 text-[hsl(var(--format-print))]" />
+                    <p className="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+                      Alineado con los ODS - Agenda 2030
+                    </p>
+                  </div>
+                  <div className="divide-y divide-border">
+                    {odsItems.map((item) => (
+                      <div key={item.number} className="flex items-center gap-3 px-4 py-3">
+                        <div
+                          className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg text-white"
+                          style={{ backgroundColor: item.color }}
+                        >
+                          <span className="font-body text-[9px] font-bold uppercase leading-none">ODS</span>
+                          <span className="font-body text-lg font-bold leading-none">{item.number}</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-body text-xs font-bold leading-snug" style={{ color: item.color }}>
+                            {item.title}
+                          </p>
+                          <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="border-t border-border px-4 py-2 text-right">
+                    <span className="font-body text-[10px] text-muted-foreground">* ONU Agenda 2030</span>
+                  </div>
+                </div>
+
+                <div className="overflow-hidden rounded-lg border border-[hsl(var(--format-ebook)/0.22)] bg-card shadow-sm">
+                  <div className="flex items-center gap-4 px-4 py-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center">
+                      <img src={logoDpa} alt="Declaración de prestigio académico" className="max-h-full max-w-full object-contain" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-body text-[11px] font-bold uppercase leading-relaxed tracking-[0.22em] text-[#0A7080]">
+                        Declaración de prestigio académico
+                      </p>
+                      <p className="mt-1 font-body text-xs text-muted-foreground">
+                        Certificación de calidad editorial
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-[1fr_auto] gap-3 border-t border-[hsl(var(--format-ebook)/0.14)] px-4 py-4">
+                    <div className="space-y-2">
+                      <p className="font-body text-[11px] text-muted-foreground">Fecha de emisión</p>
+                      <p className="font-body text-[11px] text-muted-foreground">Evaluación</p>
+                      <p className="font-body text-[11px] text-muted-foreground">Estado</p>
+                    </div>
+                    <div className="space-y-2 text-right">
+                      <p className="font-body text-[11px] font-bold text-[#0A7080]">15-03-2025</p>
+                      <p className="font-body text-[11px] text-foreground">Revisión por pares ciegos</p>
+                      <span className="inline-flex rounded-full bg-[#DCEFF2] px-3 py-1 font-body text-[11px] font-bold text-[#0A7080]">
+                        Vigente
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -220,6 +415,61 @@ const ProductDetail = () => {
               )}
 
               {/* ── Collapsible: Table of Contents ── */}
+              {book.multimediaResources && book.multimediaResources.length > 0 && (
+                <div className="mb-6 border border-border bg-card p-4 shadow-sm">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div>
+                      <span className="font-body text-[10px] tracking-[0.16em] uppercase text-primary font-bold">
+                        Recursos multimedia
+                      </span>
+                      <p className="mt-1 font-body text-xs text-muted-foreground font-light">
+                        Material complementario disponible para esta obra.
+                      </p>
+                    </div>
+                    <Target className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {book.multimediaResources.map(resource => {
+                      const cfg = multimediaCfg[resource.type];
+                      const Icon = cfg.icon;
+
+                      return (
+                        <button
+                          key={`${resource.type}-${resource.title}`}
+                          className="group flex items-start gap-3 border p-3 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm"
+                          style={{ borderColor: cfg.color, backgroundColor: cfg.soft }}
+                        >
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center text-white" style={{ backgroundColor: cfg.color }}>
+                            <Icon className="h-5 w-5" />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="flex items-center gap-2">
+                              <span className="font-body text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: cfg.color }}>
+                                {cfg.label}
+                              </span>
+                              {resource.duration && (
+                                <span className="font-body text-[10px] text-muted-foreground">{resource.duration}</span>
+                              )}
+                            </span>
+                            <span className="mt-1 block font-body text-sm font-semibold leading-snug text-foreground">
+                              {resource.title}
+                            </span>
+                            <span className="mt-1 block font-body text-[11px] leading-relaxed text-muted-foreground">
+                              {resource.description}
+                            </span>
+                            <span className="mt-2 flex items-center gap-1 font-body text-[11px] font-semibold text-primary">
+                              <PlayCircle className="h-3.5 w-3.5" />
+                              Vista previa
+                              {resource.size && <span className="font-light text-muted-foreground">· {resource.size}</span>}
+                            </span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {book.toc && book.toc.length > 0 && (
                 <div className="border border-border mb-4">
                   <button
@@ -342,30 +592,46 @@ const ProductDetail = () => {
                 <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold mb-3 block">
                   Formato
                 </span>
-                <div className="flex gap-2 mb-5">
+                <div className="grid grid-cols-3 gap-1.5 mb-3">
                   {book.formats.map(f => {
                     const cfg = fmtCfg[f];
                     const Icon = cfg.icon;
                     const isSelected = effectiveFormat === f;
                     const detail = book.formatDetails?.find(d => d.format === f);
                     const fPrice = detail?.price;
+                    const formatColor = `hsl(var(${formatCssVar[f]}))`;
+                    const formatSoftColor = `hsl(var(${formatCssVar[f]}) / 0.08)`;
 
                     return (
                       <button
                         key={f}
                         onClick={() => { setSelectedFormat(f); setSelectedEbookSub(null); setShowNotifyForm(false); }}
-                        className={`flex-1 flex flex-col items-center gap-1 py-3 px-2 border transition-all ${
+                        aria-pressed={isSelected}
+                        className={`relative min-h-[52px] overflow-hidden border bg-card px-2 py-2 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm ${
                           isSelected
-                            ? 'border-primary bg-primary/5 shadow-sm'
+                            ? 'shadow-sm ring-2'
                             : 'border-border hover:border-foreground/30'
                         }`}
+                        style={isSelected
+                          ? { borderColor: formatColor, backgroundColor: formatColor, ['--tw-ring-color' as string]: 'hsl(var(--ring) / 0.35)' }
+                          : { backgroundColor: formatSoftColor }}
                       >
-                        <Icon className={`h-4 w-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                        <span className={`font-body text-xs font-medium ${isSelected ? 'text-foreground' : 'text-muted-foreground'}`}>
+                        <span className="absolute left-0 top-0 h-1 w-full" style={{ backgroundColor: isSelected ? 'rgba(255,255,255,0.5)' : formatColor }} />
+                        <span className="flex items-start justify-between gap-2">
+                          <span className="flex min-w-0 items-start gap-1.5">
+                            <Icon className="mt-0.5 h-3 w-3 flex-shrink-0" style={{ color: isSelected ? '#fff' : formatColor }} />
+                            <span>
+                        <span className={`font-body text-[11px] font-semibold block leading-tight whitespace-nowrap ${isSelected ? 'text-white' : 'text-foreground/75'}`}>
                           {cfg.label}
                         </span>
-                        <span className={`font-body text-[10px] ${isSelected ? 'text-primary font-medium' : 'text-muted-foreground font-light'}`}>
+                        <span className={`font-body text-[10px] block mt-0.5 whitespace-nowrap ${isSelected ? 'font-semibold text-white/85' : 'text-muted-foreground font-light'}`}>
                           {fPrice && fPrice > 0 ? formatPrice(fPrice) : f === 'open-access' ? 'Gratis' : '—'}
+                        </span>
+                            </span>
+                          </span>
+                          {isSelected && (
+                            <Check className="h-3 w-3 flex-shrink-0 text-white" />
+                          )}
                         </span>
                       </button>
                     );
@@ -373,7 +639,73 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Format-specific details box */}
-                {isEbook && (
+                <div
+                  className="border p-3 mb-4"
+                  style={{ borderColor: `hsl(var(${formatCssVar[effectiveFormat]}) / 0.18)`, backgroundColor: currentFormatSoftColor }}
+                >
+                  <span
+                    className="font-body text-[10px] tracking-[0.16em] uppercase font-bold block mb-2"
+                    style={{ color: currentFormatColor }}
+                  >
+                    {detailCardTitle[effectiveFormat]}
+                  </span>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    {detailItems.map(({ icon: DetailIcon, label, value }) => (
+                      <div key={label} className="flex items-start gap-2">
+                        <DetailIcon className="h-3 w-3 mt-0.5 flex-shrink-0" style={{ color: currentFormatColor }} />
+                        <div>
+                          <span className="font-body text-[10px] text-muted-foreground block leading-tight">{label}</span>
+                          <span className="font-body text-[11px] font-semibold text-foreground block leading-snug">{value}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 bg-card/80 border border-white/70 px-3 py-2 shadow-sm">
+                    <p className="font-body text-[11px] text-muted-foreground font-light leading-relaxed">
+                      {detailPopover[effectiveFormat].note}
+                    </p>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          type="button"
+                          className="mt-1 font-body text-[11px] font-semibold hover:underline"
+                          style={{ color: currentFormatColor }}
+                        >
+                          {detailLinkLabel[effectiveFormat]}
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent align="start" side="top" className="w-80 rounded-md border-border p-4 shadow-lg">
+                        <h4 className="font-body text-sm font-semibold text-foreground mb-2">
+                          {detailPopover[effectiveFormat].title}
+                        </h4>
+                        <p className="font-body text-xs text-muted-foreground font-light leading-relaxed">
+                          {detailPopover[effectiveFormat].body}
+                        </p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  {false && isEbook && ebookFormats.length > 1 && (
+                    <div className="flex gap-2 mt-3">
+                      {ebookFormats.map(sub => (
+                        <button
+                          key={sub}
+                          onClick={() => setSelectedEbookSub(sub)}
+                          className="flex-1 border py-2 font-body text-xs font-semibold uppercase tracking-[0.08em] transition-all"
+                          style={effectiveEbookSub === sub
+                            ? { borderColor: currentFormatColor, backgroundColor: 'hsl(var(--format-ebook) / 0.12)', color: currentFormatColor }
+                            : { borderColor: 'hsl(var(--border))', color: 'hsl(var(--muted-foreground))' }}
+                        >
+                          {sub.toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {false && isEbook && (
                   <div className="bg-[hsl(var(--format-ebook)/0.06)] border border-[hsl(var(--format-ebook)/0.15)] p-3 mb-4">
                     <span className="font-body text-[10px] tracking-[0.15em] uppercase text-[hsl(var(--format-ebook))] font-semibold block mb-2">
                       Características del E-book
@@ -430,9 +762,9 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                {isPrinted && !isOutOfStock && !isComingSoon && (
-                  <div className="bg-primary/5 border border-primary/10 p-3 mb-4">
-                    <span className="font-body text-[10px] tracking-[0.15em] uppercase text-primary font-semibold block mb-2">
+                {false && isPrinted && !isOutOfStock && !isComingSoon && (
+                  <div className="border p-3 mb-4" style={{ borderColor: currentFormatSoftColor, backgroundColor: currentFormatSoftColor }}>
+                    <span className="font-body text-[10px] tracking-[0.15em] uppercase font-semibold block mb-2" style={{ color: currentFormatColor }}>
                       Detalles del impreso
                     </span>
                     <div className="grid grid-cols-2 gap-2">
@@ -453,10 +785,10 @@ const ProductDetail = () => {
                 )}
 
                 {/* Price */}
-                <div className="mb-4">
+                <div className="mb-3">
                   {currentPrice > 0 ? (
                     <div className="flex items-baseline gap-2">
-                      <span className="font-body text-3xl font-bold text-foreground">{formatPrice(currentPrice)}</span>
+                      <span className="font-body text-2xl font-bold text-primary tracking-wide">{formatPrice(currentPrice)}</span>
                       <span className="font-body text-xs text-muted-foreground font-light">COP</span>
                       {currentOriginalPrice && (
                         <span className="font-body text-base text-muted-foreground line-through font-light ml-2">{formatPrice(currentOriginalPrice)}</span>
@@ -485,24 +817,25 @@ const ProductDetail = () => {
 
                   {/* Main CTA button */}
                   {isOpenAccess ? (
-                    <Button size="lg" className="w-full font-body font-medium bg-secondary hover:bg-secondary/90 text-secondary-foreground uppercase text-sm tracking-[0.15em]">
-                      <Download className="h-4 w-4 mr-2" /> Descargar gratis
+                    <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
+                      <Unlock className="h-4 w-4 mr-2" /> Descargar gratis
                     </Button>
                   ) : isAudiobook && audioStatus === 'coming-soon' ? (
-                    <Button size="lg" disabled className="w-full font-body font-medium bg-muted text-muted-foreground uppercase text-sm tracking-[0.15em]">
+                    <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
                       <Clock className="h-4 w-4 mr-2" /> Próximamente
                     </Button>
                   ) : isAudiobook && audioStatus === 'free-listen' ? (
-                    <Button size="lg" className="w-full font-body font-medium bg-[hsl(var(--format-audio))] hover:opacity-90 text-white uppercase text-sm tracking-[0.15em]">
+                    <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
                       <Headphones className="h-4 w-4 mr-2" /> Escuchar ahora
                     </Button>
                   ) : isOutOfStock ? (
                     <>
-                      <Button size="lg" disabled className="w-full font-body font-medium bg-muted text-muted-foreground uppercase text-sm tracking-[0.15em]">
+                      <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
                         <AlertTriangle className="h-4 w-4 mr-2" /> Sin stock
                       </Button>
                       <Button size="lg" variant="outline" onClick={() => setShowNotifyForm(true)}
-                        className="w-full font-body font-medium border-primary text-primary hover:bg-primary hover:text-primary-foreground uppercase text-sm tracking-[0.15em]">
+                        className="w-full font-body font-semibold hover:opacity-90 uppercase text-sm tracking-[0.08em]"
+                        style={{ borderColor: currentFormatColor, color: currentFormatColor, backgroundColor: showNotifyForm ? currentFormatSoftColor : undefined }}>
                         <Bell className="h-4 w-4 mr-2" /> Avíseme disponibilidad
                       </Button>
                       <AnimatePresence>
@@ -520,20 +853,20 @@ const ProductDetail = () => {
                       </AnimatePresence>
                     </>
                   ) : isComingSoon ? (
-                    <Button size="lg" disabled className="w-full font-body font-medium bg-muted text-muted-foreground uppercase text-sm tracking-[0.15em]">
+                    <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
                       <Clock className="h-4 w-4 mr-2" /> Próximamente
                     </Button>
                   ) : (
-                    <Button size="lg" className="w-full font-body font-medium uppercase text-sm tracking-[0.15em]">
+                    <Button size="lg" className="w-full font-body font-semibold bg-primary hover:bg-primary/90 text-primary-foreground uppercase text-sm tracking-[0.08em]">
                       <ShoppingCart className="h-4 w-4 mr-2" />
-                      {isEbook ? 'Comprar E-book' : isIBD ? 'Solicitar impresión' : 'Agregar al carrito'}
+                      Agregar al carrito
                     </Button>
                   )}
                 </div>
 
                 {/* "Qué recibes" benefits */}
                 {!isOpenAccess && currentPrice > 0 && (
-                  <div className="border-t border-border pt-4">
+                  <div className="border border-border bg-card p-4 shadow-sm">
                     <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold block mb-2">
                       Qué recibes
                     </span>
@@ -541,41 +874,41 @@ const ProductDetail = () => {
                       {isEbook && (
                         <>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Acceso web y app oficial
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Acceso web y app oficial
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Apps para Windows, Mac, iOS y Android
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Apps para Windows, Mac, iOS y Android
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-secondary flex-shrink-0" /> {book.drmType || 'DRM social'} — uso personal
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> {book.drmType || 'DRM social'} — uso personal
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Descarga directa {effectiveEbookSub?.toUpperCase() || 'PDF/EPUB'}
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Descarga directa {effectiveEbookSub?.toUpperCase() || 'PDF/EPUB'}
                           </li>
                         </>
                       )}
                       {isPrinted && (
                         <>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Truck className="h-3 w-3 text-secondary flex-shrink-0" /> Envío a todo Colombia — 5-7 días hábiles
+                            <Truck className="h-3 w-3 text-primary flex-shrink-0" /> Envío a todo Colombia — 5-7 días hábiles
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Libro físico con acabado editorial
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Libro físico con acabado editorial
                           </li>
                         </>
                       )}
                       {isIBD && (
                         <>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Clock className="h-3 w-3 text-secondary flex-shrink-0" /> Producción 10-15 días hábiles
+                            <Clock className="h-3 w-3 text-primary flex-shrink-0" /> Producción 10-15 días hábiles
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Impresión de alta calidad bajo demanda
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Impresión de alta calidad bajo demanda
                           </li>
                         </>
                       )}
                       <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                        <Shield className="h-3 w-3 text-secondary flex-shrink-0" /> Pago seguro con cifrado SSL
+                        <Shield className="h-3 w-3 text-primary flex-shrink-0" /> Pago seguro con cifrado SSL
                       </li>
                     </ul>
                   </div>

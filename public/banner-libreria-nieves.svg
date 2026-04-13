@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 371" role="img" aria-labelledby="title desc">
+  <title id="title">Horario Libreria UNAL Las Nieves</title>
+  <desc id="desc">Banner azul con horarios de atencion de Libreria UNAL Las Nieves para 2026.</desc>
+  <rect width="2048" height="371" fill="#363bd6"/>
+  <rect width="74" height="371" fill="#c8f8df"/>
+  <text x="50" y="186" transform="rotate(-90 50 186)" font-family="Arial, sans-serif" font-size="28" letter-spacing="3" fill="#363bd6">Horarios - 2026</text>
+  <path d="M74 136c28-22 40-14 66-14l58 125c-46 2-70 11-96 32-9 7-18 11-28 10" fill="none" stroke="#bfc2ff" stroke-width="2"/>
+  <text x="190" y="106" font-family="Georgia, serif" font-style="italic" font-size="70" fill="#fff">Te esperamos en:</text>
+  <text x="242" y="203" font-family="Arial, sans-serif" font-weight="700" font-size="58" fill="#fff">Libreria UNAL</text>
+  <text x="242" y="255" font-family="Arial, sans-serif" font-weight="700" font-size="58" fill="#fff">Las Nieves</text>
+  <text x="244" y="307" font-family="Arial, sans-serif" font-size="28" letter-spacing="6" fill="#fff">Carrera 7 # 19 -67</text>
+  <text x="786" y="208" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="41" fill="#fff">Lunes a viernes:</text>
+  <text x="790" y="258" font-family="Arial, sans-serif" font-size="39" fill="#fff">10:00 a. m. a 7:00 p. m.</text>
+  <line x1="1298" y1="176" x2="1298" y2="268" stroke="#fff" stroke-width="4"/>
+  <text x="1348" y="208" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="41" fill="#fff">Sabados:</text>
+  <text x="1348" y="258" font-family="Arial, sans-serif" font-size="39" fill="#fff">10:00 a. m. a 5:00 p. m.</text>
+  <path d="M1160 76c24-12 50-22 72-28 16-5 17 2 17 9 21-6 34-2 24 13-12 20-31 16-31 16 5 31-8 58-35 60-28 1-42-16-50-38l-8-27z" fill="none" stroke="#aeb3ff" stroke-width="5" stroke-linejoin="round"/>
+  <circle cx="687" cy="286" r="30" fill="none" stroke="#aeb3ff" stroke-width="2"/>
+  <path d="M1826 80l18-32 10 36 35-5-29 20 27 23-35-4-16 32-7-34-37 4 31-20-25-25z" fill="none" stroke="#aeb3ff" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M1886 152l76-14 18-72 68 5v136c-10 24-15 67-24 76-4 5-15 4-25 2l21-78-61 21-18 88c-11 11-20 6-31 4l21-104-31-7-14 95c-5 3-10 4-15 0z" fill="none" stroke="#aeb3ff" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="0" y="371" width="2048" height="0" fill="#f8f8f8"/>
+  <rect x="1818" y="371" width="230" height="0" fill="#fff"/>
+</svg>

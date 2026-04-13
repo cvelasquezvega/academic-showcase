@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
 import SearchBar from '@/components/SearchBar';
 import FormatAccess from '@/components/FormatAccess';
+import ImageBannerSlider from '@/components/ImageBannerSlider';
 import BookSection from '@/components/BookSection';
 import PromoBanner from '@/components/PromoBanner';
 import ConvocatoriaBanner from '@/components/ConvocatoriaBanner';
@@ -20,6 +21,7 @@ const Index = () => (
     <HeroBanner />
     <SearchBar />
     <FormatAccess />
+    <ImageBannerSlider />
     <BookSection title="Novedades editoriales" subtitle="Nuevos lanzamientos" books={featuredBooks} />
     <PromoBanner />
     <BookSection title="Los más vendidos" subtitle="Bestsellers" books={bestsellerBooks} ctaLabel="Ver más" />

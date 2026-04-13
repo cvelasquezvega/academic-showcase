@@ -1,19 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Download, ShoppingCart, ArrowRight, Headphones, BookOpen, Unlock, Clock, ChevronRight, Bell } from 'lucide-react';
+import { Search, X, ArrowRight, Headphones, BookOpen, Unlock, Clock, ChevronRight, Bell, Smartphone, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { featuredBooks, bestsellerBooks, formatPrice, getMiniCardCTA } from '@/data/books';
 import type { Book, BookFormat } from '@/data/books';
+import BookCover from '@/components/BookCover';
 
 const allBooks = [...featuredBooks, ...bestsellerBooks];
 
 const formatFilters: { key: BookFormat | 'all'; label: string; icon: React.ElementType }[] = [
   { key: 'all', label: 'Todos', icon: Search },
   { key: 'open-access', label: 'Acceso Abierto', icon: Unlock },
-  { key: 'ebook', label: 'eBooks', icon: Download },
+  { key: 'ebook', label: 'eBooks', icon: Smartphone },
   { key: 'printed', label: 'Impresos', icon: BookOpen },
   { key: 'audiobook', label: 'Audiolibros', icon: Headphones },
-  { key: 'ibd', label: 'Bajo Demanda', icon: Clock },
+  { key: 'ibd', label: 'Bajo Demanda', icon: Package },
 ];
 
 const popularSearches = [
@@ -21,12 +22,12 @@ const popularSearches = [
   'Arquitectura urbana', 'Salud pública', 'Acceso abierto',
 ];
 
-const formatMeta: Record<string, { label: string; class: string }> = {
-  'open-access': { label: 'Acceso Abierto', class: 'badge-open-access' },
-  ebook: { label: 'eBook', class: 'badge-ebook' },
-  printed: { label: 'Impreso', class: 'badge-print' },
-  audiobook: { label: 'Audiolibro', class: 'badge-audio' },
-  ibd: { label: 'Bajo Demanda', class: 'badge-ibd' },
+const formatMeta: Record<BookFormat, { label: string; class: string; icon: typeof BookOpen }> = {
+  'open-access': { label: 'Acceso Abierto', class: 'badge-open-access', icon: Unlock },
+  ebook: { label: 'eBook', class: 'badge-ebook', icon: Smartphone },
+  printed: { label: 'Impreso', class: 'badge-print', icon: BookOpen },
+  audiobook: { label: 'Audiolibro', class: 'badge-audio', icon: Headphones },
+  ibd: { label: 'Bajo Demanda', class: 'badge-ibd', icon: Package },
 };
 
 interface SearchOverlayProps {
@@ -192,22 +193,27 @@ const SearchResultItem = ({ book }: { book: Book }) => {
   const lowestPrice = book.formatDetails
     ? Math.min(...book.formatDetails.filter(d => d.price && d.price > 0).map(d => d.price!))
     : book.price;
+  const singleActionFormat = book.formats.find(f => f !== 'audiobook') || book.formats[0];
+  const CtaFormatIcon = formatMeta[singleActionFormat].icon;
 
   return (
     <div className="flex items-center gap-4 px-6 py-3 hover:bg-primary-light/30 transition-colors border-b border-border/50 last:border-b-0 cursor-pointer">
       {/* Mini cover */}
-      <div className={`w-12 h-16 flex-shrink-0 bg-gradient-to-br ${book.coverColor} flex items-center justify-center`}>
-        <span className="font-heading text-[8px] text-white font-bold text-center leading-tight px-1 line-clamp-2">{book.title}</span>
-      </div>
+      <BookCover book={book} className="w-12 h-16 flex-shrink-0" fallbackClassName="p-1" />
 
       {/* Info */}
       <div className="flex-1 min-w-0">
         <h4 className="font-body text-sm font-semibold text-foreground truncate">{book.title}</h4>
         <p className="font-body text-xs text-muted-foreground">{book.author}</p>
         <div className="flex flex-wrap gap-1 mt-1">
-          {book.formats.map(f => (
-            <span key={f} className={`badge-format text-[10px] ${formatMeta[f].class}`}>{formatMeta[f].label}</span>
-          ))}
+          {book.formats.map(f => {
+            const Icon = formatMeta[f].icon;
+            return (
+              <span key={f} className={`badge-format text-[10px] gap-1 ${formatMeta[f].class}`}>
+                <Icon className="h-3 w-3" /> {formatMeta[f].label}
+              </span>
+            );
+          })}
         </div>
       </div>
 
@@ -222,11 +228,13 @@ const SearchResultItem = ({ book }: { book: Book }) => {
           size="sm"
           variant={cta.icon === 'notify' ? 'outline' : 'default'}
           className={`font-body text-[11px] font-semibold h-7 px-2.5 mt-1 ${
-            cta.icon === 'download' ? 'bg-secondary hover:bg-secondary/90 text-secondary-foreground' : ''
-          } ${cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground cursor-default' : ''}`}
+            cta.icon === 'download' ? 'bg-[hsl(var(--format-open))] hover:bg-[hsl(var(--format-open)/0.9)] text-white' : ''
+          } ${cta.icon === 'options' ? 'bg-[#2B303B] text-white hover:bg-[#1f232b]' : ''} ${
+            cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground cursor-default' : ''
+          }`}
         >
-          {cta.icon === 'download' && <Download className="h-3 w-3 mr-1" />}
-          {cta.icon === 'cart' && <ShoppingCart className="h-3 w-3 mr-1" />}
+          {cta.icon === 'download' && <Unlock className="h-3 w-3 mr-1" />}
+          {cta.icon === 'cart' && <CtaFormatIcon className="h-3 w-3 mr-1" />}
           {cta.icon === 'options' && <ChevronRight className="h-3 w-3 mr-1" />}
           {cta.icon === 'notify' && <Bell className="h-3 w-3 mr-1" />}
           {cta.label}

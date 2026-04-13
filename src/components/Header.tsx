@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, User, ShoppingCart, Menu, X, Heart, BookMarked, ChevronDown, ChevronRight, Ticket } from 'lucide-react';
+import { Search, User, ShoppingCart, Menu, X, Heart, BookMarked, ChevronDown, ChevronRight, Ticket, Smartphone, Unlock, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SearchOverlay from '@/components/SearchOverlay';
 import RedeemCodeModal from '@/components/RedeemCodeModal';
+import editorialLogo from '@/assets/logo-editorial_unal.png';
+import unalLogo from '@/assets/logo-unal.svg';
 
 /* ── Catálogo: categorías con subcategorías ── */
 const catalogoSections: { label: string; items: string[] }[] = [
@@ -32,12 +34,16 @@ const catalogoSections: { label: string; items: string[] }[] = [
     ],
   },
   {
+    label: 'Impreso',
+    items: ['Todos los impresos', 'Novedades impresas', 'Más vendidos impresos', 'Disponibles para envío'],
+  },
+  {
     label: 'E-books',
-    items: ['PDF', 'EPUB', 'Acceso abierto'],
+    items: ['Todos los E-books', 'Compra inmediata', 'PDF', 'EPUB', 'Acceso abierto', 'Descargas gratuitas'],
   },
   {
     label: 'Impreso bajo demanda',
-    items: ['Catálogo IBD', 'Novedades IBD'],
+    items: ['Catálogo IBD', 'Novedades IBD', 'Solicitar impresión bajo demanda', 'Cómo funciona IBD', 'Tiempos de producción'],
   },
 ];
 
@@ -51,6 +57,25 @@ const noticiasSections: { label: string; items: string[] }[] = [
     items: ['Acceso abierto', 'Códice Abierto', 'Botánica', 'Literatura infantil', 'Literatura no ficción', 'Fac. Ciencias Humanas', 'Fac. Ciencias Agrarias', 'Editorial UNAL'],
   },
 ];
+
+const formatNavIcons: Record<string, { icon: typeof Search; color: string }> = {
+  Impreso: { icon: BookMarked, color: 'text-format-print' },
+  'Todos los impresos': { icon: BookMarked, color: 'text-format-print' },
+  'Novedades impresas': { icon: BookMarked, color: 'text-format-print' },
+  'Más vendidos impresos': { icon: BookMarked, color: 'text-format-print' },
+  'Disponibles para envío': { icon: BookMarked, color: 'text-format-print' },
+  'Todos los E-books': { icon: Smartphone, color: 'text-format-ebook' },
+  'Compra inmediata': { icon: Smartphone, color: 'text-format-ebook' },
+  PDF: { icon: Smartphone, color: 'text-format-ebook' },
+  EPUB: { icon: Smartphone, color: 'text-format-ebook' },
+  'Acceso abierto': { icon: Unlock, color: 'text-format-open' },
+  'Descargas gratuitas': { icon: Unlock, color: 'text-format-open' },
+  'Catálogo IBD': { icon: Package, color: 'text-format-ibd' },
+  'Novedades IBD': { icon: Package, color: 'text-format-ibd' },
+  'Solicitar impresión bajo demanda': { icon: Package, color: 'text-format-ibd' },
+  'Cómo funciona IBD': { icon: Package, color: 'text-format-ibd' },
+  'Tiempos de producción': { icon: Package, color: 'text-format-ibd' },
+};
 
 /* ── arrays for mobile ── */
 const areas = catalogoSections[0].items;
@@ -94,7 +119,7 @@ const Header = () => {
   }, []);
 
   const navLinkClass = (isActive: boolean) =>
-    `font-nav text-sm font-medium transition-colors relative px-1 py-1 ${
+    `font-nav text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors relative px-1 py-2 ${
       isActive
         ? 'text-primary'
         : 'text-foreground hover:text-primary'
@@ -110,17 +135,8 @@ const Header = () => {
       <header ref={headerRef} className="sticky top-0 z-50">
         {/* ── Top institutional strip ── */}
         <div className="bg-header-dark">
-          <div className="container mx-auto px-4 flex items-center justify-between h-10">
+          <div className="container mx-auto px-4 flex items-center justify-end h-9">
             <div className="flex items-center gap-3">
-              {/* UNAL shield placeholder */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-white/10 flex items-center justify-center">
-                  <span className="font-nav text-[7px] text-white font-bold leading-none text-center">UN</span>
-                </div>
-                <span className="font-nav text-[11px] text-white/80 font-light tracking-wide hidden sm:inline">
-                  Universidad Nacional de Colombia
-                </span>
-              </div>
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -142,19 +158,20 @@ const Header = () => {
 
         {/* ── Main navigation bar ── */}
         <div className="bg-white border-b border-border/60">
-          <div className="container mx-auto px-4 flex items-center justify-between h-[71px]">
+          <div className="container mx-auto px-4 flex items-center gap-5 h-[86px] relative">
             {/* Logo */}
-            <a href="#" className="flex items-baseline gap-1.5 flex-shrink-0">
-              <span className="font-heading text-xl font-bold text-foreground tracking-tight italic">
-                Editorial
-              </span>
-              <span className="font-nav text-sm font-extrabold bg-primary text-primary-foreground px-2 py-0.5 tracking-wider">
-                UNAL
-              </span>
-            </a>
+            <div className="flex items-center gap-4 flex-shrink-0">
+              <a href="https://unal.edu.co/" target="_blank" rel="noopener noreferrer" aria-label="Ir al portal de la Universidad Nacional de Colombia">
+                <img src={unalLogo} alt="Universidad Nacional de Colombia" className="h-[58px] w-auto object-contain lg:h-[64px]" />
+              </a>
+              <span className="hidden h-9 w-px bg-border lg:block" aria-hidden="true" />
+              <a href="#" aria-label="Ir al inicio de Editorial UNAL">
+                <img src={editorialLogo} alt="Editorial UNAL" className="h-9 w-auto object-contain lg:h-10" />
+              </a>
+            </div>
 
             {/* Center nav links */}
-            <nav className="hidden lg:flex items-center gap-6">
+            <nav className="hidden lg:flex flex-1 items-center justify-center gap-6">
               <div
                 className="relative"
                 onMouseEnter={() => openMenu('catalogo')}
@@ -191,11 +208,11 @@ const Header = () => {
             </nav>
 
             {/* Right section: search + icons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               {/* Inline search (desktop) */}
               <button
                 onClick={() => setSearchOpen(true)}
-                className="hidden lg:flex items-center gap-2 bg-muted/60 hover:bg-muted px-4 py-2 transition-colors group w-[200px]"
+                className="hidden xl:flex items-center gap-2 bg-muted/60 hover:bg-muted px-4 py-2 transition-colors group w-[180px]"
               >
                 <Search className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                 <span className="font-nav text-sm text-muted-foreground font-light">Buscar...</span>
@@ -261,15 +278,21 @@ const Header = () => {
                 {/* Right panel */}
                 <div className="flex-1 px-10 py-8">
                   <div className="grid grid-cols-3 gap-x-10 gap-y-0">
-                    {catalogoSections[hoveredSection]?.items.map((item) => (
-                      <a
-                        key={item}
-                        href="#"
-                        className="font-nav text-sm text-foreground/70 font-light hover:text-primary transition-colors py-3 border-b border-dashed border-border/40"
-                      >
-                        {item}
-                      </a>
-                    ))}
+                    {catalogoSections[hoveredSection]?.items.map((item) => {
+                      const FormatIcon = formatNavIcons[item]?.icon;
+                      const formatIconColor = formatNavIcons[item]?.color;
+
+                      return (
+                        <a
+                          key={item}
+                          href="#"
+                          className="font-nav text-sm text-foreground/70 font-light hover:text-primary transition-colors py-3 border-b border-dashed border-border/40 flex items-center gap-2"
+                        >
+                          {FormatIcon && <FormatIcon className={`h-4 w-4 ${formatIconColor}`} />}
+                          {item}
+                        </a>
+                      );
+                    })}
                   </div>
                   {catalogoSections[hoveredSection]?.label === 'Colecciones' && (
                     <a href="#" className="inline-flex items-center gap-1 mt-6 font-nav text-xs font-medium text-primary hover:underline tracking-wide">
@@ -362,9 +385,17 @@ const Header = () => {
                       <span className="font-nav text-[11px] font-semibold tracking-widest uppercase text-primary flex items-center gap-1.5 mb-2">
                         {section.label}
                       </span>
-                      {section.items.map((item) => (
-                        <a key={item} href="#" className="block font-nav text-sm text-foreground/60 font-light hover:text-primary py-1.5 pl-4">{item}</a>
-                      ))}
+                      {section.items.map((item) => {
+                        const FormatIcon = formatNavIcons[item]?.icon;
+                        const formatIconColor = formatNavIcons[item]?.color;
+
+                        return (
+                          <a key={item} href="#" className="flex items-center gap-2 font-nav text-sm text-foreground/60 font-light hover:text-primary py-1.5 pl-4">
+                            {FormatIcon && <FormatIcon className={`h-4 w-4 ${formatIconColor}`} />}
+                            {item}
+                          </a>
+                        );
+                      })}
                     </div>
                   ))}
                 </div>

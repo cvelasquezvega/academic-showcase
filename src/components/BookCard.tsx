@@ -1,16 +1,25 @@
 import { motion } from 'framer-motion';
-import { Download, ShoppingCart, Truck, Clock, ChevronRight, Bell, Headphones } from 'lucide-react';
+import { Truck, Clock, ChevronRight, Bell, Headphones, BookOpen, Smartphone, Unlock, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import type { Book } from '@/data/books';
+import BookCover from '@/components/BookCover';
+import type { Book, BookFormat } from '@/data/books';
 import { formatPrice, getMiniCardCTA, isMultiFormat } from '@/data/books';
 
-const formatMeta: Record<string, { label: string; class: string }> = {
-  'open-access': { label: 'Acceso Abierto', class: 'badge-open-access' },
-  ebook: { label: 'eBook', class: 'badge-ebook' },
-  printed: { label: 'Impreso', class: 'badge-print' },
-  audiobook: { label: 'Audiolibro', class: 'badge-audio' },
-  ibd: { label: 'Bajo Demanda', class: 'badge-ibd' },
+const formatMeta: Record<BookFormat, { label: string; class: string; icon: typeof BookOpen }> = {
+  'open-access': { label: 'Acceso Abierto', class: 'badge-open-access', icon: Unlock },
+  ebook: { label: 'eBook', class: 'badge-ebook', icon: Smartphone },
+  printed: { label: 'Impreso', class: 'badge-print', icon: BookOpen },
+  audiobook: { label: 'Audiolibro', class: 'badge-audio', icon: Headphones },
+  ibd: { label: 'Bajo Demanda', class: 'badge-ibd', icon: Package },
+};
+
+const formatButtonClass: Record<BookFormat, string> = {
+  printed: 'bg-[hsl(var(--format-print))] text-white hover:bg-[hsl(var(--format-print)/0.9)]',
+  ebook: 'bg-[hsl(var(--format-ebook))] text-white hover:bg-[hsl(var(--format-ebook)/0.9)]',
+  'open-access': 'bg-[hsl(var(--format-open))] text-white hover:bg-[hsl(var(--format-open)/0.9)]',
+  ibd: 'bg-[hsl(var(--format-ibd))] text-foreground hover:bg-[hsl(var(--format-ibd)/0.9)]',
+  audiobook: 'bg-[hsl(var(--format-audio))] text-white hover:bg-[hsl(var(--format-audio)/0.9)]',
 };
 
 const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
@@ -18,6 +27,17 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
   const multiFormat = isMultiFormat(book);
   const printDetail = book.formatDetails?.find(d => d.format === 'printed');
   const audioDetail = book.formatDetails?.find(d => d.format === 'audiobook');
+  const singleActionFormat = book.formats.find(f => f !== 'audiobook') || book.formats[0];
+  const CtaFormatIcon = formatMeta[singleActionFormat].icon;
+  const ctaLabel = cta.icon === 'notify' ? 'Avísame' : cta.label;
+  const ctaClassName = [
+    'w-full h-11 px-3 font-body font-semibold uppercase text-[10px] tracking-[0.08em] relative z-20',
+    'whitespace-normal leading-tight text-center rounded-md transition-all',
+    cta.icon === 'options' ? 'bg-[#2B303B] text-white hover:bg-[#1f232b] shadow-sm hover:shadow-md' : '',
+    cta.icon === 'cart' ? formatButtonClass[singleActionFormat] : '',
+    cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground hover:bg-muted cursor-default' : '',
+    cta.icon === 'notify' ? 'border-destructive/70 text-destructive hover:bg-destructive hover:text-destructive-foreground' : '',
+  ].filter(Boolean).join(' ');
 
   const prices = book.formatDetails
     ? book.formatDetails.filter(d => d.price && d.price > 0).map(d => d.price!)
@@ -60,24 +80,27 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       </div>
 
       {/* Cover — full image area with hover overlay */}
-      <div className={`relative h-64 bg-gradient-to-br ${book.coverColor} overflow-hidden`}>
+      <BookCover book={book} className="h-64" imageClassName="group-hover:scale-105 transition-transform duration-500">
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-all duration-300 flex items-center justify-center">
           <span className="font-body text-sm font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-foreground/60 backdrop-blur-sm px-4 py-2 flex items-center gap-1.5">
             Ver detalle <ChevronRight className="h-3.5 w-3.5" />
           </span>
         </div>
-        {/* Scale effect on hover */}
-        <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-transparent to-transparent" />
-      </div>
+      </BookCover>
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         {/* Format badges */}
         <div className="flex flex-wrap gap-1 mb-2">
-          {book.formats.map(f => (
-            <span key={f} className={`badge-format ${formatMeta[f].class} text-[10px]`}>{formatMeta[f].label}</span>
-          ))}
+          {book.formats.map(f => {
+            const Icon = formatMeta[f].icon;
+            return (
+              <span key={f} className={`badge-format ${formatMeta[f].class} text-[10px] gap-1`}>
+                <Icon className="h-3 w-3" /> {formatMeta[f].label}
+              </span>
+            );
+          })}
         </div>
 
         {/* Category */}
@@ -90,9 +113,13 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
         {/* Price + CTA area */}
         <div className="mt-auto pt-3 border-t border-border">
           {cta.icon === 'download' ? (
-            <Button size="sm" className="w-full font-body font-medium bg-secondary hover:bg-secondary/90 text-secondary-foreground uppercase text-[11px] tracking-[0.15em] relative z-20" asChild>
+            <Button
+              size="sm"
+              className="w-full h-11 px-3 font-body font-semibold bg-[hsl(var(--format-open))] hover:bg-[hsl(var(--format-open)/0.9)] text-white uppercase text-[10px] tracking-[0.08em] whitespace-normal leading-tight rounded-md relative z-20"
+              asChild
+            >
               <Link to={`/libro/${book.id}`}>
-                <Download className="h-3.5 w-3.5 mr-1.5" /> Descargar gratis
+                <Unlock className="h-3.5 w-3.5 mr-1.5" /> Descargar gratis
               </Link>
             </Button>
           ) : (
@@ -110,7 +137,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
 
               {!multiFormat && (
                 <div className="flex items-center gap-1 text-muted-foreground text-[11px] font-body font-light mb-2">
-                  {book.formats.includes('ebook') && <span className="flex items-center gap-0.5"><Download className="h-3 w-3" /> Inmediato</span>}
+                  {book.formats.includes('ebook') && <span className="flex items-center gap-0.5"><Smartphone className="h-3 w-3" /> Inmediato</span>}
                   {book.formats.includes('printed') && printDetail?.printStatus === 'available' && (
                     <span className="flex items-center gap-0.5 ml-2"><Truck className="h-3 w-3" /> Envío</span>
                   )}
@@ -127,17 +154,15 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
               <Button
                 size="sm"
                 variant={cta.icon === 'notify' ? 'outline' : 'default'}
-                className={`w-full font-body font-medium uppercase text-[11px] tracking-[0.15em] relative z-20 ${
-                  cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground hover:bg-muted cursor-default' : ''
-                } ${cta.icon === 'notify' ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground' : ''}`}
+                className={ctaClassName}
                 asChild
               >
                 <Link to={`/libro/${book.id}`}>
-                  {cta.icon === 'cart' && <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />}
-                  {cta.icon === 'options' && <ChevronRight className="h-3.5 w-3.5 mr-1.5" />}
-                  {cta.icon === 'notify' && <Bell className="h-3.5 w-3.5 mr-1.5" />}
-                  {cta.icon === 'coming-soon' && <Clock className="h-3.5 w-3.5 mr-1.5" />}
-                  {cta.label}
+                  {cta.icon === 'cart' && <CtaFormatIcon className="h-3.5 w-3.5" />}
+                  {cta.icon === 'options' && <ChevronRight className="h-3.5 w-3.5" />}
+                  {cta.icon === 'notify' && <Bell className="h-3.5 w-3.5" />}
+                  {cta.icon === 'coming-soon' && <Clock className="h-3.5 w-3.5" />}
+                  <span>{ctaLabel}</span>
                 </Link>
               </Button>
 
