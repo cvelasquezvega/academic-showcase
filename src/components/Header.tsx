@@ -240,9 +240,14 @@ const Header = () => {
                     2
                   </span>
                 </Button>
-                <Button variant="ghost" size="icon" className="lg:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
+                <button
+                  type="button"
+                  className="flex h-10 w-10 items-center justify-center text-foreground transition-colors hover:text-primary lg:hidden"
+                  onClick={() => setMobileOpen(!mobileOpen)}
+                  aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
+                >
                   {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </Button>
+                </button>
               </div>
             </div>
           </div>
@@ -354,24 +359,24 @@ const Header = () => {
         {mobileOpen && (
           <nav className="fixed inset-x-0 bottom-0 top-[110px] z-40 overflow-y-auto overscroll-contain border-b border-border bg-white px-4 py-5 pb-10 shadow-xl lg:hidden">
             {/* Quick actions */}
-            <div className="mb-4 grid grid-cols-2 gap-2">
+            <div className="mb-5 grid grid-cols-4 gap-1.5">
               <button
                 onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
-                className="flex-1 flex items-center justify-center gap-2 font-nav text-xs font-medium text-foreground bg-muted py-2.5 hover:bg-muted/80 transition-colors"
+                className="flex min-h-10 items-center justify-center gap-1.5 bg-muted px-2 py-2 font-nav text-[11px] font-medium leading-tight text-foreground hover:bg-muted/80"
               >
-                <Search className="h-4 w-4" /> Buscar
+                <Search className="h-3.5 w-3.5 shrink-0" /> Buscar
               </button>
               <button
                 onClick={() => { setMobileOpen(false); setRedeemOpen(true); }}
-                className="flex-1 flex items-center justify-center gap-2 font-nav text-xs font-medium text-foreground bg-muted py-2.5 hover:bg-muted/80 transition-colors"
+                className="flex min-h-10 items-center justify-center gap-1.5 bg-muted px-2 py-2 font-nav text-[11px] font-medium leading-tight text-foreground hover:bg-muted/80"
               >
-                <Ticket className="h-4 w-4" /> Redimir código
+                <Ticket className="h-3.5 w-3.5 shrink-0" /> Redimir
               </button>
-              <a href="#" className="flex items-center justify-center font-nav text-xs font-medium text-foreground bg-muted py-2.5 hover:bg-muted/80 transition-colors">
-                Iniciar sesión
+              <a href="#" className="flex min-h-10 items-center justify-center bg-muted px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-foreground hover:bg-muted/80">
+                Ingresar
               </a>
-              <a href="#" className="flex items-center justify-center bg-primary py-2.5 font-nav text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity">
-                Crear cuenta
+              <a href="#" className="flex min-h-10 items-center justify-center bg-primary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-primary-foreground hover:opacity-90">
+                Registro
               </a>
             </div>
 
