@@ -73,7 +73,7 @@ const SearchBar = () => {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Buscar por título, autor, ISBN o temática..."
+              placeholder="Buscar por título, autor, ISBN o área..."
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => setFocused(true)}

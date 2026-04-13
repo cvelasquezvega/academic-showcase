@@ -21,7 +21,7 @@ const links = [
 const InternalLinksBar = () => (
   <section className="bg-primary-light/40 py-10 md:py-14">
     <div className="container mx-auto px-4">
-      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="grid gap-3 md:grid-cols-3">
         {links.map((link, i) => (
           <motion.a
             key={link.label}
@@ -32,20 +32,24 @@ const InternalLinksBar = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="flex items-baseline gap-2 group transition-opacity hover:opacity-70"
+            className="group flex min-h-[76px] items-center justify-center border border-primary/20 bg-card/80 px-5 text-center transition-all hover:border-primary/40 hover:bg-card hover:shadow-sm"
           >
             {link.sublabel ? (
               /* Programa: Entre Libros — italic style */
-              <span className="font-heading text-xl md:text-2xl font-bold text-primary italic leading-tight">
-                {link.label}<br />
-                <span className="not-italic">{link.sublabel}</span>
+              <span className="leading-tight">
+                <span className="block font-body text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {link.label.replace(':', '')}
+                </span>
+                <span className="block font-heading text-xl font-bold italic text-primary">
+                  {link.sublabel}
+                </span>
               </span>
             ) : (
               /* Portal de Revistas UNAL / Repositorio UNAL */
-              <span className="flex items-center gap-2">
-                <span className="font-body text-lg md:text-xl font-light text-primary">{link.label}</span>
+              <span className="flex items-center justify-center gap-2 leading-none">
+                <span className="font-body text-base font-medium text-primary">{link.label}</span>
                 {link.badge && (
-                  <span className="font-nav text-xs font-extrabold bg-primary text-primary-foreground px-2 py-0.5 tracking-wider">
+                  <span className="font-nav text-[10px] font-extrabold bg-primary text-primary-foreground px-2 py-0.5 tracking-wider">
                     {link.badge}
                   </span>
                 )}

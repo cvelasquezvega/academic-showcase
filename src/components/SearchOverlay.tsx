@@ -98,7 +98,7 @@ const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Buscar por título, autor, ISBN o temática..."
+                placeholder="Buscar por título, autor, ISBN o área..."
                 value={query}
                 onChange={e => setQuery(e.target.value)}
                 className="flex-1 bg-transparent font-body text-base text-foreground placeholder:text-muted-foreground outline-none"

@@ -5,8 +5,8 @@ import {
   Truck, Clock, Bell, Heart, ShoppingCart,
   Share2, BookOpen, FileText, Headphones, ChevronRight, ChevronDown,
   Check, AlertTriangle, Info, ExternalLink, Copy,
-  Monitor, Smartphone, Shield, Tag, BookMarked, Users, Globe, Unlock, Package,
-  Leaf, Target, Music2, Video, PlayCircle
+  Monitor, Smartphone, Shield, BookMarked, Users, Globe, Unlock, Package,
+  Leaf
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -15,11 +15,61 @@ import Footer from '@/components/Footer';
 import BookCard from '@/components/BookCard';
 import BookCover from '@/components/BookCover';
 import { featuredBooks, bestsellerBooks, formatPrice } from '@/data/books';
-import type { Book, BookFormat } from '@/data/books';
+import type { Book, BookFormat, MultimediaResource } from '@/data/books';
 import { toast } from '@/hooks/use-toast';
 import logoDpa from '@/assets/Logo-DPA.png';
 
 const allBooks = [...featuredBooks, ...bestsellerBooks];
+const siteUrl = 'https://editorial.unal.edu.co';
+const defaultTitle = 'Editorial UNAL | Catálogo de publicaciones académicas';
+const defaultDescription = 'Catálogo editorial de la Universidad Nacional de Colombia: libros académicos, eBooks, acceso abierto, audiolibros y publicaciones universitarias.';
+const defaultImage = `${siteUrl}/favicon-editorial_UN.png`;
+
+const upsertMeta = (key: 'name' | 'property', value: string, content: string) => {
+  let tag = document.head.querySelector<HTMLMetaElement>(`meta[${key}="${value}"]`);
+  if (!tag) {
+    tag = document.createElement('meta');
+    tag.setAttribute(key, value);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute('content', content);
+};
+
+const upsertLink = (rel: string, href: string) => {
+  let tag = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+  if (!tag) {
+    tag = document.createElement('link');
+    tag.setAttribute('rel', rel);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute('href', href);
+};
+
+const upsertJsonLd = (id: string, data: object) => {
+  let tag = document.getElementById(id) as HTMLScriptElement | null;
+  if (!tag) {
+    tag = document.createElement('script');
+    tag.id = id;
+    tag.type = 'application/ld+json';
+    document.head.appendChild(tag);
+  }
+  tag.textContent = JSON.stringify(data);
+};
+
+const applyDefaultSeo = () => {
+  document.title = defaultTitle;
+  upsertMeta('name', 'description', defaultDescription);
+  upsertMeta('property', 'og:title', defaultTitle);
+  upsertMeta('property', 'og:description', defaultDescription);
+  upsertMeta('property', 'og:type', 'website');
+  upsertMeta('property', 'og:url', siteUrl);
+  upsertMeta('property', 'og:image', defaultImage);
+  upsertMeta('name', 'twitter:title', defaultTitle);
+  upsertMeta('name', 'twitter:description', defaultDescription);
+  upsertMeta('name', 'twitter:image', defaultImage);
+  upsertLink('canonical', `${siteUrl}/`);
+  document.getElementById('book-jsonld')?.remove();
+};
 
 /* ── Format config ── */
 const fmtCfg: Record<BookFormat, { label: string; icon: typeof BookOpen; badgeClass: string }> = {
@@ -36,21 +86,6 @@ const formatCssVar: Record<BookFormat, string> = {
   'open-access': '--format-open',
   ibd: '--format-ibd',
   audiobook: '--format-audio',
-};
-
-const multimediaCfg = {
-  mp3: {
-    label: 'MP3',
-    icon: Music2,
-    color: 'hsl(var(--format-audio))',
-    soft: 'hsl(var(--format-audio) / 0.08)',
-  },
-  mp4: {
-    label: 'MP4',
-    icon: Video,
-    color: 'hsl(var(--format-ebook))',
-    soft: 'hsl(var(--format-ebook) / 0.08)',
-  },
 };
 
 const odsItems = [
@@ -74,19 +109,243 @@ const odsItems = [
   },
 ];
 
+const femaleAuthorNames = [
+  'maria', 'luz', 'mara', 'rosa', 'camila', 'patricia', 'krisna', 'claudia',
+];
+
+const maleAuthorNames = [
+  'francisco', 'carlos', 'felipe', 'juan', 'ivan', 'luis', 'gregorio', 'camilo',
+];
+
+const authorPortraits = {
+  female: [
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=240&q=80',
+    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80',
+  ],
+  male: [
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80',
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80',
+  ],
+  neutral: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=240&q=80',
+};
+
+const knownAuthorOrcids: Record<string, string> = {
+  'maria angelica sanchez alvarez': '0000-0002-4897-7940',
+  'luz gabriela arango': '0000-0002-6354-1643',
+  'mara viveros vigoya': '0000-0003-3257-7149',
+};
+
+const normalizePersonName = (name: string) =>
+  name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+const getAuthorOrcid = (name: string) => knownAuthorOrcids[normalizePersonName(name)];
+
+const getAuthorPortrait = (name: string) => {
+  const normalized = normalizePersonName(name);
+
+  if (normalized.includes('grupo')) {
+    return authorPortraits.neutral;
+  }
+
+  const firstName = normalized.split(/\s+/)[0];
+  const pool = femaleAuthorNames.includes(firstName)
+    ? authorPortraits.female
+    : maleAuthorNames.includes(firstName)
+      ? authorPortraits.male
+      : authorPortraits.neutral;
+
+  if (typeof pool === 'string') {
+    return pool;
+  }
+
+  const index = [...normalized].reduce((sum, char) => sum + char.charCodeAt(0), 0) % pool.length;
+  return pool[index];
+};
+
+const MultimediaPreviewCard = ({ resource }: { resource: MultimediaResource }) => {
+  const isSpotify = resource.provider === 'spotify' && resource.embedUrl;
+  const isYoutube = resource.provider === 'youtube' && resource.embedUrl;
+  const isAudioFile = resource.type === 'mp3' && resource.mediaUrl;
+  const isVideoFile = resource.type === 'mp4' && resource.mediaUrl;
+
+  return (
+    <div className="overflow-hidden border border-border bg-background/70">
+      <div className="px-3 py-3">
+        <p className="font-body text-sm font-semibold leading-snug text-foreground">
+          {resource.title}
+        </p>
+        <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">
+          {resource.description}
+        </p>
+        {(resource.duration || resource.size) && (
+          <p className="mt-2 font-body text-[10px] text-muted-foreground">
+            {[resource.duration, resource.size].filter(Boolean).join(' - ')}
+          </p>
+        )}
+      </div>
+
+      {isSpotify && (
+        <iframe
+          title={resource.title}
+          src={resource.embedUrl}
+          className="h-[152px] w-full border-0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        />
+      )}
+
+      {isYoutube && (
+        <div className="aspect-video bg-foreground">
+          <iframe
+            title={resource.title}
+            src={resource.embedUrl}
+            className="h-full w-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
+      )}
+
+      {isAudioFile && !isSpotify && (
+        <div className="px-3 pb-3">
+          <audio controls preload="metadata" className="w-full">
+            <source src={resource.mediaUrl} type="audio/mpeg" />
+          </audio>
+        </div>
+      )}
+
+      {isVideoFile && !isYoutube && (
+        <video
+          controls
+          preload="metadata"
+          poster={resource.thumbnailUrl}
+          className="aspect-video w-full bg-foreground object-cover"
+        >
+          <source src={resource.mediaUrl} type="video/mp4" />
+        </video>
+      )}
+
+      {!isSpotify && !isYoutube && !isAudioFile && !isVideoFile && (
+        <div className="mx-3 mb-3 flex min-h-[88px] items-center justify-center border border-dashed border-border bg-muted/40">
+          <span className="font-body text-[11px] font-semibold text-muted-foreground">
+            Vista preliminar pendiente
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const book = allBooks.find(b => b.id === id);
   const [selectedFormat, setSelectedFormat] = useState<BookFormat | null>(null);
   const [selectedEbookSub, setSelectedEbookSub] = useState<'pdf' | 'epub' | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<'desc' | 'toc' | 'author' | 'reviews'>('desc');
+  const [activeTab, setActiveTab] = useState<'desc' | 'toc' | 'author'>('desc');
   const [notifyEmail, setNotifyEmail] = useState('');
   const [showNotifyForm, setShowNotifyForm] = useState(false);
+  const [multimediaOpen, setMultimediaOpen] = useState(false);
   const [tocOpen, setTocOpen] = useState(false);
+  const [collaboratorsOpen, setCollaboratorsOpen] = useState(false);
 
   // Scroll to top on book change
   useEffect(() => { window.scrollTo(0, 0); }, [id]);
+
+  useEffect(() => {
+    setSelectedFormat(null);
+    setSelectedEbookSub(null);
+    setQuantity(1);
+    setShowNotifyForm(false);
+    setNotifyEmail('');
+    setMultimediaOpen(false);
+    setTocOpen(false);
+    setCollaboratorsOpen(false);
+  }, [id]);
+
+  useEffect(() => {
+    if (!book) {
+      applyDefaultSeo();
+      return;
+    }
+
+    const canonicalUrl = `${siteUrl}/libro/${book.id}`;
+    const title = `${book.title} | Editorial UNAL`;
+    const description = (book.description || `${book.title}, publicación académica de Editorial UNAL.`)
+      .replace(/\s+/g, ' ')
+      .slice(0, 158);
+    const image = book.coverImage || defaultImage;
+    const pricedDetail = book.formatDetails?.find(detail => detail.price && detail.price > 0);
+    const price = pricedDetail?.price || book.price;
+    const availability = book.formatDetails?.some(detail => detail.printStatus === 'out-of-stock')
+      ? 'https://schema.org/OutOfStock'
+      : 'https://schema.org/InStock';
+
+    document.title = title;
+    upsertMeta('name', 'description', description);
+    upsertMeta('name', 'author', book.author);
+    upsertMeta('name', 'keywords', [book.category, book.collection, ...(book.keywords || [])].filter(Boolean).join(', '));
+    upsertMeta('property', 'og:title', title);
+    upsertMeta('property', 'og:description', description);
+    upsertMeta('property', 'og:type', 'book');
+    upsertMeta('property', 'og:url', canonicalUrl);
+    upsertMeta('property', 'og:image', image);
+    upsertMeta('property', 'og:image:alt', `Portada de ${book.title}`);
+    upsertMeta('name', 'twitter:title', title);
+    upsertMeta('name', 'twitter:description', description);
+    upsertMeta('name', 'twitter:image', image);
+    upsertLink('canonical', canonicalUrl);
+
+    upsertJsonLd('book-jsonld', {
+      '@context': 'https://schema.org',
+      '@type': 'Book',
+      '@id': `${canonicalUrl}#book`,
+      name: book.title,
+      alternateName: book.subtitle,
+      description,
+      url: canonicalUrl,
+      image,
+      author: {
+        '@type': 'Person',
+        name: book.author,
+      },
+      contributor: book.coAuthors?.map(name => ({ '@type': 'Person', name })),
+      publisher: {
+        '@type': 'Organization',
+        name: 'Editorial Universidad Nacional de Colombia',
+        url: siteUrl,
+      },
+      datePublished: book.year?.toString(),
+      inLanguage: book.language || 'es-CO',
+      numberOfPages: book.pages,
+      bookEdition: book.edition,
+      isbn: book.isbnPrint || book.isbnPdf || book.isbnEpub || book.isbnIbd,
+      keywords: book.keywords,
+      genre: book.category,
+      sameAs: book.doi ? `https://doi.org/${book.doi}` : undefined,
+      offers: price ? {
+        '@type': 'Offer',
+        url: canonicalUrl,
+        price,
+        priceCurrency: 'COP',
+        availability,
+        seller: {
+          '@type': 'Organization',
+          name: 'Editorial Universidad Nacional de Colombia',
+        },
+      } : undefined,
+      aggregateRating: book.ratingAvg && book.ratingCount ? {
+        '@type': 'AggregateRating',
+        ratingValue: book.ratingAvg,
+        reviewCount: book.ratingCount,
+      } : undefined,
+    });
+
+    return applyDefaultSeo;
+  }, [book]);
 
   if (!book) {
     return (
@@ -104,7 +363,7 @@ const ProductDetail = () => {
     );
   }
 
-  const effectiveFormat = selectedFormat || book.formats[0];
+  const effectiveFormat = selectedFormat || (book.formats.includes('open-access') ? 'open-access' : book.formats[0]);
   const currentDetail = book.formatDetails?.find(d => d.format === effectiveFormat);
   const isOpenAccess = effectiveFormat === 'open-access';
   const isPrinted = effectiveFormat === 'printed';
@@ -112,7 +371,17 @@ const ProductDetail = () => {
   const isIBD = effectiveFormat === 'ibd';
   const isAudiobook = effectiveFormat === 'audiobook';
   const currentPrice = currentDetail?.price || 0;
-  const currentOriginalPrice = currentDetail?.originalPrice;
+  const currentOriginalPrice = currentDetail?.originalPrice || book.originalPrice;
+  const derivedDiscountOriginalPrice = book.discount && currentPrice > 0
+    ? Math.round(currentPrice / (1 - book.discount / 100))
+    : undefined;
+  const visibleOriginalPrice = currentOriginalPrice || derivedDiscountOriginalPrice;
+  const savingsAmount = visibleOriginalPrice && visibleOriginalPrice > currentPrice
+    ? visibleOriginalPrice - currentPrice
+    : 0;
+  const savingsPercent = savingsAmount && visibleOriginalPrice
+    ? Math.round((savingsAmount / visibleOriginalPrice) * 100)
+    : book.discount || 0;
   const printStatus = currentDetail?.printStatus;
   const isOutOfStock = isPrinted && printStatus === 'out-of-stock';
   const isComingSoon = (isPrinted && printStatus === 'coming-soon');
@@ -121,17 +390,46 @@ const ProductDetail = () => {
   const audioStatus = currentDetail?.audioStatus;
   const currentFormatColor = `hsl(var(${formatCssVar[effectiveFormat]}))`;
   const currentFormatSoftColor = `hsl(var(${formatCssVar[effectiveFormat]}) / 0.08)`;
+  const availabilityState = isOutOfStock
+    ? { label: 'Agotado', helper: 'Puedes activar el aviso de disponibilidad.' }
+    : isComingSoon || (isAudiobook && audioStatus === 'coming-soon')
+      ? { label: 'Próximamente', helper: 'Este formato aún no está disponible.' }
+      : isIBD
+        ? { label: 'Impresión bajo demanda', helper: 'Preparación estimada de 15 a 21 días hábiles.' }
+        : isOpenAccess
+          ? { label: 'Acceso abierto', helper: 'Consulta sin costo desde el recurso autorizado.' }
+          : { label: 'Disponible', helper: isEbook ? 'Acceso digital después de la compra.' : 'Listo para compra según disponibilidad.' };
+  const mobileCtaLabel = isOpenAccess
+    ? 'Abrir acceso'
+    : isOutOfStock
+      ? 'Avísenme'
+      : isComingSoon || (isAudiobook && audioStatus === 'coming-soon')
+        ? 'Próximamente'
+        : isAudiobook && audioStatus === 'free-listen'
+          ? 'Escuchar'
+          : 'Agregar';
+  const mobileCtaDisabled = isComingSoon || (isAudiobook && audioStatus === 'coming-soon');
+  const publicationCollaborators = [
+    { name: book.author, role: 'Autoría', bio: book.aboutAuthor },
+    ...(book.coAuthors || []).map(name => ({ name, role: 'Coautoría', bio: undefined })),
+  ];
+  const hasPreviewResources = Boolean(book.multimediaResources?.length);
+  const invertName = (name: string) => {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length < 2) return name;
+    return `${parts.slice(-1).join(' ')}, ${parts.slice(0, -1).join(' ')}`;
+  };
   const detailCardTitle: Record<BookFormat, string> = {
     printed: 'Características del impreso',
     ebook: 'Características del E-book',
-    'open-access': 'Características del acceso abierto',
+    'open-access': 'Acceso abierto disponible',
     ibd: 'Características del impreso bajo demanda',
     audiobook: 'Características del audiolibro',
   };
   const detailLinkLabel: Record<BookFormat, string> = {
     printed: 'Detalles de entrega',
     ebook: 'Detalles de lectura',
-    'open-access': 'Detalles de lectura',
+    'open-access': 'Condiciones de acceso',
     ibd: 'Detalles de entrega',
     audiobook: 'Detalles de escucha',
   };
@@ -148,8 +446,8 @@ const ProductDetail = () => {
     },
     'open-access': {
       title: 'Acceso abierto',
-      body: 'Puedes consultar y descargar este título sin costo desde el entorno de lectura autorizado.',
-      note: 'Consulta y descarga gratuita.',
+      body: 'Este formato puede abrir un repositorio institucional de acceso abierto o descargar un archivo directo, segun la configuracion de la obra.',
+      note: 'Acceso sin costo desde repositorio o archivo autorizado.',
     },
     ibd: {
       title: 'Impreso bajo demanda',
@@ -163,7 +461,16 @@ const ProductDetail = () => {
     },
   };
   const detailItems = (() => {
-    if (isEbook || isOpenAccess) {
+    if (isOpenAccess) {
+      return [
+        { icon: Unlock, label: 'Acceso', value: 'Consulta abierta' },
+        { icon: Monitor, label: 'Lectura', value: 'Web' },
+        { icon: Shield, label: 'Costo', value: 'Sin pago' },
+        book.pages && { icon: BookOpen, label: 'Pags. orientativas', value: `~${book.pages} pp.` },
+      ].filter(Boolean) as { icon: typeof BookOpen; label: string; value: string }[];
+    }
+
+    if (isEbook) {
       return [
         { icon: Monitor, label: 'Versión digital', value: effectiveEbookSub ? effectiveEbookSub.toUpperCase() : 'Web' },
         book.fileSize && { icon: FileText, label: 'Tamaño', value: book.fileSize },
@@ -206,17 +513,8 @@ const ProductDetail = () => {
     toast({ title: 'Enlace copiado', description: 'Se ha copiado el enlace al portapapeles.' });
   };
 
-  // Stars component
-  const Stars = ({ rating, size = 'text-sm' }: { rating: number; size?: string }) => (
-    <div className="flex gap-0.5">
-      {[1,2,3,4,5].map(s => (
-        <span key={s} className={`${size} ${s <= Math.round(rating) ? 'text-primary' : 'text-border'}`}>★</span>
-      ))}
-    </div>
-  );
-
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-primary-light/30 pb-24 md:pb-0">
       <Header />
 
       {/* ═══ BREADCRUMB ═══ */}
@@ -268,6 +566,20 @@ const ProductDetail = () => {
                     <ExternalLink className="h-3.5 w-3.5" /> OpenAlex
                   </a>
                 )}
+              </div>
+
+              <div className="mt-3">
+                <button
+                  type="button"
+                  disabled={!hasPreviewResources}
+                  onClick={() => {
+                    setMultimediaOpen(true);
+                    document.getElementById('book-preview-resources')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="w-full border border-border bg-card px-4 py-2.5 font-body text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Vista preliminar
+                </button>
               </div>
 
               {/* Formats available badges */}
@@ -374,7 +686,7 @@ const ProductDetail = () => {
                 {book.title}
               </h1>
               {book.subtitle && (
-                <p className="font-heading text-base md:text-lg font-normal text-muted-foreground italic leading-snug mb-3">
+                <p className="font-body text-sm md:text-base font-light text-muted-foreground leading-relaxed mb-4 max-w-2xl">
                   {book.subtitle}
                 </p>
               )}
@@ -395,16 +707,6 @@ const ProductDetail = () => {
                 {book.edition && <span>· {book.edition}</span>}
               </div>
 
-              {/* Rating */}
-              {book.ratingAvg && (
-                <div className="flex items-center gap-2 mb-6">
-                  <Stars rating={book.ratingAvg} />
-                  <span className="font-body text-xs text-muted-foreground font-light">
-                    {book.ratingAvg.toFixed(1)} ({book.ratingCount} reseñas)
-                  </span>
-                </div>
-              )}
-
               {/* Description */}
               {book.description && (
                 <div className="mb-6">
@@ -416,62 +718,40 @@ const ProductDetail = () => {
 
               {/* ── Collapsible: Table of Contents ── */}
               {book.multimediaResources && book.multimediaResources.length > 0 && (
-                <div className="mb-6 border border-border bg-card p-4 shadow-sm">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <div>
-                      <span className="font-body text-[10px] tracking-[0.16em] uppercase text-primary font-bold">
-                        Recursos multimedia
-                      </span>
-                      <p className="mt-1 font-body text-xs text-muted-foreground font-light">
-                        Material complementario disponible para esta obra.
-                      </p>
-                    </div>
-                    <Target className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {book.multimediaResources.map(resource => {
-                      const cfg = multimediaCfg[resource.type];
-                      const Icon = cfg.icon;
-
-                      return (
-                        <button
-                          key={`${resource.type}-${resource.title}`}
-                          className="group flex items-start gap-3 border p-3 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm"
-                          style={{ borderColor: cfg.color, backgroundColor: cfg.soft }}
-                        >
-                          <span className="flex h-10 w-10 shrink-0 items-center justify-center text-white" style={{ backgroundColor: cfg.color }}>
-                            <Icon className="h-5 w-5" />
-                          </span>
-                          <span className="min-w-0 flex-1">
-                            <span className="flex items-center gap-2">
-                              <span className="font-body text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: cfg.color }}>
-                                {cfg.label}
-                              </span>
-                              {resource.duration && (
-                                <span className="font-body text-[10px] text-muted-foreground">{resource.duration}</span>
-                              )}
-                            </span>
-                            <span className="mt-1 block font-body text-sm font-semibold leading-snug text-foreground">
-                              {resource.title}
-                            </span>
-                            <span className="mt-1 block font-body text-[11px] leading-relaxed text-muted-foreground">
-                              {resource.description}
-                            </span>
-                            <span className="mt-2 flex items-center gap-1 font-body text-[11px] font-semibold text-primary">
-                              <PlayCircle className="h-3.5 w-3.5" />
-                              Vista previa
-                              {resource.size && <span className="font-light text-muted-foreground">· {resource.size}</span>}
-                            </span>
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                <div id="book-preview-resources" className="border border-border mb-4 bg-card">
+                  <button
+                    onClick={() => setMultimediaOpen(!multimediaOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Headphones className="h-4 w-4 text-muted-foreground" /> Recursos multimedia
+                    </span>
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${multimediaOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {multimediaOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="space-y-3 px-4 pb-4">
+                          <p className="font-body text-xs text-muted-foreground font-light">
+                            Material complementario disponible para esta obra.
+                          </p>
+                          {book.multimediaResources.map(resource => (
+                            <MultimediaPreviewCard key={`${resource.type}-${resource.title}`} resource={resource} />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 
               {book.toc && book.toc.length > 0 && (
-                <div className="border border-border mb-4">
+                <div className="border border-border mb-4 bg-card">
                   <button
                     onClick={() => setTocOpen(!tocOpen)}
                     className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
@@ -504,6 +784,95 @@ const ProductDetail = () => {
               )}
 
               {/* ── Keywords ── */}
+              {publicationCollaborators.length > 0 && (
+                <div className="border border-border mb-6 bg-card">
+                  <button
+                    onClick={() => setCollaboratorsOpen(!collaboratorsOpen)}
+                    className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-muted-foreground" /> Autores y colaboradores asociados a esta publicación
+                    </span>
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${collaboratorsOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {collaboratorsOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="space-y-3 px-4 pb-4">
+                          {publicationCollaborators.map((person) => {
+                            const initials = person.name
+                              .split(/\s+/)
+                              .filter(Boolean)
+                              .slice(0, 2)
+                              .map(part => part[0])
+                              .join('')
+                              .toUpperCase();
+                            const portrait = getAuthorPortrait(person.name);
+                            const orcid = getAuthorOrcid(person.name);
+
+                            return (
+                              <div key={`${person.role}-${person.name}`} className="border border-border bg-background/80 p-4 shadow-sm">
+                                <div className="flex flex-col gap-4 sm:flex-row">
+                                  <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden bg-primary/10 font-heading text-xl font-bold text-primary">
+                                    <span aria-hidden="true">{initials}</span>
+                                    <img
+                                      src={portrait}
+                                      alt={`Imagen de perfil de ${person.name}`}
+                                      className="absolute inset-0 h-full w-full object-cover"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="flex flex-wrap items-start justify-between gap-3">
+                                      <div>
+                                        <h3 className="font-heading text-xl font-bold leading-tight text-foreground">
+                                          {person.name}
+                                        </h3>
+                                        <p className="mt-1 font-body text-sm text-muted-foreground">
+                                          Nombre invertido: <span className="font-semibold text-foreground">{invertName(person.name)}</span>
+                                        </p>
+                                        {orcid && (
+                                          <a
+                                            href={`https://orcid.org/${orcid}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="mt-3 inline-flex items-center gap-2 rounded-md bg-[#009A6E] px-3 py-1.5 font-body text-xs font-bold tracking-wide text-white transition-colors hover:bg-[#007F5C]"
+                                          >
+                                            <Globe className="h-3.5 w-3.5" />
+                                            {orcid}
+                                            <ExternalLink className="h-3 w-3" />
+                                          </a>
+                                        )}
+                                      </div>
+                                      <span className="rounded-full bg-primary/10 px-4 py-1.5 font-body text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+                                        {person.role}
+                                      </span>
+                                    </div>
+                                    <div className="mt-4 border-t border-border pt-3">
+                                      <p className="font-body text-[11px] font-bold uppercase tracking-[0.16em] text-foreground">
+                                        Biografía
+                                      </p>
+                                      <p className="mt-2 font-body text-sm leading-relaxed text-foreground/75">
+                                        {person.bio || 'Perfil académico asociado a esta publicación.'}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
+
               {book.keywords && book.keywords.length > 0 && (
                 <div className="mb-6">
                   <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-2 block">
@@ -523,20 +892,20 @@ const ProductDetail = () => {
               {book.classifications && book.classifications.length > 0 && (
                 <div className="mb-6">
                   <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-2 flex items-center gap-1">
-                    <Tag className="h-3 w-3" /> Clasificación temática
+                    Clasificación por área
                   </span>
-                  <div className="space-y-1.5">
+                  <div className="divide-y divide-border border border-border">
                     {book.classifications.map((cl, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <span className={`font-nav text-[10px] font-bold px-2 py-0.5 ${
-                          cl.system === 'BISAC' ? 'bg-primary text-primary-foreground'
-                          : cl.system === 'THEMA' ? 'bg-secondary text-secondary-foreground'
-                          : 'bg-muted-foreground text-white'
-                        }`}>
+                      <div key={i} className="flex items-start gap-3 px-4 py-2.5">
+                        <span className="font-body text-xs text-muted-foreground font-medium w-[140px] flex-shrink-0">
                           {cl.system}
                         </span>
-                        <span className="font-body text-sm text-foreground/80 font-light flex-1">{cl.label}</span>
-                        <span className="font-body text-xs text-muted-foreground font-light">{cl.code}</span>
+                        <span className="min-w-0 flex-1 font-body text-xs text-foreground/80 font-light">
+                          {cl.label}
+                        </span>
+                        <span className="font-body text-xs text-muted-foreground font-light">
+                          {cl.code}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -586,13 +955,13 @@ const ProductDetail = () => {
             </div>
 
             {/* ────── COL 3: Purchase sidebar (sticky) ────── */}
-            <div className="lg:self-start lg:sticky lg:top-[120px]">
+            <div id="purchase-options" className="lg:self-start lg:sticky lg:top-[120px]">
               <div className="border border-border bg-card p-5 shadow-sm">
                 {/* Format selector */}
                 <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold mb-3 block">
                   Formato
                 </span>
-                <div className="grid grid-cols-3 gap-1.5 mb-3">
+                <div className="grid grid-cols-2 gap-2 mb-3">
                   {book.formats.map(f => {
                     const cfg = fmtCfg[f];
                     const Icon = cfg.icon;
@@ -601,37 +970,35 @@ const ProductDetail = () => {
                     const fPrice = detail?.price;
                     const formatColor = `hsl(var(${formatCssVar[f]}))`;
                     const formatSoftColor = `hsl(var(${formatCssVar[f]}) / 0.08)`;
+                    const formatSelectedColor = `hsl(var(${formatCssVar[f]}) / 0.18)`;
 
                     return (
                       <button
                         key={f}
                         onClick={() => { setSelectedFormat(f); setSelectedEbookSub(null); setShowNotifyForm(false); }}
                         aria-pressed={isSelected}
-                        className={`relative min-h-[52px] overflow-hidden border bg-card px-2 py-2 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm ${
+                        className={`relative min-h-[60px] overflow-hidden border px-2.5 py-2 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm ${
                           isSelected
-                            ? 'shadow-sm ring-2'
-                            : 'border-border hover:border-foreground/30'
+                            ? 'shadow-sm ring-1'
+                            : 'border-border bg-card hover:border-foreground/30'
                         }`}
                         style={isSelected
-                          ? { borderColor: formatColor, backgroundColor: formatColor, ['--tw-ring-color' as string]: 'hsl(var(--ring) / 0.35)' }
+                          ? { borderColor: formatColor, backgroundColor: formatSelectedColor, ['--tw-ring-color' as string]: formatColor }
                           : { backgroundColor: formatSoftColor }}
                       >
-                        <span className="absolute left-0 top-0 h-1 w-full" style={{ backgroundColor: isSelected ? 'rgba(255,255,255,0.5)' : formatColor }} />
-                        <span className="flex items-start justify-between gap-2">
+                        <span className="absolute left-0 top-0 h-1.5 w-full" style={{ backgroundColor: formatColor, opacity: isSelected ? 1 : 0.45 }} />
+                        <span className="flex items-start gap-2">
                           <span className="flex min-w-0 items-start gap-1.5">
-                            <Icon className="mt-0.5 h-3 w-3 flex-shrink-0" style={{ color: isSelected ? '#fff' : formatColor }} />
-                            <span>
-                        <span className={`font-body text-[11px] font-semibold block leading-tight whitespace-nowrap ${isSelected ? 'text-white' : 'text-foreground/75'}`}>
+                            <Icon className="mt-0.5 h-3 w-3 flex-shrink-0" style={{ color: formatColor }} />
+                            <span className="min-w-0">
+                        <span className={`font-body text-[11px] font-semibold block leading-tight whitespace-normal break-words ${isSelected ? 'text-foreground' : 'text-foreground/75'}`}>
                           {cfg.label}
                         </span>
-                        <span className={`font-body text-[10px] block mt-0.5 whitespace-nowrap ${isSelected ? 'font-semibold text-white/85' : 'text-muted-foreground font-light'}`}>
-                          {fPrice && fPrice > 0 ? formatPrice(fPrice) : f === 'open-access' ? 'Gratis' : '—'}
+                        <span className={`font-body text-[10px] block mt-0.5 whitespace-normal ${isSelected ? 'font-medium text-muted-foreground' : 'text-muted-foreground font-light'}`}>
+                          {fPrice && fPrice > 0 ? formatPrice(fPrice) : f === 'open-access' ? 'Sin costo' : '—'}
                         </span>
                             </span>
                           </span>
-                          {isSelected && (
-                            <Check className="h-3 w-3 flex-shrink-0 text-white" />
-                          )}
                         </span>
                       </button>
                     );
@@ -703,6 +1070,22 @@ const ProductDetail = () => {
                       ))}
                     </div>
                   )}
+                </div>
+
+                <div className="mb-3 border px-3 py-2" style={{ borderColor: `hsl(var(${formatCssVar[effectiveFormat]}) / 0.22)`, backgroundColor: currentFormatSoftColor }}>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-body text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: currentFormatColor }}>
+                      {availabilityState.label}
+                    </span>
+                    {savingsAmount > 0 && (
+                      <span className="font-body text-[10px] font-bold uppercase tracking-[0.12em] text-primary">
+                        {savingsPercent > 0 ? `${savingsPercent}% de descuento` : 'Promoción'}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">
+                    {availabilityState.helper}
+                  </p>
                 </div>
 
                 {false && isEbook && (
@@ -787,15 +1170,32 @@ const ProductDetail = () => {
                 {/* Price */}
                 <div className="mb-3">
                   {currentPrice > 0 ? (
-                    <div className="flex items-baseline gap-2">
-                      <span className="font-body text-2xl font-bold text-primary tracking-wide">{formatPrice(currentPrice)}</span>
-                      <span className="font-body text-xs text-muted-foreground font-light">COP</span>
-                      {currentOriginalPrice && (
-                        <span className="font-body text-base text-muted-foreground line-through font-light ml-2">{formatPrice(currentOriginalPrice)}</span>
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-body text-2xl font-bold text-primary tracking-wide">{formatPrice(currentPrice)}</span>
+                        <span className="font-body text-xs text-muted-foreground font-light">COP</span>
+                        {visibleOriginalPrice && visibleOriginalPrice > currentPrice && (
+                          <span className="font-body text-base text-muted-foreground line-through font-light ml-2">{formatPrice(visibleOriginalPrice)}</span>
+                        )}
+                      </div>
+                      {savingsAmount > 0 && (
+                        <p className="mt-1 font-body text-[11px] font-semibold text-primary">
+                          Ahorras {formatPrice(savingsAmount)}
+                        </p>
                       )}
                     </div>
                   ) : isOpenAccess ? (
-                    <span className="font-body text-2xl font-bold text-secondary">Descarga gratuita</span>
+                    <div className="border border-[hsl(var(--format-open)/0.18)] bg-[hsl(var(--format-open)/0.06)] px-3 py-3">
+                      <p className="font-body text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--format-open))]">
+                        Acceso abierto
+                      </p>
+                      <p className="mt-1 font-body text-2xl font-bold leading-tight text-secondary">
+                        Acceso sin costo
+                      </p>
+                      <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">
+                        Abre el repositorio de acceso abierto o descarga el archivo autorizado, segun la obra.
+                      </p>
+                    </div>
                   ) : null}
                 </div>
 
@@ -817,9 +1217,14 @@ const ProductDetail = () => {
 
                   {/* Main CTA button */}
                   {isOpenAccess ? (
-                    <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
-                      <Unlock className="h-4 w-4 mr-2" /> Descargar gratis
-                    </Button>
+                    <div className="space-y-2">
+                      <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
+                        <Unlock className="h-4 w-4 mr-2" /> Abrir acceso
+                      </Button>
+                      <p className="font-body text-[11px] leading-relaxed text-muted-foreground">
+                        Independiente de la disponibilidad de los demas formatos.
+                      </p>
+                    </div>
                   ) : isAudiobook && audioStatus === 'coming-soon' ? (
                     <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
                       <Clock className="h-4 w-4 mr-2" /> Próximamente
@@ -865,6 +1270,25 @@ const ProductDetail = () => {
                 </div>
 
                 {/* "Qué recibes" benefits */}
+                {isOpenAccess && (
+                  <div className="border border-border bg-card p-4 shadow-sm">
+                    <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold block mb-2">
+                      Acceso incluido
+                    </span>
+                    <ul className="space-y-1.5">
+                      <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
+                        <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Consulta sin costo
+                      </li>
+                      <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
+                        <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Repositorio o archivo directo
+                      </li>
+                      <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
+                        <Check className="h-3 w-3 text-secondary flex-shrink-0" /> Los demas formatos pueden seleccionarse aparte
+                      </li>
+                    </ul>
+                  </div>
+                )}
+
                 {!isOpenAccess && currentPrice > 0 && (
                   <div className="border border-border bg-card p-4 shadow-sm">
                     <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold block mb-2">
@@ -935,30 +1359,35 @@ const ProductDetail = () => {
       </section>
 
       {/* ═══ TABS: Author / Reviews ═══ */}
-      <section className="border-t border-border py-8 md:py-10 bg-muted/20">
+      {false && (
+      <section className="border-t border-border/70 bg-card/70 py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="flex gap-0 border-b border-border mb-8">
+          <div className="max-w-4xl">
+            <span className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+              Detalle editorial
+            </span>
+            <div className="mt-4 mb-7 inline-flex flex-wrap gap-1 border border-border bg-background/70 p-1">
             {[
               { key: 'desc' as const, label: 'Sobre la obra' },
               { key: 'author' as const, label: 'Sobre el autor' },
-              { key: 'reviews' as const, label: `Reseñas (${book.ratingCount || 0})` },
             ].map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-5 py-3 font-body text-sm transition-all border-b-2 -mb-[1px] ${
+                className={`px-5 py-2.5 font-body text-sm transition-colors ${
                   activeTab === tab.key
-                    ? 'border-primary text-primary font-medium'
-                    : 'border-transparent text-muted-foreground font-light hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground font-medium'
+                    : 'text-muted-foreground font-light hover:bg-muted hover:text-foreground'
                 }`}
               >
                 {tab.label}
               </button>
             ))}
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }} className="max-w-3xl">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }} className="max-w-4xl">
               {activeTab === 'desc' && (
                 <div className="font-body text-sm text-foreground/80 font-light leading-[1.8] whitespace-pre-line">
                   {book.description || 'Descripción no disponible para este título.'}
@@ -982,15 +1411,15 @@ const ProductDetail = () => {
                 </div>
               )}
 
-              {activeTab === 'reviews' && (
+              {false && (
                 <div className="space-y-6">
                   {/* Summary */}
                   {book.ratingAvg && (
                     <div className="flex items-center gap-6 p-5 bg-card border border-border">
                       <div className="text-center">
                         <span className="font-heading text-4xl font-bold text-foreground">{book.ratingAvg.toFixed(1)}</span>
-                        <div className="mt-1"><Stars rating={book.ratingAvg} size="text-xs" /></div>
-                        <p className="font-body text-xs text-muted-foreground mt-1 font-light">{book.ratingCount} reseñas</p>
+                        <div className="mt-1" />
+                        <p className="font-body text-xs text-muted-foreground mt-1 font-light">{book.ratingCount}</p>
                       </div>
                       <div className="flex-1 space-y-1">
                         {[5,4,3,2,1].map(star => (
@@ -1016,7 +1445,6 @@ const ProductDetail = () => {
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 bg-primary/10 flex items-center justify-center font-body text-xs font-medium text-primary">{review.name[0]}</div>
                           <span className="font-body text-sm font-medium text-foreground">{review.name}</span>
-                          <Stars rating={review.rating} size="text-xs" />
                         </div>
                         <span className="font-body text-xs text-muted-foreground font-light">{review.date}</span>
                       </div>
@@ -1030,12 +1458,13 @@ const ProductDetail = () => {
         </div>
       </section>
 
-      {/* ═══ RELATED BOOKS ═══ */}
+      )}
+
       <section className="border-t border-border py-10 md:py-14">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-6">
             <div>
-              <p className="font-body text-[11px] tracking-[0.2em] uppercase text-primary font-semibold mb-1">Misma temática</p>
+              <p className="font-body text-[11px] tracking-[0.2em] uppercase text-primary font-semibold mb-1">Misma área</p>
               <h2 className="font-heading text-xl md:text-2xl font-bold text-foreground">También puede interesarte</h2>
             </div>
             <Link to="/" className="font-body text-xs text-primary font-medium hover:underline uppercase tracking-wider flex items-center gap-1">
@@ -1049,6 +1478,49 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur md:hidden">
+        <div className="mx-auto flex max-w-md items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="font-body text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: currentFormatColor }}>
+              {availabilityState.label}
+            </p>
+            {currentPrice > 0 ? (
+              <p className="font-body text-base font-bold leading-tight text-primary">
+                {formatPrice(currentPrice)}
+                {savingsAmount > 0 && (
+                  <span className="ml-2 font-body text-[11px] font-semibold text-muted-foreground">
+                    Ahorras {formatPrice(savingsAmount)}
+                  </span>
+                )}
+              </p>
+            ) : (
+              <p className="font-body text-base font-bold leading-tight text-secondary">
+                {isOpenAccess ? 'Acceso sin costo' : fmtCfg[effectiveFormat].label}
+              </p>
+            )}
+          </div>
+          <Button
+            size="sm"
+            disabled={mobileCtaDisabled}
+            onClick={() => {
+              if (isOutOfStock) {
+                setShowNotifyForm(true);
+                document.getElementById('purchase-options')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+              }
+              toast({
+                title: mobileCtaLabel,
+                description: isOpenAccess ? 'Abriendo el acceso autorizado.' : 'Formato seleccionado en la ficha.',
+              });
+            }}
+            className="shrink-0 px-4 font-body text-xs font-bold uppercase tracking-[0.08em]"
+            style={!mobileCtaDisabled ? { backgroundColor: currentFormatColor, color: '#fff' } : undefined}
+          >
+            {mobileCtaLabel}
+          </Button>
+        </div>
+      </div>
 
       <Footer />
     </div>

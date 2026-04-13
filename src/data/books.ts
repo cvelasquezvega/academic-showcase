@@ -29,6 +29,10 @@ export interface MultimediaResource {
   description: string;
   duration?: string;
   size?: string;
+  provider?: 'spotify' | 'youtube' | 'file';
+  embedUrl?: string;
+  mediaUrl?: string;
+  thumbnailUrl?: string;
 }
 
 export interface Book {
@@ -82,17 +86,17 @@ export const isMultiFormat = (book: Book): boolean => {
 };
 
 export const getMiniCardCTA = (book: Book): { label: string; icon: 'download' | 'cart' | 'options' | 'notify' | 'coming-soon' } => {
-  if (book.formats.length === 1 && book.formats[0] === 'open-access') return { label: 'Descargar gratis', icon: 'download' };
+  if (book.formats.length === 1 && book.formats[0] === 'open-access') return { label: 'Ver opciones', icon: 'options' };
   const printDetail = book.formatDetails?.find(d => d.format === 'printed');
   if (book.formats.length === 1 && book.formats[0] === 'printed') {
     if (printDetail?.printStatus === 'out-of-stock') return { label: 'Avíseme disponibilidad', icon: 'notify' };
     if (printDetail?.printStatus === 'coming-soon') return { label: 'Próximamente', icon: 'coming-soon' };
-    return { label: 'Agregar al carrito', icon: 'cart' };
+    return { label: 'Ver opciones', icon: 'options' };
   }
-  if (book.formats.length === 1 && book.formats[0] === 'ebook') return { label: 'Comprar eBook', icon: 'cart' };
-  if (book.formats.length === 1 && book.formats[0] === 'ibd') return { label: 'Solicitar impresión', icon: 'cart' };
+  if (book.formats.length === 1 && book.formats[0] === 'ebook') return { label: 'Ver opciones', icon: 'options' };
+  if (book.formats.length === 1 && book.formats[0] === 'ibd') return { label: 'Ver opciones', icon: 'options' };
   if (isMultiFormat(book)) return { label: 'Ver opciones', icon: 'options' };
-  if (book.formats.includes('open-access')) return { label: 'Descargar gratis', icon: 'download' };
+  if (book.formats.includes('open-access')) return { label: 'Ver opciones', icon: 'options' };
   return { label: 'Ver opciones', icon: 'options' };
 };
 
@@ -163,6 +167,8 @@ export const featuredBooks: Book[] = [
         description: 'Comentario de lectura y contexto académico del título.',
         duration: '08:42',
         size: '7.8 MB',
+        provider: 'file',
+        mediaUrl: '/media/presentacion-sonora.mp3',
       },
       {
         type: 'mp4',
@@ -170,6 +176,9 @@ export const featuredBooks: Book[] = [
         description: 'Introducción audiovisual a los principales aportes de la obra.',
         duration: '03:16',
         size: '42 MB',
+        provider: 'file',
+        mediaUrl: '/media/video-presentacion.mp4',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },

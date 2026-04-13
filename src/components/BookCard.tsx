@@ -14,27 +14,16 @@ const formatMeta: Record<BookFormat, { label: string; class: string; icon: typeo
   ibd: { label: 'Bajo Demanda', class: 'badge-ibd', icon: Package },
 };
 
-const formatButtonClass: Record<BookFormat, string> = {
-  printed: 'bg-[hsl(var(--format-print))] text-white hover:bg-[hsl(var(--format-print)/0.9)]',
-  ebook: 'bg-[hsl(var(--format-ebook))] text-white hover:bg-[hsl(var(--format-ebook)/0.9)]',
-  'open-access': 'bg-[hsl(var(--format-open))] text-white hover:bg-[hsl(var(--format-open)/0.9)]',
-  ibd: 'bg-[hsl(var(--format-ibd))] text-foreground hover:bg-[hsl(var(--format-ibd)/0.9)]',
-  audiobook: 'bg-[hsl(var(--format-audio))] text-white hover:bg-[hsl(var(--format-audio)/0.9)]',
-};
-
 const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
   const cta = getMiniCardCTA(book);
   const multiFormat = isMultiFormat(book);
   const printDetail = book.formatDetails?.find(d => d.format === 'printed');
   const audioDetail = book.formatDetails?.find(d => d.format === 'audiobook');
-  const singleActionFormat = book.formats.find(f => f !== 'audiobook') || book.formats[0];
-  const CtaFormatIcon = formatMeta[singleActionFormat].icon;
   const ctaLabel = cta.icon === 'notify' ? 'Avísame' : cta.label;
   const ctaClassName = [
     'w-full h-11 px-3 font-body font-semibold uppercase text-[10px] tracking-[0.08em] relative z-20',
     'whitespace-normal leading-tight text-center rounded-md transition-all',
     cta.icon === 'options' ? 'bg-[#2B303B] text-white hover:bg-[#1f232b] shadow-sm hover:shadow-md' : '',
-    cta.icon === 'cart' ? formatButtonClass[singleActionFormat] : '',
     cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground hover:bg-muted cursor-default' : '',
     cta.icon === 'notify' ? 'border-destructive/70 text-destructive hover:bg-destructive hover:text-destructive-foreground' : '',
   ].filter(Boolean).join(' ');
@@ -158,7 +147,6 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
                 asChild
               >
                 <Link to={`/libro/${book.id}`}>
-                  {cta.icon === 'cart' && <CtaFormatIcon className="h-3.5 w-3.5" />}
                   {cta.icon === 'options' && <ChevronRight className="h-3.5 w-3.5" />}
                   {cta.icon === 'notify' && <Bell className="h-3.5 w-3.5" />}
                   {cta.icon === 'coming-soon' && <Clock className="h-3.5 w-3.5" />}
