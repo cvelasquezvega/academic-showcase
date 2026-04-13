@@ -24,16 +24,16 @@ const Newsletter = () => {
         <p className="font-body text-primary-foreground/60 text-sm mb-6 leading-relaxed font-light">
           Recibe novedades, acceso a títulos gratuitos, descuentos exclusivos y un <strong className="text-primary font-medium">10% de descuento</strong> en tu primera compra.
         </p>
-        <form onSubmit={handleSubmit} className="flex gap-0 max-w-md mx-auto">
+        <form onSubmit={handleSubmit} className="mx-auto flex max-w-md flex-col gap-2 sm:flex-row sm:gap-0">
           <input
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="tu@email.com"
             required
-            className="flex-1 px-4 py-3 bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 font-body text-sm font-light outline-none focus:border-primary transition-colors"
+            className="min-w-0 flex-1 border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-3 font-body text-sm font-light text-primary-foreground outline-none transition-colors placeholder:text-primary-foreground/40 focus:border-primary"
           />
-          <Button type="submit" size="lg" className="font-body font-medium uppercase tracking-[0.15em] text-sm">
+          <Button type="submit" size="lg" className="w-full min-w-0 whitespace-normal px-4 font-body text-sm font-medium uppercase tracking-[0.1em] sm:w-auto sm:tracking-[0.15em]">
             Suscribirse <ArrowRight className="ml-1 h-4 w-4" />
           </Button>
         </form>

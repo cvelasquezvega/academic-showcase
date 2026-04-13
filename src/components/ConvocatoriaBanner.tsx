@@ -9,7 +9,7 @@ const ConvocatoriaBanner = () => (
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex flex-col md:flex-row items-center gap-6 md:gap-10"
+        className="flex flex-col items-center gap-6 md:flex-row md:gap-10"
       >
         <div className="flex items-center gap-4 flex-shrink-0">
           <div className="w-14 h-14 bg-secondary/10 flex items-center justify-center">
@@ -24,11 +24,11 @@ const ConvocatoriaBanner = () => (
             ¿Tienes un manuscrito académico? Conoce nuestras convocatorias vigentes y postula tu obra para publicación.
           </p>
         </div>
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <Button variant="outline" className="font-body font-medium text-[11px] uppercase tracking-[0.15em] border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground">
+        <div className="grid w-full flex-shrink-0 grid-cols-1 gap-2 sm:max-w-sm sm:grid-cols-2 md:w-auto">
+          <Button variant="outline" className="min-w-0 whitespace-normal px-3 font-body text-[11px] font-medium uppercase leading-tight tracking-[0.1em] text-secondary border-secondary hover:bg-secondary hover:text-secondary-foreground md:tracking-[0.15em]">
             <FileText className="h-3.5 w-3.5 mr-1.5" /> Ver convocatorias
           </Button>
-          <Button className="font-body font-medium text-[11px] uppercase tracking-[0.15em] bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+          <Button className="min-w-0 whitespace-normal bg-secondary px-3 font-body text-[11px] font-medium uppercase leading-tight tracking-[0.1em] text-secondary-foreground hover:bg-secondary/90 md:tracking-[0.15em]">
             <Mail className="h-3.5 w-3.5 mr-1.5" /> Contactar
           </Button>
         </div>

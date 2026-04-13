@@ -93,11 +93,11 @@ const HeroBanner = () => {
             <p className="font-body text-base md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto font-light">
               {slide.subtitle}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button size="lg" className="font-body font-medium text-sm uppercase tracking-[0.15em]">
+            <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-3 sm:max-w-none sm:flex-row">
+              <Button size="lg" className="w-full min-w-0 whitespace-normal px-4 font-body text-sm font-medium uppercase leading-tight tracking-[0.1em] sm:w-auto sm:px-8 sm:tracking-[0.15em]">
                 {slide.cta} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" className="font-body font-medium text-sm uppercase tracking-[0.15em] border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground">
+              <Button size="lg" variant="outline" className="w-full min-w-0 whitespace-normal border-foreground px-4 font-body text-sm font-medium uppercase leading-tight tracking-[0.1em] text-foreground hover:bg-foreground hover:text-primary-foreground sm:w-auto sm:px-8 sm:tracking-[0.15em]">
                 Crear cuenta gratis
               </Button>
             </div>

@@ -29,14 +29,19 @@ const StickyRegisterCTA = () => {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className="fixed inset-x-0 bottom-0 z-40 w-full max-w-full overflow-hidden border-t border-white/10 bg-header-dark shadow-2xl"
         >
-          <div className="mx-auto flex w-full max-w-7xl items-center gap-2 px-3 py-2 sm:gap-4 sm:px-6 sm:py-3">
-            <div className="hidden min-w-0 flex-1 items-center gap-3 sm:flex">
+          <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-3 py-2 sm:flex-row sm:items-center sm:gap-4 sm:px-6 sm:py-3">
+            <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
               <UserPlus className="h-5 w-5 flex-shrink-0 text-primary" />
-              <p className="font-body text-sm text-white/90 truncate font-light">
-                <strong className="text-primary font-medium">Regístrate gratis</strong> y obtén 10% de descuento en tu primera compra + acceso a cientos de libros en Acceso Abierto.
+              <p className="min-w-0 font-body text-xs font-light leading-snug text-white/85 sm:truncate sm:text-sm">
+                <span className="sm:hidden">
+                  <strong className="font-medium text-primary">Regístrate gratis</strong> y obtén 10% de descuento.
+                </span>
+                <span className="hidden sm:inline">
+                  <strong className="font-medium text-primary">Regístrate gratis</strong> y obtén 10% de descuento en tu primera compra + acceso a cientos de libros en Acceso Abierto.
+                </span>
               </p>
             </div>
-            <div className="flex min-w-0 flex-1 items-center gap-2 sm:flex-none">
+            <div className="flex min-w-0 items-center gap-2 sm:flex-none">
               <Button className="h-10 min-w-0 flex-1 px-3 font-body text-[11px] font-medium uppercase tracking-[0.12em] sm:flex-none sm:px-5 sm:tracking-[0.15em]">
                 <span className="sm:hidden">Crear cuenta</span>
                 <span className="hidden sm:inline">Crear cuenta gratis</span>
