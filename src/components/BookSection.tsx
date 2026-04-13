@@ -74,9 +74,9 @@ const BookSection = ({ title, subtitle, books, ctaLabel = 'Ver todo' }: Props) =
 
         {/* Carousel */}
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex -ml-4">
+          <div className="flex -ml-3 sm:-ml-4">
             {books.map((book, i) => (
-              <div key={book.id} className="carousel-slide-book min-w-0 pl-4">
+              <div key={book.id} className="carousel-slide-book min-w-0 pl-3 sm:pl-4">
                 <BookCard book={book} index={i} />
               </div>
             ))}

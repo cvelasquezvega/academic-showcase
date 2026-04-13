@@ -116,7 +116,7 @@
   }
   /* Carousel slide responsive widths */
   .carousel-slide-book {
-    flex: 0 0 85%;
+    flex: 0 0 50%;
   }
   @media (min-width: 640px) {
     .carousel-slide-book { flex: 0 0 48%; }

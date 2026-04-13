@@ -110,9 +110,9 @@ const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
               )}
               <button
                 onClick={onClose}
-                className="ml-2 font-body text-xs font-semibold text-muted-foreground border border-border px-2 py-1 hover:text-foreground"
+                className="ml-2 border border-border px-3 py-1 font-body text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground hover:text-foreground"
               >
-                ESC
+                Cerrar
               </button>
             </div>
 

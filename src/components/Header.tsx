@@ -146,7 +146,7 @@ const Header = () => {
                 <Ticket className="h-3.5 w-3.5" /> Redimir código
               </button>
               <span className="text-white/20 hidden sm:inline">|</span>
-              <a href="#" className="font-nav text-[11px] text-white/70 hover:text-white font-light tracking-wide transition-colors hidden sm:inline">
+              <a href="#" className="hidden bg-secondary px-3 py-1 font-nav text-[11px] font-medium tracking-wide text-secondary-foreground transition-opacity hover:opacity-90 sm:inline">
                 Iniciar sesión
               </a>
               <a href="#" className="font-nav text-[11px] bg-primary text-primary-foreground px-3 py-1 font-medium tracking-wide hover:opacity-90 transition-opacity hidden sm:inline">
@@ -372,7 +372,7 @@ const Header = () => {
               >
                 <Ticket className="h-3.5 w-3.5 shrink-0" /> Redimir
               </button>
-              <a href="#" className="flex min-h-10 items-center justify-center bg-muted px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-foreground hover:bg-muted/80">
+              <a href="#" className="flex min-h-10 items-center justify-center bg-secondary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-secondary-foreground hover:bg-secondary/90">
                 Ingresar
               </a>
               <a href="#" className="flex min-h-10 items-center justify-center bg-primary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-primary-foreground hover:opacity-90">

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Truck, Clock, ChevronRight, Bell, Headphones, BookOpen, Smartphone, Unlock, Package } from 'lucide-react';
+import { Clock, ChevronRight, Bell, Headphones, BookOpen, Smartphone, Unlock, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import BookCover from '@/components/BookCover';
@@ -21,7 +21,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
   const audioDetail = book.formatDetails?.find(d => d.format === 'audiobook');
   const ctaLabel = cta.icon === 'notify' ? 'Avísame' : cta.label;
   const ctaClassName = [
-    'w-full h-11 px-3 font-body font-semibold uppercase text-[10px] tracking-[0.08em] relative z-20',
+    'w-full h-10 sm:h-11 px-2 sm:px-3 font-body font-semibold uppercase text-[10px] tracking-[0.06em] sm:tracking-[0.08em] relative z-20',
     'whitespace-normal leading-tight text-center rounded-md transition-all',
     cta.icon === 'options' ? 'bg-[#2B303B] text-white hover:bg-[#1f232b] shadow-sm hover:shadow-md' : '',
     cta.icon === 'coming-soon' ? 'bg-muted text-muted-foreground hover:bg-muted cursor-default' : '',
@@ -32,7 +32,6 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
     ? book.formatDetails.filter(d => d.price && d.price > 0).map(d => d.price!)
     : book.price ? [book.price] : [];
   const lowestPrice = prices.length > 0 ? Math.min(...prices) : null;
-  const highestPrice = prices.length > 1 ? Math.max(...prices) : null;
 
   return (
     <motion.div
@@ -49,7 +48,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       {book.discount && <span className="badge-discount z-20">-{book.discount}%</span>}
 
       {/* Status badges (top-right) */}
-      <div className="absolute top-3 right-3 z-20 flex flex-col gap-1">
+      <div className="absolute right-2 top-2 z-20 flex flex-col gap-1 sm:right-3 sm:top-3">
         {printDetail?.printStatus === 'out-of-stock' && (
           <span className="font-body text-[10px] font-semibold bg-destructive/90 text-white px-2 py-0.5">Sin stock</span>
         )}
@@ -69,7 +68,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       </div>
 
       {/* Cover — full image area with hover overlay */}
-      <BookCover book={book} className="h-64" imageClassName="group-hover:scale-105 transition-transform duration-500">
+      <BookCover book={book} className="aspect-[4/5] sm:aspect-auto sm:h-64" imageClassName="group-hover:scale-105 transition-transform duration-500">
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-all duration-300 flex items-center justify-center">
           <span className="font-body text-sm font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-foreground/60 backdrop-blur-sm px-4 py-2 flex items-center gap-1.5">
@@ -79,32 +78,32 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       </BookCover>
 
       {/* Content */}
-      <div className="p-4 flex flex-col flex-1">
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
         {/* Format badges */}
         <div className="flex flex-wrap gap-1 mb-2">
           {book.formats.map(f => {
             const Icon = formatMeta[f].icon;
             return (
-              <span key={f} className={`badge-format ${formatMeta[f].class} text-[10px] gap-1`}>
-                <Icon className="h-3 w-3" /> {formatMeta[f].label}
+              <span key={f} className={`badge-format ${formatMeta[f].class} gap-1 px-1.5 text-[9px] sm:px-2 sm:text-[10px]`}>
+                <Icon className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> {formatMeta[f].label}
               </span>
             );
           })}
         </div>
 
         {/* Category */}
-        <p className="font-body text-[11px] text-muted-foreground tracking-wide uppercase mb-1.5 font-medium">{book.category}</p>
+        <p className="mb-1.5 font-body text-[10px] font-medium uppercase tracking-wide text-muted-foreground sm:text-[11px]">{book.category}</p>
 
         {/* Title + Author — now here, between category and price */}
-        <h3 className="font-heading text-sm font-bold text-foreground leading-snug line-clamp-2 mb-0.5">{book.title}</h3>
-        <p className="font-body text-xs text-muted-foreground font-light mb-3">{book.author}</p>
+        <h3 className="mb-0.5 line-clamp-2 font-heading text-[13px] font-bold leading-snug text-foreground sm:text-sm">{book.title}</h3>
+        <p className="mb-3 line-clamp-2 font-body text-[11px] font-light leading-snug text-muted-foreground sm:text-xs">{book.author}</p>
 
         {/* Price + CTA area */}
         <div className="mt-auto pt-3 border-t border-border">
           {cta.icon === 'download' ? (
             <Button
               size="sm"
-              className="w-full h-11 px-3 font-body font-semibold bg-[hsl(var(--format-open))] hover:bg-[hsl(var(--format-open)/0.9)] text-white uppercase text-[10px] tracking-[0.08em] whitespace-normal leading-tight rounded-md relative z-20"
+              className="relative z-20 h-10 w-full rounded-md bg-[hsl(var(--format-open))] px-2 font-body text-[10px] font-semibold uppercase leading-tight tracking-[0.06em] text-white hover:bg-[hsl(var(--format-open)/0.9)] sm:h-11 sm:px-3 sm:tracking-[0.08em]"
               asChild
             >
               <Link to={`/libro/${book.id}`}>
@@ -114,29 +113,13 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
           ) : (
             <>
               {lowestPrice && (
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="font-body text-lg font-semibold text-foreground">
+                <div className="mb-2 flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-2">
+                  <span className="font-body text-base font-semibold leading-tight text-foreground sm:text-lg">
                     {multiFormat ? `Desde ${formatPrice(lowestPrice)}` : formatPrice(lowestPrice)}
                   </span>
                   {book.originalPrice && !multiFormat && (
                     <span className="font-body text-sm text-muted-foreground line-through font-light">{formatPrice(book.originalPrice)}</span>
                   )}
-                </div>
-              )}
-
-              {!multiFormat && (
-                <div className="flex items-center gap-1 text-muted-foreground text-[11px] font-body font-light mb-2">
-                  {book.formats.includes('ebook') && <span className="flex items-center gap-0.5"><Smartphone className="h-3 w-3" /> Inmediato</span>}
-                  {book.formats.includes('printed') && printDetail?.printStatus === 'available' && (
-                    <span className="flex items-center gap-0.5 ml-2"><Truck className="h-3 w-3" /> Envío</span>
-                  )}
-                  {book.formats.includes('ibd') && <span className="flex items-center gap-0.5 ml-2"><Clock className="h-3 w-3" /> 5-7 días</span>}
-                </div>
-              )}
-
-              {multiFormat && highestPrice && (
-                <div className="text-[11px] font-body text-muted-foreground font-light mb-2">
-                  {book.formats.filter(f => f !== 'audiobook').length} formatos disponibles
                 </div>
               )}
 
