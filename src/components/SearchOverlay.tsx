@@ -110,9 +110,10 @@ const SearchOverlay = ({ open, onClose }: SearchOverlayProps) => {
               )}
               <button
                 onClick={onClose}
-                className="ml-2 border border-border px-3 py-1 font-body text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground hover:text-foreground"
+                className="ml-2 flex h-9 w-9 flex-shrink-0 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+                aria-label="Cerrar búsqueda"
               >
-                Cerrar
+                <X className="h-4 w-4" />
               </button>
             </div>
 
