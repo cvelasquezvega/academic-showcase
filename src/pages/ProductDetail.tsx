@@ -251,9 +251,17 @@ const ProductDetail = () => {
   const [multimediaOpen, setMultimediaOpen] = useState(false);
   const [tocOpen, setTocOpen] = useState(false);
   const [collaboratorsOpen, setCollaboratorsOpen] = useState(false);
+  const [showMobileCta, setShowMobileCta] = useState(false);
 
   // Scroll to top on book change
   useEffect(() => { window.scrollTo(0, 0); }, [id]);
+
+  useEffect(() => {
+    const handleScroll = () => setShowMobileCta(window.scrollY > 520);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     setSelectedFormat(null);
@@ -409,6 +417,10 @@ const ProductDetail = () => {
           ? 'Escuchar'
           : 'Agregar';
   const mobileCtaDisabled = isComingSoon || (isAudiobook && audioStatus === 'coming-soon');
+  const lowestPurchasePrice = book.formatDetails
+    ?.map(detail => detail.price)
+    .filter((price): price is number => Boolean(price && price > 0))
+    .sort((a, b) => a - b)[0] || book.price || currentPrice;
   const publicationCollaborators = [
     { name: book.author, role: 'Autoría', bio: book.aboutAuthor },
     ...(book.coAuthors || []).map(name => ({ name, role: 'Coautoría', bio: undefined })),
@@ -518,7 +530,7 @@ const ProductDetail = () => {
       <Header />
 
       {/* ═══ BREADCRUMB ═══ */}
-      <nav className="border-b border-border bg-card">
+      <nav className="hidden border-b border-border bg-card sm:block">
         <div className="container mx-auto px-4 py-3 flex items-center gap-2 font-body text-[11px] text-muted-foreground font-light">
           <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
           <ChevronRight className="h-3 w-3 flex-shrink-0" />
@@ -536,10 +548,43 @@ const ProductDetail = () => {
       {/* ═══ MAIN PRODUCT — 3-column layout ═══ */}
       <section className="py-8 md:py-10">
         <div className="container mx-auto px-4">
+          <div className="mb-5 flex items-start gap-4 lg:hidden">
+            <div className="w-24 shrink-0">
+              <BookCover book={book} className="aspect-[3/4] shadow-md">
+                {book.discount && (
+                  <span className="absolute left-2 top-2 bg-primary px-2 py-1 font-body text-[10px] font-semibold text-primary-foreground">
+                    -{book.discount}%
+                  </span>
+                )}
+              </BookCover>
+            </div>
+            <div className="min-w-0 flex-1 pt-1">
+              <span className="inline-flex bg-primary/10 px-3 py-1 font-body text-[10px] font-bold uppercase tracking-[0.12em] text-primary">
+                {book.category}
+              </span>
+              <h1 className="mt-2 font-heading text-xl font-bold leading-tight text-foreground">
+                {book.title}
+              </h1>
+              {book.subtitle && (
+                <p className="mt-1 font-body text-xs leading-relaxed text-muted-foreground">
+                  {book.subtitle}
+                </p>
+              )}
+              <div className="mt-3 space-y-1 font-body text-[11px] text-muted-foreground">
+                <p>
+                  <span className="uppercase tracking-[0.12em]">Escrito por </span>
+                  <span className="font-semibold text-foreground">{book.author}</span>
+                </p>
+                {book.sede && <p>{book.sede}</p>}
+                <p>{[book.year, book.edition].filter(Boolean).join(' · ')}</p>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-8 lg:gap-10">
 
             {/* ────── COL 1: Cover + actions ────── */}
-            <div>
+            <div className="hidden lg:block">
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -667,9 +712,9 @@ const ProductDetail = () => {
             </div>
 
             {/* ────── COL 2: Product info (scrollable) ────── */}
-            <div className="min-w-0">
+            <div className="order-3 min-w-0 lg:order-2">
               {/* Category + Collection */}
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <div className="hidden items-center gap-2 mb-2 flex-wrap lg:flex">
                 <span className="font-body text-[11px] tracking-[0.2em] uppercase text-primary font-semibold">{book.category}</span>
                 {book.collection && (
                   <>
@@ -682,17 +727,17 @@ const ProductDetail = () => {
               </div>
 
               {/* Title */}
-              <h1 className="font-heading text-2xl md:text-3xl font-bold text-foreground leading-tight mb-1">
+              <h1 className="hidden font-heading text-2xl md:text-3xl font-bold text-foreground leading-tight mb-1 lg:block">
                 {book.title}
               </h1>
               {book.subtitle && (
-                <p className="font-body text-sm md:text-base font-light text-muted-foreground leading-relaxed mb-4 max-w-2xl">
+                <p className="hidden font-body text-sm md:text-base font-light text-muted-foreground leading-relaxed mb-4 max-w-2xl lg:block">
                   {book.subtitle}
                 </p>
               )}
 
               {/* Author(s) */}
-              <div className="mb-3">
+              <div className="mb-3 hidden lg:block">
                 <span className="font-body text-[11px] text-muted-foreground uppercase tracking-wider font-medium">Escrito por </span>
                 <span className="font-body text-sm font-medium text-foreground">{book.author}</span>
                 {book.coAuthors && book.coAuthors.length > 0 && (
@@ -701,7 +746,7 @@ const ProductDetail = () => {
               </div>
 
               {/* Meta line */}
-              <div className="flex items-center gap-3 text-muted-foreground font-body text-xs font-light mb-4 flex-wrap">
+              <div className="hidden items-center gap-3 text-muted-foreground font-body text-xs font-light mb-4 flex-wrap lg:flex">
                 {book.sede && <span className="flex items-center gap-1"><Globe className="h-3 w-3" /> {book.sede}</span>}
                 {book.year && <span>· {book.year}</span>}
                 {book.edition && <span>· {book.edition}</span>}
@@ -955,7 +1000,7 @@ const ProductDetail = () => {
             </div>
 
             {/* ────── COL 3: Purchase sidebar (sticky) ────── */}
-            <div id="purchase-options" className="lg:self-start lg:sticky lg:top-[120px]">
+            <div id="purchase-options" className="order-2 scroll-mt-[132px] lg:order-3 lg:self-start lg:sticky lg:top-[120px] lg:scroll-mt-0">
               <div className="border border-border bg-card p-5 shadow-sm">
                 {/* Format selector */}
                 <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold mb-3 block">
@@ -1578,45 +1623,30 @@ const ProductDetail = () => {
         </div>
       </section>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur md:hidden">
+      <div className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur transition-transform duration-300 md:hidden ${showMobileCta ? 'translate-y-0' : 'pointer-events-none translate-y-full'}`}>
         <div className="mx-auto flex max-w-md items-center gap-3">
           <div className="min-w-0 flex-1">
-            <p className="font-body text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: currentFormatColor }}>
-              {availabilityState.label}
+            <p className="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+              Opciones de compra:
             </p>
-            {currentPrice > 0 ? (
-              <p className="font-body text-base font-bold leading-tight text-primary">
-                {formatPrice(currentPrice)}
-                {savingsAmount > 0 && (
-                  <span className="ml-2 font-body text-[11px] font-semibold text-muted-foreground">
-                    Ahorras {formatPrice(savingsAmount)}
-                  </span>
-                )}
+            {lowestPurchasePrice > 0 ? (
+              <p className="font-body text-base font-bold leading-tight text-foreground">
+                Desde {formatPrice(lowestPurchasePrice)}
               </p>
             ) : (
-              <p className="font-body text-base font-bold leading-tight text-secondary">
-                {isOpenAccess ? 'Acceso sin costo' : fmtCfg[effectiveFormat].label}
+              <p className="font-body text-base font-bold leading-tight text-foreground">
+                Acceso abierto
               </p>
             )}
           </div>
           <Button
             size="sm"
-            disabled={mobileCtaDisabled}
             onClick={() => {
-              if (isOutOfStock) {
-                setShowNotifyForm(true);
-                document.getElementById('purchase-options')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                return;
-              }
-              toast({
-                title: mobileCtaLabel,
-                description: isOpenAccess ? 'Abriendo el acceso autorizado.' : 'Formato seleccionado en la ficha.',
-              });
+              document.getElementById('purchase-options')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="shrink-0 px-4 font-body text-xs font-bold uppercase tracking-[0.08em]"
-            style={!mobileCtaDisabled ? { backgroundColor: currentFormatColor, color: '#fff' } : undefined}
+            className="shrink-0 bg-foreground px-4 font-body text-xs font-bold uppercase tracking-[0.08em] text-background hover:bg-foreground/90"
           >
-            {mobileCtaLabel}
+            Ver opciones
           </Button>
         </div>
       </div>

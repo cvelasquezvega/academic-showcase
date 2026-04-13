@@ -158,15 +158,15 @@ const Header = () => {
 
         {/* ── Main navigation bar ── */}
         <div className="bg-white border-b border-border/60">
-          <div className="container mx-auto px-4 flex items-center gap-5 h-[86px] relative">
+          <div className="container mx-auto px-4 flex items-center gap-3 lg:gap-5 h-[74px] lg:h-[86px] relative">
             {/* Logo */}
-            <div className="flex items-center gap-4 flex-shrink-0">
+            <div className="flex min-w-0 items-center gap-2 sm:gap-4 flex-shrink-0">
               <a href="https://unal.edu.co/" target="_blank" rel="noopener noreferrer" aria-label="Ir al portal de la Universidad Nacional de Colombia">
-                <img src={unalLogo} alt="Universidad Nacional de Colombia" className="h-[58px] w-auto object-contain lg:h-[64px]" />
+                <img src={unalLogo} alt="Universidad Nacional de Colombia" className="h-11 w-auto object-contain sm:h-[58px] lg:h-[64px]" />
               </a>
               <span className="hidden h-9 w-px bg-border lg:block" aria-hidden="true" />
               <a href="/" aria-label="Ir al inicio de Editorial UNAL">
-                <img src={editorialLogo} alt="Editorial UNAL" className="h-9 w-auto object-contain lg:h-10" />
+                <img src={editorialLogo} alt="Editorial UNAL" className="h-7 w-auto max-w-[118px] object-contain sm:h-9 sm:max-w-none lg:h-10" />
               </a>
             </div>
 
@@ -352,9 +352,9 @@ const Header = () => {
 
         {/* ==================== MOBILE MENU ==================== */}
         {mobileOpen && (
-          <nav className="lg:hidden bg-white border-b border-border px-4 py-6 space-y-1 max-h-[80vh] overflow-y-auto">
+          <nav className="fixed inset-x-0 bottom-0 top-[110px] z-40 overflow-y-auto overscroll-contain border-b border-border bg-white px-4 py-5 pb-10 shadow-xl lg:hidden">
             {/* Quick actions */}
-            <div className="flex gap-2 mb-4">
+            <div className="mb-4 grid grid-cols-2 gap-2">
               <button
                 onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
                 className="flex-1 flex items-center justify-center gap-2 font-nav text-xs font-medium text-foreground bg-muted py-2.5 hover:bg-muted/80 transition-colors"
@@ -367,6 +367,12 @@ const Header = () => {
               >
                 <Ticket className="h-4 w-4" /> Redimir código
               </button>
+              <a href="#" className="flex items-center justify-center font-nav text-xs font-medium text-foreground bg-muted py-2.5 hover:bg-muted/80 transition-colors">
+                Iniciar sesión
+              </a>
+              <a href="#" className="flex items-center justify-center bg-primary py-2.5 font-nav text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity">
+                Crear cuenta
+              </a>
             </div>
 
             {/* CATÁLOGO accordion */}
@@ -390,9 +396,9 @@ const Header = () => {
                         const formatIconColor = formatNavIcons[item]?.color;
 
                         return (
-                          <a key={item} href="#" className="flex items-center gap-2 font-nav text-sm text-foreground/60 font-light hover:text-primary py-1.5 pl-4">
-                            {FormatIcon && <FormatIcon className={`h-4 w-4 ${formatIconColor}`} />}
-                            {item}
+                          <a key={item} href="#" className="flex min-w-0 items-start gap-2 py-1.5 pl-4 font-nav text-sm font-light leading-snug text-foreground/60 hover:text-primary">
+                            {FormatIcon && <FormatIcon className={`mt-0.5 h-4 w-4 shrink-0 ${formatIconColor}`} />}
+                            <span className="min-w-0 break-words">{item}</span>
                           </a>
                         );
                       })}
@@ -423,7 +429,7 @@ const Header = () => {
                         {section.label}
                       </span>
                       {section.items.map((item) => (
-                        <a key={item} href="#" className="block font-nav text-sm text-foreground/60 font-light hover:text-primary py-1.5 pl-4">{item}</a>
+                        <a key={item} href="#" className="block break-words py-1.5 pl-4 font-nav text-sm font-light leading-snug text-foreground/60 hover:text-primary">{item}</a>
                       ))}
                     </div>
                   ))}
@@ -435,7 +441,7 @@ const Header = () => {
               Nosotros
             </a>
 
-            <div className="pt-4 space-y-2">
+            <div className="hidden pt-4 space-y-2">
               <a href="#" className="block font-nav text-sm font-light text-foreground/70 py-2">Iniciar sesión</a>
               <Button className="w-full font-nav font-medium text-sm tracking-wide">
                 Crear cuenta gratis
