@@ -1,3 +1,5 @@
+import editorialLogo from '@/assets/logo-editorial_unal.png';
+
 const footerSections = [
   {
     title: 'Atención al usuario',
@@ -18,10 +20,9 @@ const Footer = () => (
     <div className="container mx-auto px-4 py-14">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
         <div>
-          <div className="flex items-baseline gap-1.5 mb-4">
-            <span className="font-heading text-lg font-bold italic">Editorial</span>
-            <span className="font-body text-base font-bold text-primary">UNAL</span>
-          </div>
+          <a href="/" aria-label="Ir al inicio de Editorial UNAL" className="mb-4 inline-flex bg-white px-3 py-2">
+            <img src={editorialLogo} alt="Editorial UNAL" className="h-10 w-auto object-contain" />
+          </a>
           <p className="font-body text-xs text-primary-foreground/50 leading-relaxed font-light">
             Universidad Nacional de Colombia. Publicaciones académicas con rigor editorial al servicio de la investigación, la docencia y la extensión.
           </p>

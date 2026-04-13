@@ -165,7 +165,7 @@ const Header = () => {
                 <img src={unalLogo} alt="Universidad Nacional de Colombia" className="h-[58px] w-auto object-contain lg:h-[64px]" />
               </a>
               <span className="hidden h-9 w-px bg-border lg:block" aria-hidden="true" />
-              <a href="#" aria-label="Ir al inicio de Editorial UNAL">
+              <a href="/" aria-label="Ir al inicio de Editorial UNAL">
                 <img src={editorialLogo} alt="Editorial UNAL" className="h-9 w-auto object-contain lg:h-10" />
               </a>
             </div>

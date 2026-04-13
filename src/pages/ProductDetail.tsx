@@ -961,7 +961,7 @@ const ProductDetail = () => {
                 <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold mb-3 block">
                   Formato
                 </span>
-                <div className="grid grid-cols-2 gap-2 mb-3">
+                <div className="grid grid-cols-3 gap-2 mb-3">
                   {book.formats.map(f => {
                     const cfg = fmtCfg[f];
                     const Icon = cfg.icon;
@@ -1005,7 +1005,103 @@ const ProductDetail = () => {
                   })}
                 </div>
 
+                <div className="mb-4 border-b border-border pb-4">
+                  <div className="mb-3">
+                    {currentPrice > 0 ? (
+                      <div>
+                        <div className="flex flex-wrap items-baseline gap-2">
+                          <span className="font-body text-2xl font-bold tracking-wide" style={{ color: currentFormatColor }}>
+                            {formatPrice(currentPrice)}
+                          </span>
+                          <span className="font-body text-xs text-muted-foreground font-light">COP</span>
+                          {visibleOriginalPrice && visibleOriginalPrice > currentPrice && (
+                            <span className="font-body text-sm text-muted-foreground line-through font-light">{formatPrice(visibleOriginalPrice)}</span>
+                          )}
+                        </div>
+                        {savingsAmount > 0 && (
+                          <p className="mt-1 font-body text-[11px] font-semibold" style={{ color: currentFormatColor }}>
+                            Ahorras {formatPrice(savingsAmount)}
+                          </p>
+                        )}
+                      </div>
+                    ) : isOpenAccess ? (
+                      null
+                    ) : null}
+                  </div>
+
+                  {(isPrinted || isIBD) && !isOutOfStock && !isComingSoon && (
+                    <div className="mb-3 flex items-center gap-3">
+                      <span className="font-body text-xs text-muted-foreground font-light">Cant.:</span>
+                      <div className="flex items-center border border-border">
+                        <button onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="w-8 h-8 flex items-center justify-center text-foreground hover:bg-muted transition-colors font-body text-sm">−</button>
+                        <span className="w-8 h-8 flex items-center justify-center font-body text-xs font-medium border-x border-border">{quantity}</span>
+                        <button onClick={() => setQuantity(quantity + 1)}
+                          className="w-8 h-8 flex items-center justify-center text-foreground hover:bg-muted transition-colors font-body text-sm">+</button>
+                      </div>
+                    </div>
+                  )}
+
+                  {isOpenAccess ? (
+                    <div className="space-y-2">
+                      <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
+                        <Unlock className="h-4 w-4 mr-2" /> Abrir acceso
+                      </Button>
+                      <div className="border border-[hsl(var(--format-open)/0.18)] bg-[hsl(var(--format-open)/0.06)] px-3 py-2">
+                        <p className="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--format-open))]">
+                          Qué recibes
+                        </p>
+                        <p className="mt-1 font-body text-xs font-medium leading-relaxed text-foreground/80">
+                          Abre un repositorio institucional o un archivo autorizado, según la configuración de esta obra.
+                        </p>
+                      </div>
+                    </div>
+                  ) : isAudiobook && audioStatus === 'coming-soon' ? (
+                    <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
+                      <Clock className="h-4 w-4 mr-2" /> Próximamente
+                    </Button>
+                  ) : isAudiobook && audioStatus === 'free-listen' ? (
+                    <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
+                      <Headphones className="h-4 w-4 mr-2" /> Escuchar ahora
+                    </Button>
+                  ) : isOutOfStock ? (
+                    <div className="space-y-2">
+                      <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
+                        <AlertTriangle className="h-4 w-4 mr-2" /> Sin stock
+                      </Button>
+                      <Button size="lg" variant="outline" onClick={() => setShowNotifyForm(true)}
+                        className="w-full font-body font-semibold hover:opacity-90 uppercase text-sm tracking-[0.08em] text-[var(--format-color)] hover:bg-[var(--format-color)] hover:text-white"
+                        style={{ borderColor: currentFormatColor, ['--format-color' as string]: currentFormatColor, backgroundColor: showNotifyForm ? currentFormatSoftColor : undefined }}>
+                        <Bell className="h-4 w-4 mr-2" /> Avíseme disponibilidad
+                      </Button>
+                      <AnimatePresence>
+                        {showNotifyForm && (
+                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                            <div className="flex gap-2">
+                              <input type="email" value={notifyEmail} onChange={e => setNotifyEmail(e.target.value)}
+                                placeholder="tu@email.com"
+                                className="flex-1 px-3 py-2 border border-border font-body text-sm font-light focus:border-primary outline-none transition-colors" />
+                              <Button size="sm" onClick={() => { toast({ title: '¡Listo!', description: 'Te notificaremos cuando esté disponible.' }); setShowNotifyForm(false); }}
+                                className="font-body font-medium text-xs">Enviar</Button>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : isComingSoon ? (
+                    <Button size="lg" disabled className="w-full font-body font-semibold bg-muted text-muted-foreground uppercase text-sm tracking-[0.08em]">
+                      <Clock className="h-4 w-4 mr-2" /> Próximamente
+                    </Button>
+                  ) : (
+                    <Button size="lg" className="w-full font-body font-semibold bg-primary hover:bg-primary/90 text-primary-foreground uppercase text-sm tracking-[0.08em]">
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Agregar al carrito
+                    </Button>
+                  )}
+                </div>
+
                 {/* Format-specific details box */}
+                {!isOpenAccess && (
                 <div
                   className="border p-3 mb-4"
                   style={{ borderColor: `hsl(var(${formatCssVar[effectiveFormat]}) / 0.18)`, backgroundColor: currentFormatSoftColor }}
@@ -1071,7 +1167,9 @@ const ProductDetail = () => {
                     </div>
                   )}
                 </div>
+                )}
 
+                {false && !isOpenAccess && (
                 <div className="mb-3 border px-3 py-2" style={{ borderColor: `hsl(var(${formatCssVar[effectiveFormat]}) / 0.22)`, backgroundColor: currentFormatSoftColor }}>
                   <div className="flex items-center justify-between gap-3">
                     <span className="font-body text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: currentFormatColor }}>
@@ -1087,6 +1185,7 @@ const ProductDetail = () => {
                     {availabilityState.helper}
                   </p>
                 </div>
+                )}
 
                 {false && isEbook && (
                   <div className="bg-[hsl(var(--format-ebook)/0.06)] border border-[hsl(var(--format-ebook)/0.15)] p-3 mb-4">
@@ -1168,7 +1267,7 @@ const ProductDetail = () => {
                 )}
 
                 {/* Price */}
-                <div className="mb-3">
+                <div className="hidden">
                   {currentPrice > 0 ? (
                     <div>
                       <div className="flex items-baseline gap-2">
@@ -1200,7 +1299,7 @@ const ProductDetail = () => {
                 </div>
 
                 {/* CTA */}
-                <div className="space-y-3 mb-5">
+                <div className="hidden">
                   {/* Quantity for physical */}
                   {(isPrinted || isIBD) && !isOutOfStock && !isComingSoon && (
                     <div className="flex items-center gap-3">
@@ -1239,8 +1338,8 @@ const ProductDetail = () => {
                         <AlertTriangle className="h-4 w-4 mr-2" /> Sin stock
                       </Button>
                       <Button size="lg" variant="outline" onClick={() => setShowNotifyForm(true)}
-                        className="w-full font-body font-semibold hover:opacity-90 uppercase text-sm tracking-[0.08em]"
-                        style={{ borderColor: currentFormatColor, color: currentFormatColor, backgroundColor: showNotifyForm ? currentFormatSoftColor : undefined }}>
+                        className="w-full font-body font-semibold hover:opacity-90 uppercase text-sm tracking-[0.08em] text-[var(--format-color)] hover:bg-[var(--format-color)] hover:text-white"
+                        style={{ borderColor: currentFormatColor, ['--format-color' as string]: currentFormatColor, backgroundColor: showNotifyForm ? currentFormatSoftColor : undefined }}>
                         <Bell className="h-4 w-4 mr-2" /> Avíseme disponibilidad
                       </Button>
                       <AnimatePresence>
@@ -1270,7 +1369,7 @@ const ProductDetail = () => {
                 </div>
 
                 {/* "Qué recibes" benefits */}
-                {isOpenAccess && (
+                {false && isOpenAccess && (
                   <div className="border border-border bg-card p-4 shadow-sm">
                     <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold block mb-2">
                       Acceso incluido
@@ -1339,7 +1438,7 @@ const ProductDetail = () => {
                 )}
 
                 {/* Wishlist + Share */}
-                <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+                <div className="flex gap-2 mt-4 pt-4">
                   <button className="flex-1 flex items-center justify-center gap-1.5 py-2 font-body text-xs text-muted-foreground hover:text-primary transition-colors font-light">
                     <Heart className="h-3.5 w-3.5" /> Favoritos
                   </button>
