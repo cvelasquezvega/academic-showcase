@@ -323,43 +323,43 @@ export const bestsellerBooks: Book[] = [
   {
     id: '7',
     title: 'Contra el racismo',
-    subtitle: 'Movilizaci?n para el cambio social en Am?rica Latina',
+    subtitle: 'Movilización para el cambio social en América Latina',
     author: 'Krisna Ruette Orihuela',
     coAuthors: ['Peter Wade'],
     coverColor: 'from-stone-300 to-stone-600',
-    coverImage: 'https://simehbucket.s3.amazonaws.com/images/eddd43784f33cbf88423343c356cb3dd-large.jpg',
+    coverImage: 'https://simehbucket.s3.amazonaws.com/images/eddd43784f33cbf88423343c356cb3dd-medium.jpg',
     price: 48000,
     originalPrice: 60000,
     formats: ['printed'],
     formatDetails: [{ format: 'printed', price: 48000, originalPrice: 60000, printStatus: 'available' }],
-    category: 'Racismo y discriminaci?n racial',
-    collection: 'T?ndem Coediciones',
+    category: 'Racismo y discriminación racial',
+    collection: 'Tándem Coediciones',
     isBestseller: true,
     discount: 20,
     year: 2024,
     pages: 285,
     dimensions: '17 x 23 x 2.3 cm',
-    language: 'Espa?ol',
+    language: 'Español',
     sede: 'Sede Nivel Nacional',
-    edition: 'Primera edici?n',
-    publishCity: 'Bogot?, Colombia',
+    edition: 'Primera edición',
+    publishCity: 'Bogotá, Colombia',
     doi: '10.51573/%20Andes.9789587984286.9789587984293',
     isbnPrint: '9789587984286',
-    keywords: ['Racismo', 'Lucha', 'Poder', 'Discriminaci?n'],
+    keywords: ['Racismo', 'Lucha', 'Poder', 'Discriminación'],
     classifications: [
-      { system: 'BISAC', label: 'CIENCIAS SOCIALES / Sociolog?a / General', code: 'SOC026000' },
-      { system: 'THEMA', label: 'Racismo y discriminaci?n racial', code: 'JBFA1' },
-      { system: 'Dewey', label: 'Sociolog?a y Antropolog?a / Ciencias Sociales / Sociolog?a y antropolog?a', code: '301' },
+      { system: 'BISAC', label: 'CIENCIAS SOCIALES / Sociología / General', code: 'SOC026000' },
+      { system: 'THEMA', label: 'Racismo y discriminación racial', code: 'JBFA1' },
+      { system: 'Dewey', label: 'Sociología y Antropología / Ciencias Sociales / Sociología y antropología', code: '301' },
     ],
-    description: `?Basado en una ambiciosa investigaci?n, Contra el racismo es el producto de una profunda colaboraci?n entre acad?micos radicados en Am?rica Latina y en el Norte global, con diferentes identificaciones raciales y de distintas generaciones... Nos obliga a enfrentar preguntas complejas que no tienen respuestas f?ciles y tendr? un impacto significativo en c?mo se estudian la raza, el racismo y los movimientos antirracistas, no solo en Am?rica Latina sino tambi?n en otras partes del mundo.? - Joanne Rappaport, Universidad de Georgetown
+    description: `«Basado en una ambiciosa investigación, Contra el racismo es el producto de una profunda colaboración entre académicos radicados en América Latina y en el Norte global, con diferentes identificaciones raciales y de distintas generaciones... Nos obliga a enfrentar preguntas complejas que no tienen respuestas fáciles y tendrá un impacto significativo en cómo se estudian la raza, el racismo y los movimientos antirracistas, no solo en América Latina sino también en otras partes del mundo.» - Joanne Rappaport, Universidad de Georgetown
 
-Las narrativas dominantes a menudo describen a las naciones latinoamericanas como fundamentalmente mestizas, lo que ha dificultado reconocer el racismo en la regi?n. Las reformas multiculturales recientes han contribuido al reconocimiento de las identidades y culturas negras e ind?genas. Aunque el multiculturalismo puede centrarse en la identidad y la visibilidad y abordar formas m?s casuales y sociales de racismo, tambi?n puede distraer la atenci?n del racismo estructural y la inequidad racial, y limitar iniciativas antirracistas m?s amplias.
+Las narrativas dominantes a menudo describen a las naciones latinoamericanas como fundamentalmente mestizas, lo que ha dificultado reconocer el racismo en la región. Las reformas multiculturales recientes han contribuido al reconocimiento de las identidades y culturas negras e indígenas. Aunque el multiculturalismo puede centrarse en la identidad y la visibilidad y abordar formas más casuales y sociales de racismo, también puede distraer la atención del racismo estructural y la inequidad racial, y limitar iniciativas antirracistas más amplias.
 
-Adicionalmente, las diversas formas de comprender el modo en que el racismo y el antirracismo encajan en proyectos de transformaci?n social los convierten en fen?menos complejos y polifac?ticos. Los ensayos que conforman Contra el racismo examinan actores y pr?cticas de Brasil, Colombia, Ecuador y M?xico que van m?s all? de la pol?tica del reconocimiento y que abordan las inequidades estructurales y los conflictos materiales, para as? tender puentes y construir puntos de encuentro con otros grupos marginados. Las organizaciones estudiadas en el libro abogan por un enfoque de una profunda transformaci?n estructural social que sea incluyente, fomente alianzas y est? inspirado en una visi?n y una imaginaci?n radicales que inspiren la solidaridad y la acci?n colectiva para crear un presente vivible.
+Adicionalmente, las diversas formas de comprender el modo en que el racismo y el antirracismo encajan en proyectos de transformación social los convierten en fenómenos complejos y polifacéticos. Los ensayos que conforman Contra el racismo examinan actores y prácticas de Brasil, Colombia, Ecuador y México que van más allá de la política del reconocimiento y que abordan las inequidades estructurales y los conflictos materiales, para así tender puentes y construir puntos de encuentro con otros grupos marginados. Las organizaciones estudiadas en el libro abogan por un enfoque de una profunda transformación estructural social que sea incluyente, fomente alianzas y esté inspirado en una visión y una imaginación radicales que inspiren la solidaridad y la acción colectiva para crear un presente vivible.
 `,
-    aboutAuthor: `Krisna Ruette Orihuela es antrop?loga y profesora asociada de Justicia Social en la Escuela de Pol?tica Social, Trabajo Social y Justicia Social del University College Dublin.
+    aboutAuthor: `Krisna Ruette Orihuela es antropóloga y profesora asociada de Justicia Social en la Escuela de Política Social, Trabajo Social y Justicia Social del University College Dublin.
 
-Peter Wade es antrop?logo social, doctor por la Universidad de Cambridge y profesor en la Universidad de Manchester. Es autor de numerosos libros y art?culos sobre raza, etnicidad y sexualidad en Am?rica Latina.`,
+Peter Wade es antropólogo social, doctor por la Universidad de Cambridge y profesor en la Universidad de Manchester. Es autor de numerosos libros y artículos sobre raza, etnicidad y sexualidad en América Latina.`,
     ratingAvg: 4.7,
     ratingCount: 31,
   },
