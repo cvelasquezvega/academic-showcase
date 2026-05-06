@@ -251,6 +251,7 @@ const ProductDetail = () => {
   const [multimediaOpen, setMultimediaOpen] = useState(false);
   const [tocOpen, setTocOpen] = useState(false);
   const [collaboratorsOpen, setCollaboratorsOpen] = useState(false);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [showMobileCta, setShowMobileCta] = useState(false);
 
   // Scroll to top on book change
@@ -272,6 +273,7 @@ const ProductDetail = () => {
     setMultimediaOpen(false);
     setTocOpen(false);
     setCollaboratorsOpen(false);
+    setDescriptionExpanded(false);
   }, [id]);
 
   useEffect(() => {
@@ -426,6 +428,7 @@ const ProductDetail = () => {
     ...(book.coAuthors || []).map(name => ({ name, role: 'Coautoría', bio: undefined })),
   ];
   const hasPreviewResources = Boolean(book.multimediaResources?.length);
+  const shouldClampDescription = Boolean(book.description && book.description.length > 520);
   const invertName = (name: string) => {
     const parts = name.trim().split(/\s+/);
     if (parts.length < 2) return name;
@@ -769,9 +772,27 @@ const ProductDetail = () => {
               {/* Description */}
               {book.description && (
                 <div className="mb-6">
-                  <div className="font-body text-sm text-foreground/80 font-light leading-[1.8] whitespace-pre-line">
-                    {book.description}
+                  <div className="relative">
+                    <div
+                      className={`font-body text-sm text-foreground/80 font-light leading-[1.8] whitespace-pre-line transition-[max-height] duration-300 ${
+                        shouldClampDescription && !descriptionExpanded ? 'max-h-[10.8rem] overflow-hidden' : ''
+                      }`}
+                    >
+                      {book.description}
+                    </div>
+                    {shouldClampDescription && !descriptionExpanded && (
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[hsl(var(--background))] via-[hsl(var(--background))/0.92] to-transparent" />
+                    )}
                   </div>
+                  {shouldClampDescription && (
+                    <button
+                      type="button"
+                      onClick={() => setDescriptionExpanded(prev => !prev)}
+                      className="mt-3 font-body text-xs font-semibold uppercase tracking-[0.12em] text-primary transition-colors hover:text-primary/80"
+                    >
+                      {descriptionExpanded ? 'Ver menos' : 'Leer más'}
+                    </button>
+                  )}
                 </div>
               )}
 
