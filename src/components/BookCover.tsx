@@ -6,6 +6,9 @@ type BookCoverProps = {
   className?: string;
   imageClassName?: string;
   fallbackClassName?: string;
+  fillImage?: boolean;
+  showBackground?: boolean;
+  showOverlay?: boolean;
   children?: ReactNode;
 };
 
@@ -14,14 +17,19 @@ const BookCover = ({
   className = '',
   imageClassName = '',
   fallbackClassName = '',
+  fillImage = true,
+  showBackground = true,
+  showOverlay = true,
   children,
 }: BookCoverProps) => (
-  <div className={`relative bg-gradient-to-br ${book.coverColor} overflow-hidden ${className}`}>
+  <div className={`relative overflow-hidden ${showBackground ? `bg-gradient-to-br ${book.coverColor}` : ''} ${className}`}>
     {book.coverImage ? (
       <img
         src={book.coverImage}
         alt={`Portada de ${book.title}`}
-        className={`absolute inset-0 h-full w-full object-cover ${imageClassName}`}
+        className={fillImage
+          ? `absolute inset-0 h-full w-full object-cover ${imageClassName}`
+          : `block h-auto w-full ${imageClassName}`}
         loading="lazy"
         onError={(event) => {
           event.currentTarget.style.display = 'none';
@@ -34,7 +42,7 @@ const BookCover = ({
         </span>
       </div>
     )}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+    {showOverlay && <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />}
     {children}
   </div>
 );

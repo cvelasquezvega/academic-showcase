@@ -550,7 +550,14 @@ const ProductDetail = () => {
         <div className="container mx-auto px-4">
           <div className="mb-5 flex items-start gap-4 lg:hidden">
             <div className="w-24 shrink-0">
-              <BookCover book={book} className="aspect-[3/4] bg-white shadow-md" imageClassName="object-contain p-2">
+              <BookCover
+                book={book}
+                className="w-full shadow-md"
+                imageClassName=""
+                fillImage={false}
+                showBackground={false}
+                showOverlay={false}
+              >
                 {savingsPercent > 0 && (
                   <span className="absolute left-2 top-2 bg-primary px-2 py-1 font-body text-[10px] font-semibold text-primary-foreground">
                     -{savingsPercent}%
@@ -591,7 +598,14 @@ const ProductDetail = () => {
                 transition={{ duration: 0.4 }}
                 className="group"
               >
-                <BookCover book={book} className="aspect-[3/4] bg-white shadow-lg" imageClassName="object-contain p-3 group-hover:scale-105 transition-transform duration-700">
+                <BookCover
+                  book={book}
+                  className="w-full shadow-lg"
+                  imageClassName="group-hover:scale-[1.02] transition-transform duration-700"
+                  fillImage={false}
+                  showBackground={false}
+                  showOverlay={false}
+                >
                   {savingsPercent > 0 && (
                     <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-sm font-body font-semibold px-3 py-1.5 z-10">
                       -{savingsPercent}%
