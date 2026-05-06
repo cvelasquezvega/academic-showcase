@@ -454,7 +454,7 @@ const ProductDetail = () => {
     ebook: {
       title: 'Lectura digital',
       body: 'Puedes leer en navegador web o en apps oficiales para Windows, Mac, iOS y Android. No se envía PDF/EPUB por correo ni queda como descarga directa. No compatible con Linux ni Kindle.',
-      note: 'Lee en navegador web o app oficial.',
+      note: 'Lee en navegador web o apps multidispositivo.',
     },
     'open-access': {
       title: 'Acceso abierto',
@@ -550,10 +550,10 @@ const ProductDetail = () => {
         <div className="container mx-auto px-4">
           <div className="mb-5 flex items-start gap-4 lg:hidden">
             <div className="w-24 shrink-0">
-              <BookCover book={book} className="aspect-[3/4] shadow-md">
-                {book.discount && (
+              <BookCover book={book} className="aspect-[3/4] bg-white shadow-md" imageClassName="object-contain p-2">
+                {savingsPercent > 0 && (
                   <span className="absolute left-2 top-2 bg-primary px-2 py-1 font-body text-[10px] font-semibold text-primary-foreground">
-                    -{book.discount}%
+                    -{savingsPercent}%
                   </span>
                 )}
               </BookCover>
@@ -591,10 +591,10 @@ const ProductDetail = () => {
                 transition={{ duration: 0.4 }}
                 className="group"
               >
-                <BookCover book={book} className="aspect-[3/4] shadow-lg" imageClassName="group-hover:scale-105 transition-transform duration-700">
-                  {book.discount && (
+                <BookCover book={book} className="aspect-[3/4] bg-white shadow-lg" imageClassName="object-contain p-3 group-hover:scale-105 transition-transform duration-700">
+                  {savingsPercent > 0 && (
                     <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-sm font-body font-semibold px-3 py-1.5 z-10">
-                      -{book.discount}%
+                      -{savingsPercent}%
                     </span>
                   )}
                 </BookCover>
@@ -1265,7 +1265,7 @@ const ProductDetail = () => {
                     </div>
                     <div className="mt-2 pt-2 border-t border-[hsl(var(--format-ebook)/0.1)]">
                       <p className="font-body text-[10px] text-muted-foreground font-light leading-relaxed">
-                        Lee en navegador web o app oficial.
+                        Lee en navegador web o apps multidispositivo.
                       </p>
                     </div>
                     {/* Ebook sub-format selector */}
@@ -1442,16 +1442,16 @@ const ProductDetail = () => {
                       {isEbook && (
                         <>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Acceso web y app oficial
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Acceso en navegador y app oficial
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
                             <Check className="h-3 w-3 text-primary flex-shrink-0" /> Apps para Windows, Mac, iOS y Android
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> {book.drmType || 'DRM social'} — uso personal
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> {book.drmType || 'DRM propietario'} - acceso personal en plataforma
                           </li>
                           <li className="flex items-center gap-2 font-body text-xs text-foreground/80 font-light">
-                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Descarga directa {effectiveEbookSub?.toUpperCase() || 'PDF/EPUB'}
+                            <Check className="h-3 w-3 text-primary flex-shrink-0" /> Lectura en navegador y apps multidispositivo
                           </li>
                         </>
                       )}

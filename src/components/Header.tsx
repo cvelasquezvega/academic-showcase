@@ -39,7 +39,7 @@ const catalogoSections: { label: string; items: string[] }[] = [
   },
   {
     label: 'E-books',
-    items: ['Todos los E-books', 'Compra inmediata', 'PDF', 'EPUB', 'Acceso abierto', 'Descargas gratuitas'],
+    items: ['Todos los E-books', 'Lectura en línea', 'Apps multidispositivo', 'EPUB', 'Acceso abierto', 'Consulta gratuita'],
   },
   {
     label: 'Impreso bajo demanda',
@@ -65,11 +65,11 @@ const formatNavIcons: Record<string, { icon: typeof Search; color: string }> = {
   'Más vendidos impresos': { icon: BookMarked, color: 'text-format-print' },
   'Disponibles para envío': { icon: BookMarked, color: 'text-format-print' },
   'Todos los E-books': { icon: Smartphone, color: 'text-format-ebook' },
-  'Compra inmediata': { icon: Smartphone, color: 'text-format-ebook' },
-  PDF: { icon: Smartphone, color: 'text-format-ebook' },
+  'Lectura en línea': { icon: Smartphone, color: 'text-format-ebook' },
+  'Apps multidispositivo': { icon: Smartphone, color: 'text-format-ebook' },
   EPUB: { icon: Smartphone, color: 'text-format-ebook' },
   'Acceso abierto': { icon: Unlock, color: 'text-format-open' },
-  'Descargas gratuitas': { icon: Unlock, color: 'text-format-open' },
+  'Consulta gratuita': { icon: Unlock, color: 'text-format-open' },
   'Catálogo IBD': { icon: Package, color: 'text-format-ibd' },
   'Novedades IBD': { icon: Package, color: 'text-format-ibd' },
   'Solicitar impresión bajo demanda': { icon: Package, color: 'text-format-ibd' },

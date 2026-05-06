@@ -32,6 +32,12 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
     ? book.formatDetails.filter(d => d.price && d.price > 0).map(d => d.price!)
     : book.price ? [book.price] : [];
   const lowestPrice = prices.length > 0 ? Math.min(...prices) : null;
+  const maxDiscount = book.formatDetails
+    ?.map(detail => {
+      if (!detail.price || !detail.originalPrice || detail.originalPrice <= detail.price) return 0;
+      return Math.round(((detail.originalPrice - detail.price) / detail.originalPrice) * 100);
+    })
+    .reduce((highest, value) => Math.max(highest, value), 0) || book.discount || 0;
 
   return (
     <motion.div
@@ -45,7 +51,7 @@ const BookCard = ({ book, index = 0 }: { book: Book; index?: number }) => {
       <Link to={`/libro/${book.id}`} className="absolute inset-0 z-10" aria-label={`Ver ${book.title}`} />
 
       {/* Discount badge */}
-      {book.discount && <span className="badge-discount z-20">-{book.discount}%</span>}
+      {maxDiscount > 0 && <span className="badge-discount z-20">-{maxDiscount}%</span>}
 
       {/* Status badges (top-right) */}
       <div className="absolute right-2 top-2 z-20 flex flex-col gap-1 sm:right-3 sm:top-3">

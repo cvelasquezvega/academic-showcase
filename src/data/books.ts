@@ -157,7 +157,7 @@ export const featuredBooks: Book[] = [
     aboutAuthor: 'María Angélica Sánchez Álvarez es profesora asociada de la Facultad de Derecho, Ciencias Políticas y Sociales de la Universidad Nacional de Colombia. Doctora en Derecho Público por la Universidad de París 1 Panthéon-Sorbonne. Investigadora del grupo "Estado y Constitución" clasificado A1 por MinCiencias.',
     targetAudience: 'Especialistas e investigadores en derecho público, ciencia política y administración pública, estudiantes de posgrado.',
     fileSize: '4.2 MB',
-    drmType: 'Social DRM',
+    drmType: 'DRM propietario',
     ratingAvg: 4.5,
     ratingCount: 18,
     multimediaResources: [
@@ -366,11 +366,11 @@ Peter Wade es antropólogo social, doctor por la Universidad de Cambridge y prof
   {
     id: '8',
     title: 'El derecho frente al poder',
-    subtitle: 'Surgimiento, desarrollo y cr?tica del constitucionalismo moderno',
-    author: 'Juan Fernando Jaramillo P?rez',
+    subtitle: 'Surgimiento, desarrollo y crítica del constitucionalismo moderno',
+    author: 'Juan Fernando Jaramillo Pérez',
     coAuthors: [
-      'Mauricio Garc?a Villegas',
-      'Andr?s Abel Rodr?guez Villabona',
+      'Mauricio García Villegas',
+      'Andrés Abel Rodríguez Villabona',
       'Rodrigo Uprimny Yepes',
     ],
     coverColor: 'from-indigo-800 to-slate-950',
@@ -381,34 +381,34 @@ Peter Wade es antropólogo social, doctor por la Universidad de Cambridge y prof
       { format: 'printed', price: 64000, originalPrice: 80000, printStatus: 'out-of-stock' },
       { format: 'ebook', price: 22410, originalPrice: 24900, ebookFormats: ['epub'] },
     ],
-    category: 'Constituci?n: Gobierno y Estado',
-    collection: 'Serie Investigaci?n Jur?dico-Pol?ticas',
+    category: 'Constitución: Gobierno y Estado',
+    collection: 'Serie Investigación Jurídico-Políticas',
     isBestseller: true,
     year: 2018,
     pages: 976,
     dimensions: '17.5 x 25 x 3.0 cm',
-    language: 'Espa?ol',
-    sede: 'Sede Bogot?',
-    edition: 'Primera edici?n',
-    publishCity: 'Bogot?, Colombia',
+    language: 'Español',
+    sede: 'Sede Bogotá',
+    edition: 'Primera edición',
+    publishCity: 'Bogotá, Colombia',
     isbnPrint: '9789587834468',
     isbnEpub: '9789587834451',
-    keywords: ['Constituci?n', 'derechos', 'libertades', 'Derecho constitucional', 'Carta Otorgada', 'Locke', 'Rousseau', 'Montesquieu', 'Jefferson'],
+    keywords: ['Constitución', 'derechos', 'libertades', 'Derecho constitucional', 'Carta Otorgada', 'Locke', 'Rousseau', 'Montesquieu', 'Jefferson'],
     classifications: [
       { system: 'BISAC', label: 'LEY / Constitucional', code: 'LAW018000' },
       { system: 'BISAC', label: 'LEY / General', code: 'LAW000000' },
-      { system: 'THEMA', label: 'Constituci?n: Gobierno y Estado', code: 'JPHC' },
-      { system: 'Dewey', label: 'Sociolog?a y Antropolog?a / Ley / Derecho constitucional y administrativo', code: '342' },
+      { system: 'THEMA', label: 'Constitución: Gobierno y Estado', code: 'JPHC' },
+      { system: 'Dewey', label: 'Sociología y Antropología / Ley / Derecho constitucional y administrativo', code: '342' },
     ],
-    description: `El concepto de constituci?n es un concepto fronterizo entre lo normativo y lo institucional, por un lado, y el poder y los actores pol?ticos, por el otro. Este car?cter h?brido explica muchas de las tensiones interinas del constitucionalismo y tambi?n indica la necesidad de asumir una concepci?n comprensiva e interdisciplinaria para su estudio.
+    description: `El concepto de constitución es un concepto fronterizo entre lo normativo y lo institucional, por un lado, y el poder y los actores políticos, por el otro. Este carácter híbrido explica muchas de las tensiones interinas del constitucionalismo y también indica la necesidad de asumir una concepción comprensiva e interdisciplinaria para su estudio.
 
-Inspirado en estas ideas, este libro articula el an?lisis hist?rico del surgimiento del constitucionalismo moderno de talante liberal, y de la promulgaci?n de las primeras constituciones escritas, con un examen te?rico y conceptual sobre su sentido, sus funciones y sus conceptos b?sicos.
+Inspirado en estas ideas, este libro articula el análisis histórico del surgimiento del constitucionalismo moderno de talante liberal, y de la promulgación de las primeras constituciones escritas, con un examen teórico y conceptual sobre su sentido, sus funciones y sus conceptos básicos.
 
-Mientras que el primer proceso, el del surgimiento del constitucionalismo moderno, se dio principalmente en Francia de la segunda mitad del siglo XVI y en Inglaterra durante el siglo XVII, el segundo, la promulgaci?n de las primeras constituciones escritas, inici? a finales del siglo XVIII en Estados Unidos y en Francia, extendi?ndose despu?s a muchos pa?ses, incluyendo los de Am?rica Latina, que de todas formas tienen destacables peculiaridades.
+Mientras que el primer proceso, el del surgimiento del constitucionalismo moderno, se dio principalmente en Francia de la segunda mitad del siglo XVI y en Inglaterra durante el siglo XVII, el segundo, la promulgación de las primeras constituciones escritas, inició a finales del siglo XVIII en Estados Unidos y en Francia, extendiéndose después a muchos países, incluyendo los de América Latina, que de todas formas tienen destacables peculiaridades.
 
-Ahora bien, esta delimitaci?n no desconoce los aportes al constitucionalismo desarrollados desde otras perspectivas y experiencias, ni deja de lado los antecedentes que configuran el contexto del surgimiento de este modelo constitucional, al igual que su destino posterior durante el siglo XIX, frente a la reacci?n del conservadurismo, la cr?tica democr?tica y el desaf?o del socialismo.
+Ahora bien, esta delimitación no desconoce los aportes al constitucionalismo desarrollados desde otras perspectivas y experiencias, ni deja de lado los antecedentes que configuran el contexto del surgimiento de este modelo constitucional, al igual que su destino posterior durante el siglo XIX, frente a la reacción del conservadurismo, la crítica democrática y el desafío del socialismo.
 
-El derecho frente al poder es una obra fundamental para el estudio del constitucionalismo porque incluye traducciones originales de textos y documentos jur?dico-constitucionales cl?sicos, ampliamente contextualizadas y anotadas, que son una herramienta extraordinaria de consulta y de apoyo investigativo.`,
+El derecho frente al poder es una obra fundamental para el estudio del constitucionalismo porque incluye traducciones originales de textos y documentos jurídico-constitucionales clásicos, ampliamente contextualizadas y anotadas, que son una herramienta extraordinaria de consulta y de apoyo investigativo.`,
     ratingAvg: 4.6,
     ratingCount: 42,
   },
