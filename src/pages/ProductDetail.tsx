@@ -1051,7 +1051,7 @@ const ProductDetail = () => {
                   onClick={() => setMultimediaOpen(!multimediaOpen)}
                   className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
                 >
-                  <span className="flex items-center gap-2 uppercase tracking-[0.12em]">
+                  <span className="flex items-center gap-2">
                     <Headphones className="h-4 w-4 text-muted-foreground" /> Recursos multimedia
                   </span>
                   <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${multimediaOpen ? 'rotate-180' : ''}`} />
@@ -1136,7 +1136,7 @@ const ProductDetail = () => {
               <div className="border border-border mb-6 bg-card">
                 <button
                   onClick={() => setBibliographicOpen(!bibliographicOpen)}
-                  className="flex w-full items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground transition-colors hover:bg-muted/30"
+                  className="flex w-full items-center justify-between px-4 py-3 text-left font-body text-sm font-medium text-foreground transition-colors hover:bg-muted/30"
                 >
                   <FileText className="h-3 w-3" /> Ficha bibliográfica
                   <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${bibliographicOpen ? 'rotate-180' : ''}`} />
