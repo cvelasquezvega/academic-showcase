@@ -529,7 +529,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-primary-light/30 pb-24 md:pb-0">
+    <div className="min-h-screen flex flex-col bg-white pb-24 md:pb-0">
       <Header />
 
       {/* ═══ BREADCRUMB ═══ */}
@@ -549,7 +549,7 @@ const ProductDetail = () => {
       </nav>
 
       {/* ═══ MAIN PRODUCT — 3-column layout ═══ */}
-      <section className="py-8 md:py-10">
+      <section className="bg-white py-8 md:py-10">
         <div className="container mx-auto px-4">
           <div className="mb-5 flex items-start gap-4 lg:hidden">
             <div className="w-24 shrink-0">
@@ -1639,7 +1639,7 @@ const ProductDetail = () => {
 
       )}
 
-      <section className="border-t border-border py-10 md:py-14">
+      <section className="border-t border-border bg-white py-10 md:py-14">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-6">
             <div>
