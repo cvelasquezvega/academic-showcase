@@ -241,22 +241,10 @@ const MultimediaPreviewCard = ({ resource }: { resource: MultimediaResource }) =
 
 const multimediaShowcase = [
   {
-    title: 'Video de presentación',
-    description: 'Skin de referencia para video institucional o entrevista alojada en YouTube o Vimeo.',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0',
-    kind: 'video' as const,
-  },
-  {
     title: 'Territorio y acceso a servicios',
     description: 'Video institucional sobre organización territorial y acercamiento de servicios públicos a la ciudadanía.',
     embedUrl: 'https://player.vimeo.com/video/57970679',
     kind: 'video' as const,
-  },
-  {
-    title: 'Escucha en Spotify',
-    description: 'Skin de referencia para episodios, podcasts o fragmentos sonoros publicados en Spotify.',
-    embedUrl: 'https://open.spotify.com/embed/episode/7makk4oTQel546B0PZlDM5?utm_source=generator',
-    kind: 'spotify' as const,
   },
   {
     title: 'Gestión educativa y normatividad',
