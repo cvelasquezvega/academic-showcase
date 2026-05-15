@@ -247,9 +247,21 @@ const multimediaShowcase = [
     kind: 'video' as const,
   },
   {
+    title: 'Territorio y acceso a servicios',
+    description: 'Video institucional sobre organización territorial y acercamiento de servicios públicos a la ciudadanía.',
+    embedUrl: 'https://player.vimeo.com/video/57970679',
+    kind: 'video' as const,
+  },
+  {
     title: 'Escucha en Spotify',
     description: 'Skin de referencia para episodios, podcasts o fragmentos sonoros publicados en Spotify.',
     embedUrl: 'https://open.spotify.com/embed/episode/7makk4oTQel546B0PZlDM5?utm_source=generator',
+    kind: 'spotify' as const,
+  },
+  {
+    title: 'Gestión educativa y normatividad',
+    description: 'Podcast relacionado con legislación, administración y gobernanza educativa en clave académica.',
+    embedUrl: 'https://open.spotify.com/embed/episode/4KxuaAheLCNM48Raj83jV9?utm_source=generator',
     kind: 'spotify' as const,
   },
 ];
@@ -1136,10 +1148,10 @@ const ProductDetail = () => {
               <div className="border border-border mb-6 bg-card">
                 <button
                   onClick={() => setBibliographicOpen(!bibliographicOpen)}
-                  className="flex w-full items-center justify-between px-4 py-3 text-left font-body text-sm font-medium text-foreground transition-colors hover:bg-muted/30"
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left font-body text-sm font-medium text-foreground transition-colors hover:bg-muted/30"
                 >
                   <FileText className="h-3 w-3" /> Ficha bibliográfica
-                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${bibliographicOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`ml-auto h-4 w-4 text-muted-foreground transition-transform ${bibliographicOpen ? 'rotate-180' : ''}`} />
                 </button>
                 <div className={`divide-y divide-border border-t border-border ${bibliographicOpen ? 'block' : 'hidden'}`}>
                   {[
