@@ -239,6 +239,129 @@ const MultimediaPreviewCard = ({ resource }: { resource: MultimediaResource }) =
   );
 };
 
+const multimediaShowcase = [
+  {
+    title: 'Video de presentación',
+    description: 'Skin de referencia para video institucional o entrevista alojada en YouTube o Vimeo.',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0',
+    kind: 'video' as const,
+  },
+  {
+    title: 'Escucha en Spotify',
+    description: 'Skin de referencia para episodios, podcasts o fragmentos sonoros publicados en Spotify.',
+    embedUrl: 'https://open.spotify.com/embed/episode/7makk4oTQel546B0PZlDM5?utm_source=generator',
+    kind: 'spotify' as const,
+  },
+];
+
+const analyticsVisits = [0, 3, 0, 1, 1, 0, 1, 1, 0, 1, 0, 2, 2, 1, 1, 0, 0, 0, 1, 0, 0, 0, 3, 1, 4, 0, 2, 0, 1, 0];
+
+const EmbeddedShowcaseCard = ({
+  title,
+  description,
+  embedUrl,
+  kind,
+}: {
+  title: string;
+  description: string;
+  embedUrl: string;
+  kind: 'video' | 'spotify';
+}) => (
+  <div className="overflow-hidden border border-border bg-card shadow-sm">
+    <div className="border-b border-border px-4 py-3">
+      <p className="font-body text-sm font-semibold leading-snug text-foreground">{title}</p>
+      <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">{description}</p>
+    </div>
+    {kind === 'video' ? (
+      <div className="aspect-video w-full bg-foreground">
+        <iframe
+          title={title}
+          src={embedUrl}
+          className="h-full w-full border-0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+        />
+      </div>
+    ) : (
+      <iframe
+        title={title}
+        src={embedUrl}
+        className="h-[232px] w-full border-0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      />
+    )}
+  </div>
+);
+
+const AnalyticsVisitsCard = () => {
+  const width = 320;
+  const height = 130;
+  const maxValue = Math.max(...analyticsVisits, 1);
+  const points = analyticsVisits
+    .map((value, index) => {
+      const x = (index / (analyticsVisits.length - 1)) * width;
+      const y = height - (value / maxValue) * (height - 18) - 9;
+      return `${x},${y}`;
+    })
+    .join(' ');
+  const areaPoints = `0,${height} ${points} ${width},${height}`;
+  const totalVisits = analyticsVisits.reduce((sum, value) => sum + value, 0);
+
+  return (
+    <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+      <div className="border-b border-border px-4 py-3">
+        <p className="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+          Analítica de visitas
+        </p>
+        <p className="mt-2 font-body text-sm leading-relaxed text-foreground">
+          Este libro ha recibido un total de <span className="font-bold">{totalVisits} visitas</span>.
+        </p>
+      </div>
+      <div className="px-4 py-4">
+        <svg viewBox={`0 0 ${width} ${height}`} className="h-[150px] w-full" role="img" aria-label="Visitas en los últimos 30 días">
+          <defs>
+            <linearGradient id="analyticsAreaFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor="#4C8EF7" stopOpacity="0.34" />
+              <stop offset="100%" stopColor="#4C8EF7" stopOpacity="0.03" />
+            </linearGradient>
+          </defs>
+          {[0, 1, 2, 3].map(step => {
+            const y = 12 + (step * (height - 24)) / 3;
+            return (
+              <line
+                key={step}
+                x1="0"
+                y1={y}
+                x2={width}
+                y2={y}
+                stroke="rgba(60, 90, 130, 0.12)"
+                strokeDasharray="3 5"
+              />
+            );
+          })}
+          <polygon points={areaPoints} fill="url(#analyticsAreaFill)" />
+          <polyline
+            points={points}
+            fill="none"
+            stroke="#4C8EF7"
+            strokeWidth="2.25"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="mt-2 text-center">
+          <p className="font-body text-base font-semibold text-foreground">Visitas en los últimos 30 días</p>
+          <p className="mt-1 font-body text-sm text-foreground/75">
+            Fuente: <span className="font-bold">Google Analytics</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const book = allBooks.find(b => b.id === id);
@@ -251,6 +374,7 @@ const ProductDetail = () => {
   const [multimediaOpen, setMultimediaOpen] = useState(false);
   const [tocOpen, setTocOpen] = useState(false);
   const [collaboratorsOpen, setCollaboratorsOpen] = useState(false);
+  const [bibliographicOpen, setBibliographicOpen] = useState(false);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [showMobileCta, setShowMobileCta] = useState(false);
 
@@ -273,6 +397,7 @@ const ProductDetail = () => {
     setMultimediaOpen(false);
     setTocOpen(false);
     setCollaboratorsOpen(false);
+    setBibliographicOpen(false);
     setDescriptionExpanded(false);
   }, [id]);
 
@@ -710,12 +835,11 @@ const ProductDetail = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-[1fr_auto] gap-3 border-t border-[hsl(var(--format-ebook)/0.14)] px-4 py-4">
-                    <div className="space-y-2">
+                    <div className="[&>*:not(:first-child)]:hidden">
                       <p className="font-body text-[11px] text-muted-foreground">Fecha de emisión</p>
                       <p className="font-body text-[11px] text-muted-foreground">Evaluación</p>
-                      <p className="font-body text-[11px] text-muted-foreground">Estado</p>
                     </div>
-                    <div className="space-y-2 text-right">
+                    <div className="text-right [&>*:not(:first-child)]:hidden">
                       <p className="font-body text-[11px] font-bold text-[#0A7080]">15-03-2025</p>
                       <p className="font-body text-[11px] text-foreground">Revisión por pares ciegos</p>
                       <span className="inline-flex rounded-full bg-[#DCEFF2] px-3 py-1 font-body text-[11px] font-bold text-[#0A7080]">
@@ -724,6 +848,8 @@ const ProductDetail = () => {
                     </div>
                   </div>
                 </div>
+
+                <AnalyticsVisitsCard />
 
               </div>
             </div>
@@ -797,39 +923,6 @@ const ProductDetail = () => {
               )}
 
               {/* ── Collapsible: Table of Contents ── */}
-              {book.multimediaResources && book.multimediaResources.length > 0 && (
-                <div id="book-preview-resources" className="border border-border mb-4 bg-card">
-                  <button
-                    onClick={() => setMultimediaOpen(!multimediaOpen)}
-                    className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Headphones className="h-4 w-4 text-muted-foreground" /> Recursos multimedia
-                    </span>
-                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${multimediaOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {multimediaOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="space-y-3 px-4 pb-4">
-                          <p className="font-body text-xs text-muted-foreground font-light">
-                            Material complementario disponible para esta obra.
-                          </p>
-                          {book.multimediaResources.map(resource => (
-                            <MultimediaPreviewCard key={`${resource.type}-${resource.title}`} resource={resource} />
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-
               {book.toc && book.toc.length > 0 && (
                 <div className="border border-border mb-4 bg-card">
                   <button
@@ -953,6 +1046,53 @@ const ProductDetail = () => {
                 </div>
               )}
 
+              <div id="book-preview-resources" className="border border-border mb-6 bg-card">
+                <button
+                  onClick={() => setMultimediaOpen(!multimediaOpen)}
+                  className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
+                >
+                  <span className="flex items-center gap-2 uppercase tracking-[0.12em]">
+                    <Headphones className="h-4 w-4 text-muted-foreground" /> Recursos multimedia
+                  </span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${multimediaOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {multimediaOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="space-y-4 px-4 pb-4">
+                        <p className="font-body text-xs text-muted-foreground font-light">
+                          Referencias visuales para integrar entrevistas, trailers, grabaciones, podcasts o piezas multimedia de apoyo a la publicación.
+                        </p>
+                        {multimediaShowcase.map((item) => (
+                          <EmbeddedShowcaseCard
+                            key={item.title}
+                            title={item.title}
+                            description={item.description}
+                            embedUrl={item.embedUrl}
+                            kind={item.kind}
+                          />
+                        ))}
+                        {book.multimediaResources && book.multimediaResources.length > 0 && (
+                          <div className="space-y-3 border-t border-border pt-4">
+                            <p className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                              Recursos asociados a esta obra
+                            </p>
+                            {book.multimediaResources.map(resource => (
+                              <MultimediaPreviewCard key={`${resource.type}-${resource.title}`} resource={resource} />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               {book.keywords && book.keywords.length > 0 && (
                 <div className="mb-6">
                   <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-2 block">
@@ -993,11 +1133,15 @@ const ProductDetail = () => {
               )}
 
               {/* ── Bibliographic Record ── */}
-              <div className="mb-6">
-                <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-3 flex items-center gap-1">
+              <div className="border border-border mb-6 bg-card">
+                <button
+                  onClick={() => setBibliographicOpen(!bibliographicOpen)}
+                  className="flex w-full items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground transition-colors hover:bg-muted/30"
+                >
                   <FileText className="h-3 w-3" /> Ficha bibliográfica
-                </span>
-                <div className="divide-y divide-border border border-border">
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${bibliographicOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <div className={`divide-y divide-border border-t border-border ${bibliographicOpen ? 'block' : 'hidden'}`}>
                   {[
                     book.doi && { icon: ExternalLink, label: 'DOI', value: book.doi, isLink: true },
                     book.collection && { icon: BookMarked, label: 'Colección', value: book.collection },
