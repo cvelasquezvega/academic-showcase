@@ -513,6 +513,8 @@ En el Capítulo 1 se analizan los encuentros de Le Corbusier, durante sus años 
   },
 ];
 
+export const allBooks: Book[] = [...featuredBooks, ...bestsellerBooks];
+
 export const collections = [
   { name: 'Derecho y Política', count: 342, icon: '⚖️' },
   { name: 'Ciencias Sociales', count: 518, icon: '🌍' },
