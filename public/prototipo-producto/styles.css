@@ -1,0 +1,95 @@
+@import "./app-bundle.css";
+
+html {
+  scroll-behavior: smooth;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body.menu-open,
+body.overlay-open {
+  overflow: hidden;
+}
+
+.menu-active {
+  color: hsl(var(--primary)) !important;
+}
+
+.menu-active-line {
+  transform: scaleX(1) !important;
+}
+
+.overlay-visible {
+  display: block !important;
+}
+
+.panel-open {
+  display: block !important;
+}
+
+.rotate-open {
+  transform: rotate(180deg);
+}
+
+.desc-clamped {
+  max-height: 10.8rem;
+  overflow: hidden;
+}
+
+.sticky-visible {
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+.search-result-row {
+  cursor: pointer;
+}
+
+.search-result-row:last-child {
+  border-bottom: 0;
+}
+
+.menu-enter {
+  animation: menuFadeIn .16s ease;
+}
+
+.overlay-enter {
+  animation: overlayFadeIn .18s ease;
+}
+
+.panel-enter {
+  animation: panelDrop .18s ease;
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes panelDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header + Ficha de producto | Réplica estática</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="min-h-screen flex flex-col bg-white pb-24 md:pb-0">
+  <header id="siteHeader" class="sticky top-0 z-50">
+    <div class="bg-header-dark">
+      <div class="container mx-auto px-4 flex items-center justify-end h-9">
+        <div class="flex items-center gap-3">
+          <button id="openRedeemTop" class="font-nav text-[11px] text-white/70 hover:text-white font-light tracking-wide transition-colors flex items-center gap-1">
+            <span data-icon="ticket" class="h-3.5 w-3.5"></span> Redimir código
+          </button>
+          <span class="text-white/20 hidden sm:inline">|</span>
+          <a href="#" class="hidden bg-secondary px-3 py-1 font-nav text-[11px] font-medium tracking-wide text-secondary-foreground transition-opacity hover:opacity-90 sm:inline">
+            Iniciar sesión
+          </a>
+          <a href="#" class="font-nav text-[11px] bg-primary text-primary-foreground px-3 py-1 font-medium tracking-wide hover:opacity-90 transition-opacity hidden sm:inline">
+            Crear cuenta
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white border-b border-border/60">
+      <div class="container mx-auto px-4 flex items-center gap-3 lg:gap-5 h-[74px] lg:h-[86px] relative">
+        <div class="flex min-w-0 items-center gap-2 sm:gap-4 flex-shrink-0">
+          <a href="https://unal.edu.co/" target="_blank" rel="noopener noreferrer" aria-label="Ir al portal de la Universidad Nacional de Colombia">
+            <img src="./assets/logo-unal.svg" alt="Universidad Nacional de Colombia" class="h-11 w-auto object-contain sm:h-[58px] lg:h-[64px]">
+          </a>
+          <span class="hidden h-9 w-px bg-border lg:block" aria-hidden="true"></span>
+          <a href="#" aria-label="Ir al inicio de Editorial UNAL">
+            <img src="./assets/logo-editorial_unal.png" alt="Editorial UNAL" class="h-7 w-auto max-w-[118px] object-contain sm:h-9 sm:max-w-none lg:h-10">
+          </a>
+        </div>
+
+        <nav class="hidden lg:flex flex-1 items-center justify-center gap-6">
+          <div class="relative" data-menu-anchor="catalogo">
+            <button class="font-nav text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors relative px-1 py-2 text-foreground hover:text-primary" data-menu-trigger="catalogo">
+              Catálogo
+              <span data-icon="chevron-down" class="inline h-3 w-3 ml-0.5 opacity-50"></span>
+              <span class="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary transition-transform origin-left scale-x-0" data-menu-underline="catalogo"></span>
+            </button>
+          </div>
+
+          <a href="#" class="font-nav text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors relative px-1 py-2 text-foreground hover:text-primary">
+            Librerías UNAL
+            <span class="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary transition-transform origin-left scale-x-0"></span>
+          </a>
+
+          <div class="relative" data-menu-anchor="noticias">
+            <button class="font-nav text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors relative px-1 py-2 text-foreground hover:text-primary" data-menu-trigger="noticias">
+              Noticias
+              <span data-icon="chevron-down" class="inline h-3 w-3 ml-0.5 opacity-50"></span>
+              <span class="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary transition-transform origin-left scale-x-0" data-menu-underline="noticias"></span>
+            </button>
+          </div>
+
+          <a href="#" class="font-nav text-[13px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-colors relative px-1 py-2 text-foreground hover:text-primary">
+            Nosotros
+            <span class="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary transition-transform origin-left scale-x-0"></span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button id="openSearchDesktop" class="hidden xl:flex items-center gap-2 bg-muted/60 hover:bg-muted px-4 py-2 transition-colors group w-[180px]">
+            <span data-icon="search" class="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors"></span>
+            <span class="font-nav text-sm text-muted-foreground font-light">Buscar...</span>
+          </button>
+
+          <div class="flex items-center gap-0">
+            <button id="openSearchMobile" class="text-foreground/60 hover:text-primary hover:bg-transparent lg:hidden inline-flex h-10 w-10 items-center justify-center">
+              <span data-icon="search" class="h-5 w-5"></span>
+            </button>
+            <button class="text-foreground/60 hover:text-primary hover:bg-transparent hidden sm:inline-flex h-10 w-10 items-center justify-center">
+              <span data-icon="user" class="h-5 w-5"></span>
+            </button>
+            <button class="text-foreground/60 hover:text-primary hover:bg-transparent hidden sm:inline-flex h-10 w-10 items-center justify-center">
+              <span data-icon="heart" class="h-5 w-5"></span>
+            </button>
+            <button class="text-foreground/60 hover:text-primary hover:bg-transparent relative inline-flex h-10 w-10 items-center justify-center">
+              <span data-icon="shopping-cart" class="h-5 w-5"></span>
+              <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center rounded-full">2</span>
+            </button>
+            <button id="mobileMenuToggle" type="button" class="flex h-10 w-10 items-center justify-center text-foreground transition-colors hover:text-primary lg:hidden" aria-label="Abrir menú">
+              <span data-icon="menu" class="h-5 w-5" id="mobileMenuIcon"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="desktopMegaMenu" class="hidden lg:block absolute left-0 right-0 bg-white border-b border-border/40 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.1)] z-50">
+      <div class="container mx-auto px-0">
+        <div class="flex min-h-[340px]" id="megaMenuInner"></div>
+      </div>
+    </div>
+
+    <nav id="mobileMenu" class="fixed inset-x-0 bottom-0 top-[110px] z-40 overflow-y-auto overscroll-contain border-b border-border bg-white px-4 py-5 pb-10 shadow-xl lg:hidden hidden">
+      <div class="mb-5 grid grid-cols-4 gap-1.5">
+        <button id="openSearchQuick" class="flex min-h-10 items-center justify-center gap-1.5 bg-muted px-2 py-2 font-nav text-[11px] font-medium leading-tight text-foreground hover:bg-muted/80">
+          <span data-icon="search" class="h-3.5 w-3.5 shrink-0"></span> Buscar
+        </button>
+        <button id="openRedeemQuick" class="flex min-h-10 items-center justify-center gap-1.5 bg-muted px-2 py-2 font-nav text-[11px] font-medium leading-tight text-foreground hover:bg-muted/80">
+          <span data-icon="ticket" class="h-3.5 w-3.5 shrink-0"></span> Redimir
+        </button>
+        <a href="#" class="flex min-h-10 items-center justify-center bg-secondary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-secondary-foreground hover:bg-secondary/90">Ingresar</a>
+        <a href="#" class="flex min-h-10 items-center justify-center bg-primary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-primary-foreground hover:opacity-90">Registro</a>
+      </div>
+      <div id="mobileMenuSections"></div>
+    </nav>
+  </header>
+
+  <nav class="hidden border-b border-border bg-card sm:block">
+    <div class="container mx-auto px-4 py-3 flex items-center gap-2 font-body text-[11px] text-muted-foreground font-light">
+      <a href="#" class="hover:text-primary transition-colors">Inicio</a>
+      <span data-icon="chevron-right" class="h-3 w-3 flex-shrink-0"></span>
+      <span class="hover:text-primary transition-colors cursor-pointer">Catálogo</span>
+      <span data-icon="chevron-right" class="h-3 w-3 flex-shrink-0"></span>
+      <span class="hover:text-primary transition-colors cursor-pointer" id="breadcrumbCategory"></span>
+      <span data-icon="chevron-right" class="h-3 w-3 flex-shrink-0"></span>
+      <span class="text-foreground font-medium truncate max-w-[250px]" id="breadcrumbTitle"></span>
+      <button id="shareBreadcrumb" class="ml-auto flex items-center gap-1 hover:text-primary transition-colors">
+        <span data-icon="share-2" class="h-3 w-3"></span> Compartir
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="bg-white py-8 md:py-10">
+      <div class="container mx-auto px-4">
+        <div class="mb-5 flex items-start gap-4 lg:hidden">
+          <div class="w-24 shrink-0">
+            <div class="relative overflow-hidden w-full shadow-md">
+              <img id="mobileBookCover" class="block h-auto w-full" alt="">
+              <span id="mobileDiscountBadge" class="absolute left-2 top-2 bg-primary px-2 py-1 font-body text-[10px] font-semibold text-primary-foreground hidden"></span>
+            </div>
+          </div>
+          <div class="min-w-0 flex-1 pt-1">
+            <span class="inline-flex bg-primary/10 px-3 py-1 font-body text-[10px] font-bold uppercase tracking-[0.12em] text-primary" id="mobileCategory"></span>
+            <h1 class="mt-2 font-heading text-xl font-bold leading-tight text-foreground" id="mobileTitle"></h1>
+            <p class="mt-1 font-body text-xs leading-relaxed text-muted-foreground" id="mobileSubtitle"></p>
+            <div class="mt-3 space-y-1 font-body text-[11px] text-muted-foreground">
+              <p><span class="uppercase tracking-[0.12em]">Escrito por </span><span class="font-semibold text-foreground" id="mobileAuthor"></span></p>
+              <p id="mobileSede"></p>
+              <p id="mobileMeta"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-8 lg:gap-10">
+          <div class="hidden lg:block">
+            <div class="group">
+              <div class="relative overflow-hidden w-full shadow-lg">
+                <img id="desktopBookCover" class="block h-auto w-full transition-transform duration-700 group-hover:scale-[1.02]" alt="">
+                <span id="desktopDiscountBadge" class="absolute top-4 left-4 bg-primary text-primary-foreground text-sm font-body font-semibold px-3 py-1.5 z-10 hidden"></span>
+              </div>
+            </div>
+
+            <div class="flex gap-2 mt-4">
+              <button class="flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-border font-body text-xs text-muted-foreground hover:text-primary hover:border-primary transition-colors font-medium">
+                <span data-icon="copy" class="h-3.5 w-3.5"></span> Citar
+              </button>
+              <a id="openAlexLink" href="#" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-border font-body text-xs text-muted-foreground hover:text-primary hover:border-primary transition-colors font-medium">
+                <span data-icon="external-link" class="h-3.5 w-3.5"></span> OpenAlex
+              </a>
+            </div>
+
+            <div class="mt-3">
+              <button type="button" class="w-full border border-border bg-card px-4 py-2.5 font-body text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50">
+                Vista preliminar
+              </button>
+            </div>
+
+            <div class="mt-5">
+              <span class="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold block mb-2">
+                Formatos disponibles
+              </span>
+              <div class="flex flex-wrap gap-1.5" id="availableFormats"></div>
+            </div>
+
+            <div class="mt-5 space-y-5">
+              <div class="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+                <div class="flex items-center gap-2 border-b border-border px-4 py-3">
+                  <span data-icon="leaf" class="h-4 w-4 text-[hsl(var(--format-print))]"></span>
+                  <p class="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+                    Alineado con los ODS - Agenda 2030
+                  </p>
+                </div>
+                <div class="divide-y divide-border" id="odsItems"></div>
+                <div class="border-t border-border px-4 py-2 text-right">
+                  <span class="font-body text-[10px] text-muted-foreground">* ONU Agenda 2030</span>
+                </div>
+              </div>
+
+              <div class="overflow-hidden rounded-lg border border-[hsl(var(--format-ebook)/0.22)] bg-card shadow-sm">
+                <div class="flex items-center gap-4 px-4 py-4">
+                  <div class="flex h-14 w-14 shrink-0 items-center justify-center">
+                    <img src="./assets/Logo-DPA.png" alt="Declaración de prestigio académico" class="max-h-full max-w-full object-contain">
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-body text-[11px] font-bold uppercase leading-relaxed tracking-[0.22em] text-[#0A7080]">
+                      Declaración de prestigio académico
+                    </p>
+                    <p class="mt-1 font-body text-xs text-muted-foreground">
+                      Certificación de calidad editorial
+                    </p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-[1fr_auto] gap-3 border-t border-[hsl(var(--format-ebook)/0.14)] px-4 py-4">
+                  <div class="[&>*:not(:first-child)]:hidden">
+                    <p class="font-body text-[11px] text-muted-foreground">Fecha de emisión</p>
+                    <p class="font-body text-[11px] text-muted-foreground">Evaluación</p>
+                  </div>
+                  <div class="text-right [&>*:not(:first-child)]:hidden">
+                    <p class="font-body text-[11px] font-bold text-[#0A7080]">15-03-2025</p>
+                    <p class="font-body text-[11px] text-foreground">Revisión por pares ciegos</p>
+                    <span class="inline-flex rounded-full bg-[#DCEFF2] px-3 py-1 font-body text-[11px] font-bold text-[#0A7080]">Vigente</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+                <div class="border-b border-border px-4 py-3">
+                  <p class="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">Analítica de visitas</p>
+                  <p class="mt-2 font-body text-sm leading-relaxed text-foreground">Este libro ha recibido un total de <span class="font-bold" id="totalVisits"></span> visitas.</p>
+                </div>
+                <div class="px-4 py-4">
+                  <svg viewBox="0 0 320 130" class="h-[150px] w-full" role="img" aria-label="Visitas en los últimos 30 días">
+                    <defs>
+                      <linearGradient id="analyticsAreaFill" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stop-color="#4C8EF7" stop-opacity="0.34"></stop>
+                        <stop offset="100%" stop-color="#4C8EF7" stop-opacity="0.03"></stop>
+                      </linearGradient>
+                    </defs>
+                    <g id="analyticsGrid"></g>
+                    <polygon id="analyticsArea" fill="url(#analyticsAreaFill)"></polygon>
+                    <polyline id="analyticsLine" fill="none" stroke="#4C8EF7" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                  </svg>
+                  <div class="mt-2 text-center">
+                    <p class="font-body text-base font-semibold text-foreground">Visitas en los últimos 30 días</p>
+                    <p class="mt-1 font-body text-sm text-foreground/75">Fuente: <span class="font-bold">Google Analytics</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-3 min-w-0 lg:order-2">
+            <div class="hidden items-center gap-2 mb-2 flex-wrap lg:flex">
+              <span class="font-body text-[11px] tracking-[0.2em] uppercase text-primary font-semibold" id="desktopCategory"></span>
+              <span class="text-border">·</span>
+              <span class="font-body text-[11px] text-muted-foreground font-light flex items-center gap-1">
+                <span data-icon="book-marked" class="h-3 w-3"></span> <span id="desktopCollection"></span>
+              </span>
+            </div>
+
+            <h1 class="hidden font-heading text-2xl md:text-3xl font-bold text-foreground leading-tight mb-1 lg:block" id="desktopTitle"></h1>
+            <p class="hidden font-body text-sm md:text-base font-light text-muted-foreground leading-relaxed mb-4 max-w-2xl lg:block" id="desktopSubtitle"></p>
+
+            <div class="mb-3 hidden lg:block">
+              <span class="font-body text-[11px] text-muted-foreground uppercase tracking-wider font-medium">Escrito por </span>
+              <span class="font-body text-sm font-medium text-foreground" id="desktopAuthor"></span>
+              <span class="font-body text-sm text-muted-foreground font-light" id="desktopCoauthors"></span>
+            </div>
+
+            <div class="hidden items-center gap-3 text-muted-foreground font-body text-xs font-light mb-4 flex-wrap lg:flex">
+              <span class="flex items-center gap-1"><span data-icon="globe" class="h-3 w-3"></span> <span id="desktopSede"></span></span>
+              <span id="desktopYear"></span>
+              <span id="desktopEdition"></span>
+            </div>
+
+            <div class="mb-6">
+              <div class="relative">
+                <div id="descriptionText" class="font-body text-sm text-foreground/80 font-light leading-[1.8] whitespace-pre-line transition-[max-height] duration-300"></div>
+                <div id="descriptionFade" class="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[hsl(var(--background))] via-[hsl(var(--background))/0.92] to-transparent hidden"></div>
+              </div>
+              <button type="button" id="descriptionToggle" class="mt-3 font-body text-xs font-semibold uppercase tracking-[0.12em] text-primary transition-colors hover:text-primary/80 hidden">Leer más</button>
+            </div>
+
+            <div id="tocBlock" class="border border-border mb-4 bg-card">
+              <button id="tocToggle" class="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors">
+                <span class="flex items-center gap-2"><span data-icon="book-open" class="h-4 w-4 text-muted-foreground"></span> Tabla de contenido</span>
+                <span data-icon="chevron-down" class="h-4 w-4 text-muted-foreground transition-transform" id="tocChevron"></span>
+              </button>
+              <div id="tocPanel" class="overflow-hidden hidden">
+                <div class="px-4 pb-4 space-y-0" id="tocList"></div>
+              </div>
+            </div>
+
+            <div class="border border-border mb-6 bg-card">
+              <button id="collaboratorsToggle" class="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors">
+                <span class="flex items-center gap-2"><span data-icon="users" class="h-4 w-4 text-muted-foreground"></span> Autores y colaboradores asociados a esta publicación</span>
+                <span data-icon="chevron-down" class="h-4 w-4 text-muted-foreground transition-transform" id="collaboratorsChevron"></span>
+              </button>
+              <div id="collaboratorsPanel" class="overflow-hidden hidden">
+                <div class="space-y-3 px-4 pb-4" id="collaboratorsList"></div>
+              </div>
+            </div>
+
+            <div id="book-preview-resources" class="border border-border mb-6 bg-card">
+              <button id="multimediaToggle" class="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors">
+                <span class="flex items-center gap-2"><span data-icon="headphones" class="h-4 w-4 text-muted-foreground"></span> Recursos multimedia</span>
+                <span data-icon="chevron-down" class="h-4 w-4 text-muted-foreground transition-transform" id="multimediaChevron"></span>
+              </button>
+              <div id="multimediaPanel" class="overflow-hidden hidden">
+                <div class="space-y-4 px-4 pb-4">
+                  <p class="font-body text-xs text-muted-foreground font-light">
+                    Referencias visuales para integrar entrevistas, trailers, grabaciones, podcasts o piezas multimedia de apoyo a la publicación.
+                  </p>
+                  <div id="multimediaCards" class="space-y-4"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <span class="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-2 block">Palabras clave</span>
+              <div class="flex flex-wrap gap-1.5" id="keywordsList"></div>
+            </div>
+
+            <div class="mb-6">
+              <span class="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-2 flex items-center gap-1">Clasificación por área</span>
+              <div class="divide-y divide-border border border-border" id="classificationsList"></div>
+            </div>
+
+            <div class="border border-border mb-4 bg-card">
+              <button id="biblioToggle" class="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors">
+                <span class="flex items-center gap-2"><span data-icon="file-text" class="h-4 w-4 text-muted-foreground"></span> Ficha bibliográfica</span>
+                <span data-icon="chevron-down" class="h-4 w-4 text-muted-foreground transition-transform rotate-open" id="biblioChevron"></span>
+              </button>
+              <div id="biblioPanel" class="overflow-hidden">
+                <div class="px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-3" id="biblioGrid"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="purchase-options" class="order-2 scroll-mt-[132px] lg:order-3 lg:self-start lg:sticky lg:top-[120px] lg:scroll-mt-0">
+            <div class="border border-border bg-card p-5 shadow-sm">
+              <span class="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold mb-3 block">Formato</span>
+              <div class="grid grid-cols-3 gap-2 mb-3" id="formatButtons"></div>
+
+              <div class="mb-4 border-b border-border pb-4">
+                <div class="mb-3" id="priceBox"></div>
+                <div id="quantityBox" class="mb-3 flex items-center gap-3 hidden">
+                  <span class="font-body text-xs text-muted-foreground font-light">Cant.:</span>
+                  <div class="flex items-center border border-border">
+                    <button id="decreaseQty" class="w-8 h-8 flex items-center justify-center text-foreground hover:bg-muted transition-colors font-body text-sm">−</button>
+                    <span id="qtyValue" class="w-8 h-8 flex items-center justify-center font-body text-xs font-medium border-x border-border">1</span>
+                    <button id="increaseQty" class="w-8 h-8 flex items-center justify-center text-foreground hover:bg-muted transition-colors font-body text-sm">+</button>
+                  </div>
+                </div>
+                <div id="ctaArea"></div>
+              </div>
+
+              <div id="detailCard" class="border p-3 mb-4"></div>
+
+              <div id="benefitsCard" class="border border-border bg-card p-4 shadow-sm">
+                <span class="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold block mb-2">Qué recibes</span>
+                <ul id="benefitsList" class="space-y-1.5"></ul>
+              </div>
+
+              <div class="flex gap-2 mt-4 pt-4">
+                <button class="flex-1 flex items-center justify-center gap-1.5 py-2 font-body text-xs text-muted-foreground hover:text-primary transition-colors font-light">
+                  <span data-icon="heart" class="h-3.5 w-3.5"></span> Favoritos
+                </button>
+                <button id="shareSidebar" class="flex-1 flex items-center justify-center gap-1.5 py-2 font-body text-xs text-muted-foreground hover:text-primary transition-colors font-light">
+                  <span data-icon="share-2" class="h-3.5 w-3.5"></span> Compartir
+                </button>
+              </div>
+            </div>
+
+            <a href="#" class="flex items-center gap-1.5 mt-4 font-body text-xs text-muted-foreground hover:text-primary transition-colors font-light">
+              ← Volver al catálogo
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="mobileStickyCta" class="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur transition-transform duration-300 md:hidden pointer-events-none translate-y-full">
+    <div class="mx-auto flex max-w-md items-center gap-3">
+      <div class="min-w-0 flex-1">
+        <p class="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Opciones de compra:</p>
+        <p class="font-body text-base font-bold leading-tight text-foreground" id="mobileStickyPrice"></p>
+      </div>
+      <button id="mobileStickyButton" class="shrink-0 bg-foreground px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-background hover:bg-foreground/90">
+        Ver opciones
+      </button>
+    </div>
+  </div>
+
+  <div id="searchOverlay" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden">
+    <div class="bg-card w-full max-w-3xl mx-auto mt-[10vh] shadow-2xl border border-border max-h-[75vh] flex flex-col">
+      <div class="flex items-center gap-3 px-6 py-4 border-b border-border">
+        <span data-icon="search" class="h-5 w-5 text-primary flex-shrink-0"></span>
+        <input id="searchInput" type="text" placeholder="Buscar por título, autor, ISBN o área..." class="flex-1 bg-transparent font-body text-base text-foreground placeholder:text-muted-foreground outline-none">
+        <button id="searchReset" class="text-muted-foreground hover:text-foreground hidden">
+          <span data-icon="x" class="h-4 w-4"></span>
+        </button>
+        <button id="closeSearch" class="ml-2 flex h-9 w-9 flex-shrink-0 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-primary hover:text-foreground" aria-label="Cerrar búsqueda">
+          <span data-icon="x" class="h-4 w-4"></span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 px-6 py-3 border-b border-border flex-wrap" id="searchFormatFilters"></div>
+      <div class="flex-1 overflow-y-auto" id="searchResults"></div>
+    </div>
+  </div>
+
+  <div id="redeemOverlay" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-black/50" id="redeemBackdrop"></div>
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <div class="bg-card w-full max-w-md shadow-2xl border border-border pointer-events-auto">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-border bg-primary-light/30">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary/10 flex items-center justify-center">
+              <span data-icon="ticket" class="h-5 w-5 text-primary"></span>
+            </div>
+            <div>
+              <h2 class="font-heading text-lg font-bold text-foreground">Redimir código</h2>
+              <p class="font-body text-xs text-muted-foreground">Accede a contenidos exclusivos</p>
+            </div>
+          </div>
+          <button id="closeRedeem" class="text-muted-foreground hover:text-foreground p-1">
+            <span data-icon="x" class="h-5 w-5"></span>
+          </button>
+        </div>
+        <div class="px-6 py-6">
+          <div class="text-center py-4">
+            <div class="w-16 h-16 bg-muted flex items-center justify-center mx-auto mb-4">
+              <span data-icon="log-in" class="h-8 w-8 text-muted-foreground"></span>
+            </div>
+            <h3 class="font-heading text-base font-bold text-foreground mb-2">Inicia sesión para continuar</h3>
+            <p class="font-body text-sm text-muted-foreground mb-6">
+              Para redimir un código de acceso necesitas tener una cuenta y haber iniciado sesión.
+            </p>
+            <div class="flex flex-col gap-3">
+              <button class="inline-flex items-center justify-center w-full font-body font-semibold uppercase text-xs tracking-wider bg-primary text-primary-foreground h-10 px-4 py-2">
+                <span data-icon="log-in" class="h-4 w-4 mr-2"></span> Iniciar sesión
+              </button>
+              <button class="inline-flex items-center justify-center w-full font-body font-semibold uppercase text-xs tracking-wider border border-border bg-background h-10 px-4 py-2">
+                Crear cuenta gratis
+              </button>
+            </div>
+            <p class="font-body text-[11px] text-muted-foreground mt-4">
+              ¿Aún no tienes una cuenta? Regístrate gratis y obtén acceso a cientos de publicaciones en acceso abierto.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
