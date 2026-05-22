@@ -171,7 +171,7 @@ const MultimediaPreviewCard = ({ resource }: { resource: MultimediaResource }) =
   const isVideoFile = resource.type === 'mp4' && resource.mediaUrl;
 
   return (
-    <div className="overflow-hidden rounded-[18px] border border-border bg-background/70">
+    <div className="overflow-hidden border border-border bg-background/70">
       <div className="px-3 py-3">
         <p className="font-body text-sm font-semibold leading-snug text-foreground">
           {resource.title}
@@ -267,7 +267,7 @@ const EmbeddedShowcaseCard = ({
   embedUrl: string;
   kind: 'video' | 'spotify';
 }) => (
-  <div className="overflow-hidden rounded-[18px] border border-border bg-card shadow-sm">
+  <div className="overflow-hidden border border-border bg-card shadow-sm">
     <div className="border-b border-border px-4 py-3">
       <p className="font-body text-sm font-semibold leading-snug text-foreground">{title}</p>
       <p className="mt-1 font-body text-[11px] leading-relaxed text-muted-foreground">{description}</p>
@@ -310,7 +310,7 @@ const AnalyticsVisitsCard = () => {
   const totalVisits = analyticsVisits.reduce((sum, value) => sum + value, 0);
 
   return (
-    <div className="overflow-hidden rounded-[18px] border border-border bg-card shadow-sm">
+    <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       <div className="border-b border-border px-4 py-3">
         <p className="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
           Analítica de visitas
@@ -763,7 +763,7 @@ const ProductDetail = () => {
                     setMultimediaOpen(true);
                     document.getElementById('book-preview-resources')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
-                  className="w-full rounded-[14px] border border-border bg-card px-4 py-2.5 font-body text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full border border-border bg-card px-4 py-2.5 font-body text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Vista preliminar
                 </button>
@@ -787,7 +787,7 @@ const ProductDetail = () => {
               </div>
 
               <div className="mt-5 space-y-5">
-                <div className="overflow-hidden rounded-[18px] border border-border bg-card shadow-sm">
+                <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
                   <div className="flex items-center gap-2 border-b border-border px-4 py-3">
                     <Leaf className="h-4 w-4 text-[hsl(var(--format-print))]" />
                     <p className="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
@@ -798,7 +798,7 @@ const ProductDetail = () => {
                     {odsItems.map((item) => (
                       <div key={item.number} className="flex items-center gap-3 px-4 py-3">
                         <div
-                          className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-[14px] text-white"
+                          className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg text-white"
                           style={{ backgroundColor: item.color }}
                         >
                           <span className="font-body text-[9px] font-bold uppercase leading-none">ODS</span>
@@ -820,7 +820,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
 
-                <div className="overflow-hidden rounded-[18px] border border-[hsl(var(--format-ebook)/0.22)] bg-card shadow-sm">
+                <div className="overflow-hidden rounded-lg border border-[hsl(var(--format-ebook)/0.22)] bg-card shadow-sm">
                   <div className="flex items-center gap-4 px-4 py-4">
                     <div className="flex h-14 w-14 shrink-0 items-center justify-center">
                       <img src={logoDpa} alt="Declaración de prestigio académico" className="max-h-full max-w-full object-contain" />
@@ -924,7 +924,7 @@ const ProductDetail = () => {
 
               {/* ── Collapsible: Table of Contents ── */}
               {book.toc && book.toc.length > 0 && (
-                <div className="mb-4 overflow-hidden rounded-[18px] border border-border bg-card">
+                <div className="border border-border mb-4 bg-card">
                   <button
                     onClick={() => setTocOpen(!tocOpen)}
                     className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
@@ -958,7 +958,7 @@ const ProductDetail = () => {
 
               {/* ── Keywords ── */}
               {publicationCollaborators.length > 0 && (
-                <div className="mb-6 overflow-hidden rounded-[18px] border border-border bg-card">
+                <div className="border border-border mb-6 bg-card">
                   <button
                     onClick={() => setCollaboratorsOpen(!collaboratorsOpen)}
                     className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
@@ -989,7 +989,7 @@ const ProductDetail = () => {
                             const orcid = getAuthorOrcid(person.name);
 
                             return (
-                              <div key={`${person.role}-${person.name}`} className="overflow-hidden rounded-[18px] border border-border bg-background/80 p-4 shadow-sm">
+                              <div key={`${person.role}-${person.name}`} className="border border-border bg-background/80 p-4 shadow-sm">
                                 <div className="flex flex-col gap-4 sm:flex-row">
                                   <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden bg-primary/10 font-heading text-xl font-bold text-primary">
                                     <span aria-hidden="true">{initials}</span>
@@ -1046,7 +1046,7 @@ const ProductDetail = () => {
                 </div>
               )}
 
-                <div id="book-preview-resources" className="mb-6 overflow-hidden rounded-[18px] border border-border bg-card">
+                <div id="book-preview-resources" className="border border-border mb-6 bg-card">
                 <button
                   onClick={() => setMultimediaOpen(!multimediaOpen)}
                   className="w-full flex items-center justify-between px-4 py-3 font-body text-sm font-medium text-foreground hover:bg-muted/30 transition-colors"
@@ -1114,7 +1114,7 @@ const ProductDetail = () => {
                   <span className="font-body text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-semibold mb-2 flex items-center gap-1">
                     Clasificación por área
                   </span>
-                  <div className="overflow-hidden rounded-[18px] divide-y divide-border border border-border">
+                  <div className="divide-y divide-border border border-border">
                     {book.classifications.map((cl, i) => (
                       <div key={i} className="flex items-start gap-3 px-4 py-2.5">
                         <span className="font-body text-xs text-muted-foreground font-medium w-[140px] flex-shrink-0">
@@ -1133,7 +1133,7 @@ const ProductDetail = () => {
               )}
 
               {/* ── Bibliographic Record ── */}
-              <div className="mb-6 overflow-hidden rounded-[18px] border border-border bg-card">
+              <div className="border border-border mb-6 bg-card">
                 <button
                   onClick={() => setBibliographicOpen(!bibliographicOpen)}
                   className="flex w-full items-center gap-3 px-4 py-3 text-left font-body text-sm font-medium text-foreground transition-colors hover:bg-muted/30"
@@ -1180,7 +1180,7 @@ const ProductDetail = () => {
 
             {/* ────── COL 3: Purchase sidebar (sticky) ────── */}
             <div id="purchase-options" className="order-2 scroll-mt-[132px] lg:order-3 lg:self-start lg:sticky lg:top-[120px] lg:scroll-mt-0">
-              <div className="overflow-hidden rounded-[18px] border border-border bg-card p-5 shadow-sm">
+              <div className="border border-border bg-card p-5 shadow-sm">
                 {/* Format selector */}
                 <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-semibold mb-3 block">
                   Formato
@@ -1201,7 +1201,7 @@ const ProductDetail = () => {
                         key={f}
                         onClick={() => { setSelectedFormat(f); setSelectedEbookSub(null); setShowNotifyForm(false); }}
                         aria-pressed={isSelected}
-                        className={`relative min-h-[60px] overflow-hidden rounded-[14px] border px-2.5 py-2 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm ${
+                        className={`relative min-h-[60px] overflow-hidden border px-2.5 py-2 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm ${
                           isSelected
                             ? 'shadow-sm ring-1'
                             : 'border-border bg-card hover:border-foreground/30'
@@ -1256,7 +1256,7 @@ const ProductDetail = () => {
                   {(isPrinted || isIBD) && !isOutOfStock && !isComingSoon && (
                     <div className="mb-3 flex items-center gap-3">
                       <span className="font-body text-xs text-muted-foreground font-light">Cant.:</span>
-                      <div className="flex items-center overflow-hidden rounded-[14px] border border-border">
+                      <div className="flex items-center border border-border">
                         <button onClick={() => setQuantity(Math.max(1, quantity - 1))}
                           className="w-8 h-8 flex items-center justify-center text-foreground hover:bg-muted transition-colors font-body text-sm">−</button>
                         <span className="w-8 h-8 flex items-center justify-center font-body text-xs font-medium border-x border-border">{quantity}</span>
@@ -1271,7 +1271,7 @@ const ProductDetail = () => {
                       <Button size="lg" className="w-full font-body font-semibold hover:opacity-90 text-white uppercase text-sm tracking-[0.08em]" style={{ backgroundColor: currentFormatColor }}>
                         <Unlock className="h-4 w-4 mr-2" /> Abrir acceso
                       </Button>
-                      <div className="rounded-[14px] border border-[hsl(var(--format-open)/0.18)] bg-[hsl(var(--format-open)/0.06)] px-3 py-2">
+                      <div className="border border-[hsl(var(--format-open)/0.18)] bg-[hsl(var(--format-open)/0.06)] px-3 py-2">
                         <p className="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--format-open))]">
                           Qué recibes
                         </p>
