@@ -654,7 +654,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white pb-24 md:pb-0">
+    <div className="pdp-scope min-h-screen flex flex-col bg-white pb-24 md:pb-0">
       <Header />
 
       {/* ═══ BREADCRUMB ═══ */}
@@ -697,11 +697,11 @@ const ProductDetail = () => {
               <span className="inline-flex bg-primary/10 px-3 py-1 font-body text-[10px] font-bold uppercase tracking-[0.12em] text-primary">
                 {book.category}
               </span>
-              <h1 className="mt-2 font-heading text-xl font-bold leading-tight text-foreground">
+              <h1 className="pdp-title-font mt-2 text-xl font-bold leading-tight text-foreground">
                 {book.title}
               </h1>
               {book.subtitle && (
-                <p className="mt-1 font-body text-xs leading-relaxed text-muted-foreground">
+                <p className="pdp-subtitle-font mt-1 text-xs leading-relaxed text-muted-foreground">
                   {book.subtitle}
                 </p>
               )}
@@ -870,11 +870,11 @@ const ProductDetail = () => {
               </div>
 
               {/* Title */}
-              <h1 className="hidden font-heading text-2xl md:text-3xl font-bold text-foreground leading-tight mb-1 lg:block">
+              <h1 className="pdp-title-font hidden text-2xl md:text-3xl font-bold text-foreground leading-tight mb-1 lg:block">
                 {book.title}
               </h1>
               {book.subtitle && (
-                <p className="hidden font-body text-sm md:text-base font-light text-muted-foreground leading-relaxed mb-4 max-w-2xl lg:block">
+                <p className="pdp-subtitle-font hidden text-sm md:text-base text-muted-foreground leading-relaxed mb-4 max-w-2xl lg:block">
                   {book.subtitle}
                 </p>
               )}
