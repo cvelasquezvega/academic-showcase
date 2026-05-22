@@ -353,7 +353,7 @@ const CatalogExplorer = () => {
   );
 
   return (
-    <section className="bg-[linear-gradient(180deg,#fbf8f4_0%,#ffffff_22%,#ffffff_100%)] py-10 md:py-14">
+    <section className="bg-white py-10 md:py-14">
       <div className="container mx-auto px-4">
         <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
@@ -440,7 +440,7 @@ const CatalogExplorer = () => {
 
       <div className={`fixed inset-0 z-[70] bg-black/45 transition-opacity lg:hidden ${mobileFiltersOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
         <button onClick={() => setMobileFiltersOpen(false)} className="absolute inset-0 h-full w-full cursor-default" aria-label="Cerrar panel de filtros" />
-        <div className={`absolute inset-x-0 bottom-0 max-h-[88vh] overflow-y-auto rounded-t-[32px] bg-[#F9F4ED] p-3 transition-transform duration-300 ${mobileFiltersOpen ? 'translate-y-0' : 'translate-y-full'}`}>
+        <div className={`absolute inset-x-0 bottom-0 max-h-[88vh] overflow-y-auto rounded-t-[32px] bg-white p-3 transition-transform duration-300 ${mobileFiltersOpen ? 'translate-y-0' : 'translate-y-full'}`}>
           {filtersPanel}
         </div>
       </div>
