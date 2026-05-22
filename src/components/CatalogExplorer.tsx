@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useState } from 'react';
+import { useDeferredValue, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   BookOpen,
@@ -87,6 +87,9 @@ const bookMatchesMainSearch = (book: Book, rawQuery: string) => {
 };
 
 const CatalogExplorer = () => {
+  const resultsHeaderRef = useRef<HTMLDivElement | null>(null);
+  const hasMountedFilterScrollRef = useRef(false);
+  const pendingFilterScrollRef = useRef(false);
   const [mainQuery, setMainQuery] = useState('');
   const [selectedFormat, setSelectedFormat] = useState<BookFormat | 'all'>('all');
   const [availability, setAvailability] = useState<AvailabilityFilter>('all');
@@ -118,6 +121,47 @@ const CatalogExplorer = () => {
     return () => {
       document.body.style.overflow = '';
     };
+  }, [mobileFiltersOpen]);
+
+  const scrollToResultsHeader = () => {
+    if (!resultsHeaderRef.current) return;
+
+    resultsHeaderRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
+
+  useEffect(() => {
+    if (!hasMountedFilterScrollRef.current) {
+      hasMountedFilterScrollRef.current = true;
+      return;
+    }
+
+    pendingFilterScrollRef.current = true;
+
+    if (mobileFiltersOpen) {
+      setMobileFiltersOpen(false);
+      return;
+    }
+
+    scrollToResultsHeader();
+    pendingFilterScrollRef.current = false;
+  }, [
+    selectedFormat,
+    availability,
+    selectedCollections,
+    selectedAuthors,
+    selectedCategories,
+    selectedYears,
+    selectedSedes,
+  ]);
+
+  useEffect(() => {
+    if (mobileFiltersOpen || !pendingFilterScrollRef.current) return;
+
+    scrollToResultsHeader();
+    pendingFilterScrollRef.current = false;
   }, [mobileFiltersOpen]);
 
   const collections = Array.from(new Set(allBooks.map(book => book.collection).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b));
@@ -317,9 +361,9 @@ const CatalogExplorer = () => {
               <Layers3 className="h-3.5 w-3.5 text-primary" />
               <p className="font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Todo el catálogo</p>
             </div>
-            <h2 className="mt-2 font-heading text-2xl font-bold text-foreground md:text-3xl">Encuentra una publicación por formato, autor, colección, temática o año</h2>
+            <h2 className="mt-2 font-heading text-2xl font-bold text-foreground md:text-3xl">Encuentra una publicacion por formato, autor, colección, temática o año</h2>
             <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-muted-foreground md:text-base">
-              Diseñamos esta vista para que llegar a un título sea rápido y claro: filtros visibles, conteos útiles, búsquedas internas y resultados que responden a la metadata real de cada publicación.
+              Diseñamos esta vista para que llegar a un título sea rápido y claro: filtros visibles, conteos útiles, búsquedas internas y resultados que responden a la metadata real de cada publicacion.
             </p>
           </div>
           <div className="rounded-full border border-border bg-card px-4 py-2 font-body text-sm text-muted-foreground">
@@ -334,11 +378,11 @@ const CatalogExplorer = () => {
 
           <div className="min-w-0">
             <div className="rounded-[28px] border border-border bg-white p-5 shadow-[0_18px_50px_rgba(43,48,59,0.06)] md:p-6">
-              <div className="flex flex-col gap-4 border-b border-border pb-5 md:flex-row md:items-center md:justify-between">
+              <div ref={resultsHeaderRef} className="flex scroll-mt-[112px] flex-col gap-4 border-b border-border pb-5 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Exploración del catálogo</p>
                   <h3 className="mt-2 font-heading text-xl font-bold text-foreground md:text-2xl">
-                    {filteredBooks.length} publicación{filteredBooks.length !== 1 ? 'es' : ''} encontradas
+                    {filteredBooks.length} publicacion{filteredBooks.length !== 1 ? 'es' : ''} encontradas
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
