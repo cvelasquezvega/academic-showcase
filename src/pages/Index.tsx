@@ -6,7 +6,6 @@ import ImageBannerSlider from '@/components/ImageBannerSlider';
 import BookSection from '@/components/BookSection';
 import PromoBanner from '@/components/PromoBanner';
 import ConvocatoriaBanner from '@/components/ConvocatoriaBanner';
-import CatalogExplorer from '@/components/CatalogExplorer';
 import CollectionsGrid from '@/components/CollectionsGrid';
 import InternalLinksBar from '@/components/InternalLinksBar';
 import MultimediaSection from '@/components/MultimediaSection';
@@ -27,7 +26,6 @@ const Index = () => (
     <PromoBanner />
     <BookSection title="Los más vendidos" subtitle="Bestsellers" books={bestsellerBooks} ctaLabel="Ver más" />
     <ConvocatoriaBanner />
-    <CatalogExplorer />
     <CollectionsGrid />
     <InternalLinksBar />
     <MultimediaSection />
