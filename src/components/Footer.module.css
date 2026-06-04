@@ -1,0 +1,126 @@
+.unalPortalFooter {
+  margin-top: auto;
+  background: #232323;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.unalPortalFooterTop {
+  border-top: 4px solid #ff7757;
+}
+
+.unalPortalFooterContainer {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1240px;
+  padding-inline: 1rem;
+}
+
+.unalPortalFooterTop .unalPortalFooterContainer {
+  display: grid;
+  gap: 2rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
+}
+
+.unalPortalFooterBranding {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.unalPortalFooterLogoLink,
+.unalPortalFooterEditorialCard {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+}
+
+.unalPortalFooterLogoCard {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.85rem 0.95rem;
+}
+
+.unalPortalFooterUnalLogo {
+  width: min(240px, 100%);
+  height: auto;
+}
+
+.unalPortalFooterEditorialCard {
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.75rem 0.85rem;
+}
+
+.unalPortalFooterEditorialLogo {
+  height: 2.25rem;
+  width: auto;
+}
+
+.unalPortalFooterDescription {
+  max-width: 30rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.unalPortalFooterGrid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.unalPortalFooterTitle {
+  margin-bottom: 0.8rem;
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.unalPortalFooterList {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.unalPortalFooterLink {
+  color: rgba(255, 255, 255, 0.68);
+  transition: color 160ms ease;
+}
+
+.unalPortalFooterLink:hover,
+.unalPortalFooterLink:focus-visible {
+  color: #ffffff;
+}
+
+.unalPortalFooterContact {
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.unalPortalFooterBottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.unalPortalFooterBottom .unalPortalFooterContainer {
+  padding-top: 1rem;
+  padding-bottom: 1.1rem;
+}
+
+.unalPortalFooterLegal {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (min-width: 900px) {
+  .unalPortalFooterTop .unalPortalFooterContainer {
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.3fr);
+    align-items: start;
+  }
+
+  .unalPortalFooterGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
