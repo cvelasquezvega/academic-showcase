@@ -56,6 +56,23 @@
   width: auto;
 }
 
+.unalPortalFooterSubdomain {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.unalPortalFooterSubdomain:hover,
+.unalPortalFooterSubdomain:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 .unalPortalFooterDescription {
   max-width: 30rem;
   font-size: 0.95rem;

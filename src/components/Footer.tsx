@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import editorialLogo from '@/assets/logo-editorial_unal.png';
 import unalLogo from '@/assets/logo-unal.svg';
 import styles from './Footer.module.css';
 
@@ -163,8 +162,8 @@ const Footer = () => {
                 <img src={unalLogo} alt="Universidad Nacional de Colombia" className={styles.unalPortalFooterUnalLogo} />
               </span>
             </a>
-            <a href="/" className={styles.unalPortalFooterEditorialCard}>
-              <img src={editorialLogo} alt="Editorial UNAL" className={styles.unalPortalFooterEditorialLogo} />
+            <a href="https://portaldelibros.unal.edu.co/" className={styles.unalPortalFooterSubdomain}>
+              portaldelibros.unal.edu.co
             </a>
             <p className={styles.unalPortalFooterDescription}>
               Publicaciones académicas y culturales de la Universidad Nacional de Colombia al servicio de la investigación, la docencia y la extensión.
@@ -206,7 +205,7 @@ const Footer = () => {
       <div className={styles.unalPortalFooterBottom}>
         <div className={styles.unalPortalFooterContainer}>
           <p className={styles.unalPortalFooterLegal}>
-            © 2026 Universidad Nacional de Colombia · Portal de Libros UNAL. Algunos derechos reservados.
+            © 2026 Universidad Nacional de Colombia · Portal de Libros UNAL. Todos los derechos reservados. Desarrollado por Hipertexto - Netizen. 2026 © Todos los derechos reservados.
           </p>
         </div>
       </div>
