@@ -3,6 +3,7 @@ import { Search, User, ShoppingCart, Menu, X, Heart, BookMarked, ChevronDown, Ch
 import { Button } from '@/components/ui/button';
 import SearchOverlay from '@/components/SearchOverlay';
 import RedeemCodeModal from '@/components/RedeemCodeModal';
+import AuthModal, { type AuthView } from '@/components/AuthModal';
 import editorialLogo from '@/assets/logo-editorial_unal.png';
 import unalLogo from '@/assets/logo-unal.svg';
 
@@ -91,6 +92,9 @@ const Header = () => {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [redeemOpen, setRedeemOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authView, setAuthView] = useState<AuthView>('login');
+  const openAuth = (v: AuthView) => { setAuthView(v); setAuthOpen(true); };
   const menuTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
 
@@ -146,12 +150,12 @@ const Header = () => {
                 <Ticket className="h-3.5 w-3.5" /> Redimir código
               </button>
               <span className="text-white/20 hidden sm:inline">|</span>
-              <a href="#" className="hidden bg-secondary px-3 py-1 font-nav text-[11px] font-medium tracking-wide text-secondary-foreground transition-opacity hover:opacity-90 sm:inline">
+              <button onClick={() => openAuth('login')} className="hidden bg-secondary px-3 py-1 font-nav text-[11px] font-medium tracking-wide text-secondary-foreground transition-opacity hover:opacity-90 sm:inline">
                 Iniciar sesión
-              </a>
-              <a href="#" className="font-nav text-[11px] bg-primary text-primary-foreground px-3 py-1 font-medium tracking-wide hover:opacity-90 transition-opacity hidden sm:inline">
+              </button>
+              <button onClick={() => openAuth('register')} className="font-nav text-[11px] bg-primary text-primary-foreground px-3 py-1 font-medium tracking-wide hover:opacity-90 transition-opacity hidden sm:inline">
                 Crear cuenta
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -228,7 +232,7 @@ const Header = () => {
                 >
                   <Search className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" size="icon" className="text-foreground/60 hover:text-primary hover:bg-transparent hidden sm:flex">
+                <Button variant="ghost" size="icon" onClick={() => openAuth('login')} className="text-foreground/60 hover:text-primary hover:bg-transparent hidden sm:flex">
                   <User className="h-5 w-5" />
                 </Button>
                 <Button variant="ghost" size="icon" className="text-foreground/60 hover:text-primary hover:bg-transparent hidden sm:flex">
@@ -372,12 +376,12 @@ const Header = () => {
               >
                 <Ticket className="h-3.5 w-3.5 shrink-0" /> Redimir
               </button>
-              <a href="#" className="flex min-h-10 items-center justify-center bg-secondary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-secondary-foreground hover:bg-secondary/90">
+              <button onClick={() => { setMobileOpen(false); openAuth('login'); }} className="flex min-h-10 items-center justify-center bg-secondary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-secondary-foreground hover:bg-secondary/90">
                 Ingresar
-              </a>
-              <a href="#" className="flex min-h-10 items-center justify-center bg-primary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-primary-foreground hover:opacity-90">
+              </button>
+              <button onClick={() => { setMobileOpen(false); openAuth('register'); }} className="flex min-h-10 items-center justify-center bg-primary px-2 py-2 text-center font-nav text-[11px] font-medium leading-tight text-primary-foreground hover:opacity-90">
                 Registro
-              </a>
+              </button>
             </div>
 
             {/* CATÁLOGO accordion */}
@@ -459,6 +463,7 @@ const Header = () => {
       {/* Overlays rendered outside header */}
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
       <RedeemCodeModal open={redeemOpen} onClose={() => setRedeemOpen(false)} />
+      <AuthModal open={authOpen} view={authView} onClose={() => setAuthOpen(false)} onChangeView={setAuthView} />
     </>
   );
 };
