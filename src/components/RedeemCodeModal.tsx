@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 interface RedeemCodeModalProps {
   open: boolean;
   onClose: () => void;
+  onLogin?: () => void;
+  onRegister?: () => void;
 }
 
-const RedeemCodeModal = ({ open, onClose }: RedeemCodeModalProps) => {
+const RedeemCodeModal = ({ open, onClose, onLogin, onRegister }: RedeemCodeModalProps) => {
   // Simulated auth state — replace with real auth later
   const [isLoggedIn] = useState(false);
   const [code, setCode] = useState('');
@@ -84,10 +86,10 @@ const RedeemCodeModal = ({ open, onClose }: RedeemCodeModalProps) => {
                       Para redimir un código de acceso necesitas tener una cuenta y haber iniciado sesión.
                     </p>
                     <div className="flex flex-col gap-3">
-                      <Button className="w-full font-body font-semibold uppercase text-xs tracking-wider">
+                      <Button onClick={onLogin} className="w-full font-body font-semibold uppercase text-xs tracking-wider">
                         <LogIn className="h-4 w-4 mr-2" /> Iniciar sesión
                       </Button>
-                      <Button variant="outline" className="w-full font-body font-semibold uppercase text-xs tracking-wider">
+                      <Button variant="outline" onClick={onRegister} className="w-full font-body font-semibold uppercase text-xs tracking-wider">
                         Crear cuenta gratis
                       </Button>
                     </div>

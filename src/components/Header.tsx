@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import SearchOverlay from '@/components/SearchOverlay';
 import RedeemCodeModal from '@/components/RedeemCodeModal';
+import AuthModal, { type AuthView } from '@/components/AuthModal';
 
 const templateCssFiles = [
   '/prototipo-producto/assets/Header-UNAL/css/frontend.css',
@@ -752,6 +753,8 @@ const Header = () => {
   const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [redeemOpen, setRedeemOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authView, setAuthView] = useState<AuthView>('login');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -800,6 +803,13 @@ const Header = () => {
       window.removeEventListener('resize', handleScroll);
     };
   }, []);
+
+  const openAuth = (view: AuthView) => {
+    setRedeemOpen(false);
+    setMobileOpen(false);
+    setAuthView(view);
+    setAuthOpen(true);
+  };
 
   const openMenu = (menu: string) => {
     if (menuTimeout.current) clearTimeout(menuTimeout.current);
@@ -877,7 +887,7 @@ const Header = () => {
                 <span>Buscar...</span>
               </button>
               <div className="unal-portal-icon-row">
-                <button type="button" className="unal-portal-icon-button" aria-label="Usuario">
+                <button type="button" onClick={() => openAuth('login')} className="unal-portal-icon-button" aria-label="Usuario">
                   <User size={15} />
                 </button>
                 <button type="button" className="unal-portal-icon-button" aria-label="Favoritos">
@@ -963,12 +973,12 @@ const Header = () => {
                   <span>Redimir código</span>
                 </button>
                 <span className="unal-portal-commercial-separator">|</span>
-                <a href="#" className="unal-portal-commercial-button unal-portal-commercial-button--login">
+                <button type="button" onClick={() => openAuth('login')} className="unal-portal-commercial-button unal-portal-commercial-button--login">
                   Iniciar sesión
-                </a>
-                <a href="#" className="unal-portal-commercial-button unal-portal-commercial-button--signup">
+                </button>
+                <button type="button" onClick={() => openAuth('register')} className="unal-portal-commercial-button unal-portal-commercial-button--signup">
                   Crear cuenta
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -1006,8 +1016,8 @@ const Header = () => {
                     <Ticket size={15} />
                     <span>Redimir código</span>
                   </button>
-                  <a href="#" className="unal-portal-mobile-action unal-portal-mobile-action--login">Iniciar sesión</a>
-                  <a href="#" className="unal-portal-mobile-action unal-portal-mobile-action--signup">Crear cuenta</a>
+                  <button type="button" onClick={() => openAuth('login')} className="unal-portal-mobile-action unal-portal-mobile-action--login">Iniciar sesión</button>
+                  <button type="button" onClick={() => openAuth('register')} className="unal-portal-mobile-action unal-portal-mobile-action--signup">Crear cuenta</button>
                 </div>
 
                 <div className="unal-portal-mobile-menu">
@@ -1097,6 +1107,7 @@ const Header = () => {
             <button
               type="button"
               className="unal-portal-mobile-stickyitem"
+              onClick={() => openAuth('login')}
               aria-label="Cuenta"
             >
               <User size={18} />
@@ -1124,7 +1135,13 @@ const Header = () => {
       <div ref={hostRef} />
       {portalContainer ? createPortal(portalContent, portalContainer) : null}
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <RedeemCodeModal open={redeemOpen} onClose={() => setRedeemOpen(false)} />
+      <RedeemCodeModal
+        open={redeemOpen}
+        onClose={() => setRedeemOpen(false)}
+        onLogin={() => openAuth('login')}
+        onRegister={() => openAuth('register')}
+      />
+      <AuthModal open={authOpen} initialView={authView} onClose={() => setAuthOpen(false)} />
     </>
   );
 };
